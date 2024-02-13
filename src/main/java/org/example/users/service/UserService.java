@@ -37,7 +37,6 @@ public class UserService {
         String[] user_pass = decodedString.split(":");
         User user =   userRepository.getUserByMail(user_pass[0]);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        System.out.println(user_pass[1] +" "+ user.getUser_password());
         if (passwordEncoder.matches(user_pass[1], user.getUser_password())){
             user.setToken(EncryptionUtil.generateToken());
         }else {
