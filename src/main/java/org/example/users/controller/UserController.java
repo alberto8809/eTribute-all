@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.example.users.model.User;
 import org.example.users.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,16 +30,19 @@ public class UserController {
         this.userService = userService;
     }
 
+    /* Get User by Id */
     @GetMapping("users/{user_id}")
     public User getUserById(@PathVariable(name = "user_id") int user_id) {
         return userService.getUserById(user_id);
     }
 
+    /* Get all users - List users */
     @GetMapping("users")
     public List<User> getAllUser() {
         return userService.getAllUsers();
     }
 
+    /* Login User by token */
     @GetMapping("login/{token}")
     public ResponseEntity<User> getUserLogin(@PathVariable(name = "token") String token) {
         User user = userService.getUserLogin(token);
@@ -48,6 +52,33 @@ public class UserController {
         return new ResponseEntity<>(user, HttpStatus.ACCEPTED);
     }
 
+    /* Delete User */
+    @Modifying
+    @Transactional
+    @GetMapping("usersDelete/{token}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable(name = "token") String token) {
+        if (1 == userService.deleteUserByToken(token)) {
+            return new ResponseEntity<>(HttpStatus.FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    /* Update User */
+    @Transactional
+    @PostMapping(value = "usersUpdate",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<User> updateUser(@RequestBody User user) {
+
+        User newUser = userService.updateUser(user);
+        if (!newUser.equals(null)) {
+            return new ResponseEntity<>(newUser, HttpStatus.CREATED);
+        }
+        return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);
+
+    }
+
+    /* Create User */
     @Transactional
     @PostMapping(value = "users",
             consumes = MediaType.APPLICATION_JSON_VALUE,
