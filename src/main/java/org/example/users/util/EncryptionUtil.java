@@ -1,9 +1,5 @@
 package org.example.users.util;
 
-import org.example.users.model.User;
-
-import java.nio.charset.StandardCharsets;
-import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.UUID;
 
