@@ -25,7 +25,7 @@ public class UploadFileToS3 {
     private static String bucketName = "xmlfilesback";
 
     //private static String local_path = "/Users/marioalberto/IdeaProjects/upload/";
-    private static String server_path= "/home/ubuntu/satUploadFile/";
+    private static String server_path= "/home/ubuntu/endpoints/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3.class);
 

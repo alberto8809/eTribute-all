@@ -41,14 +41,14 @@ public class SatService {
 
 
             //Path destinoCer = Paths.get("/Users/marioalberto/IdeaProjects/upload/" + satClass.getRfc() + ".cer");
-            Path destinoCer = Paths.get("/home/ubuntu/satUploadFile/" + satClass.getRfc() + ".cer");
+            Path destinoCer = Paths.get("/home/ubuntu/endpoints/" + satClass.getRfc() + ".cer");
 
 
             URL url = new URL(satClass.getCer_path());
             Files.copy(url.openStream(), destinoCer, StandardCopyOption.REPLACE_EXISTING);
 
             //Path destinoKey = Paths.get("/Users/marioalberto/IdeaProjects/upload/" + satClass.getRfc() + ".key");
-            Path destinoKey = Paths.get("/home/ubuntu/satUploadFile/" + satClass.getRfc() + ".key");
+            Path destinoKey = Paths.get("/home/ubuntu/endpoints/" + satClass.getRfc() + ".key");
             URL url2 = new URL(satClass.getKey_path());
             Files.copy(url2.openStream(), destinoKey, StandardCopyOption.REPLACE_EXISTING);
 

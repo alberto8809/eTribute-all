@@ -89,7 +89,7 @@ public class WSDescargaCFDI {
 
 
     //private static String DIR_SALIDA = "/Users/marioalberto/IdeaProjects/upload/";
-    private static String DIR_SALIDA = "/home/ubuntu/satUploadFile/";
+    private static String DIR_SALIDA = "/home/ubuntu/endpoints/";
     private String RFC_SOLICITANTE = "";
 
     public static final MediaType MT_JSON = MediaType.get("text/xml; charset=utf-8");
