@@ -46,7 +46,6 @@ public class UserController {
     @GetMapping("login/{token}")
     public ResponseEntity<User> getUserLogin(@PathVariable(name = "token") String token) {
         User user = userService.getUserLogin(token);
-        LOGGER.info("{}",user);
         if (user == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
