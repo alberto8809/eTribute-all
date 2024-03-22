@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 @Service
 public class AuxiliarService {
@@ -62,6 +62,15 @@ public class AuxiliarService {
             return true;
         }
         return false;
+    }
+
+
+    public List<String> getListBalanceByDate(String token) {
+        return auxiliarRepository.getDatesByUser(token);
+    }
+
+    public List<Auxiliar> getListBalanceDate(String inicial_date, String final_date) {
+        return auxiliarRepository.getValuestoBlanace(inicial_date, final_date);
     }
 
 }

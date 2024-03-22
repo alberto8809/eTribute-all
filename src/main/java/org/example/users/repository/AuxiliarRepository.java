@@ -25,4 +25,10 @@ public interface AuxiliarRepository  extends JpaRepository<Auxiliar,String> {
     @Query(value = "SELECT SUM(pof.abono) FROM  dbmaster.policyObjFile pof where pof.cuenta=:cuenta" ,nativeQuery = true)
     String getSumAbono(String cuenta);
 
+    @Query(value = "SELECT DISTINCT pof.fecha FROM  dbmaster.policyObjFile pof, dbmaster.user u  where u.token=:token" ,nativeQuery = true)
+    List<String> getDatesByUser(String token);
+
+    @Query(value = "SELECT * FROM dbmaster.policyObjFile pof WHERE  pof.fecha BETWEEN :initial_date AND :final_date" ,nativeQuery = true)
+    List<Auxiliar> getValuestoBlanace(String initial_date, String final_date);
+
 }

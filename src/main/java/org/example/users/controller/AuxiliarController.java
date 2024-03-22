@@ -10,9 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
 @RestController
@@ -81,5 +80,29 @@ public class AuxiliarController {
         }
 
     }
+
+
+    @GetMapping("balanceGeneralByDate/{token}")
+    public ResponseEntity<List<String>> getListBalanceByDate(@PathVariable(name = "token") String token) {
+        List<String> auxiliarList = auxiliarService.getListBalanceByDate(token);
+        if (!auxiliarList.isEmpty()) {
+            return new ResponseEntity<>(auxiliarList, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+    @GetMapping("balanceGeneral/{inicial_date}/{final_date}")
+    public ResponseEntity<List<Auxiliar>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        List<Auxiliar> auxiliarList = auxiliarService.getListBalanceDate(inicial_date, final_date);
+        if (!auxiliarList.isEmpty()) {
+            return new ResponseEntity<>(auxiliarList, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
 
 }
