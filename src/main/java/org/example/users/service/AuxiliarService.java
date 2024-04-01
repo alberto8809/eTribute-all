@@ -19,7 +19,23 @@ public class AuxiliarService {
     AuxiliarRepository auxiliarRepository;
 
     public List<ListAuxiliar> getListAccounts(String token) {
-        return auxiliarRepository.getAuxiliar(token);
+        List<ListAuxiliar> list = new ArrayList<>();
+        String user_id = auxiliarRepository.getIdByToken(token);
+        List<String> account_id = auxiliarRepository.getAccountByUserId(user_id);
+        for (String account : account_id) {
+            List<Auxiliar> list1 = auxiliarRepository.getAuxiliar(account);
+            if (list1 != null) {
+                for (Auxiliar aux : list1) {
+                    ListAuxiliar listAuxiliar = new ListAuxiliar();
+                    listAuxiliar.setConcepto(aux.getConcepto());
+                    listAuxiliar.setCuenta(aux.getCuenta());
+                    list.add(listAuxiliar);
+                }
+            }
+
+        }
+
+        return list;
     }
 
     public List<Auxiliar> getValuesofTable(String cuenta) {
@@ -37,11 +53,11 @@ public class AuxiliarService {
 
 
     public List<Balance> getAllBalance(String token) {
-        List<ListAuxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(token);
+        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(token);
         List<Balance> values = new ArrayList<>();
 
         /*falta añadir inicial: deudor, acredor final: deudor, acredor*/
-        for (ListAuxiliar listAuxiliar : listAuxiliars) {
+        for (Auxiliar listAuxiliar : listAuxiliars) {
             Balance balance = new Balance();
             balance.setCuenta(listAuxiliar.getCuenta());
             balance.setConcepto(listAuxiliar.getConcepto());
