@@ -18,21 +18,16 @@ public class AuxiliarService {
     @Autowired
     AuxiliarRepository auxiliarRepository;
 
-    public List<ListAuxiliar> getListAccounts(String token) {
+    public List<ListAuxiliar> getListAccounts(String account) {
         List<ListAuxiliar> list = new ArrayList<>();
-        String user_id = auxiliarRepository.getIdByToken(token);
-        List<String> account_id = auxiliarRepository.getAccountByUserId(user_id);
-        for (String account : account_id) {
-            List<Auxiliar> list1 = auxiliarRepository.getAuxiliar(account);
-            if (list1 != null) {
-                for (Auxiliar aux : list1) {
-                    ListAuxiliar listAuxiliar = new ListAuxiliar();
-                    listAuxiliar.setConcepto(aux.getConcepto());
-                    listAuxiliar.setCuenta(aux.getCuenta());
-                    list.add(listAuxiliar);
-                }
+        List<Auxiliar> list1 = auxiliarRepository.getAuxiliar(account);
+        if (list1 != null) {
+            for (Auxiliar aux : list1) {
+                ListAuxiliar listAuxiliar = new ListAuxiliar();
+                listAuxiliar.setConcepto(aux.getConcepto());
+                listAuxiliar.setCuenta(aux.getCuenta());
+                list.add(listAuxiliar);
             }
-
         }
 
         return list;

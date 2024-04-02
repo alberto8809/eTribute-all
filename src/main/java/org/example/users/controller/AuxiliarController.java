@@ -26,9 +26,9 @@ public class AuxiliarController {
     }
 
     /*get all accounts to fill dropdown - Generar Auxiliar  */
-    @GetMapping("auxiliar/{token}")
-    public ResponseEntity<List<ListAuxiliar>> getAuxiliar(@PathVariable(name = "token") String token) {
-        List<ListAuxiliar>auxiliars = auxiliarService.getListAccounts(token);
+    @GetMapping("auxiliar/{account}")
+    public ResponseEntity<List<ListAuxiliar>> getAuxiliar(@PathVariable(name = "account") String account) {
+        List<ListAuxiliar>auxiliars = auxiliarService.getListAccounts(account);
         if (!auxiliars.isEmpty()) {
             return new ResponseEntity<>(auxiliars, HttpStatus.OK);
         } else {

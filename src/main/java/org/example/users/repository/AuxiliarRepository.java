@@ -13,14 +13,6 @@ import java.util.List;
 @Repository
 public interface AuxiliarRepository extends JpaRepository<Auxiliar, String> {
 
-
-    @Query(value = "SELECT user_id  from user where token =:token", nativeQuery = true)
-    String getIdByToken(String token);
-
-    @Query(value = "SELECT account_id  from account where account.user_id=:user_id", nativeQuery = true)
-    List<String> getAccountByUserId(String user_id);
-
-
     @Query(value = "SELECT * from policyObjFile WHERE account_id=:acount", nativeQuery = true)
     List<Auxiliar> getAuxiliar(String acount);
 
