@@ -86,7 +86,7 @@ public class CreateFilePDF {
                 account.setHorizontalAlignment(Element.ALIGN_CENTER);
                 account.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                PdfPCell name = new PdfPCell(new Paragraph(auxiliar1.getConcepto(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell name = new PdfPCell(new Paragraph(auxiliar1.getDescripcion(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 name.setBorderColorBottom(BaseColor.BLACK);
                 name.setHorizontalAlignment(Element.ALIGN_CENTER);
                 name.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -98,14 +98,14 @@ public class CreateFilePDF {
                 inicial.setHorizontalAlignment(Element.ALIGN_CENTER);
 
                 /* sum of all total  -  debe */
-                PdfPCell debe = new PdfPCell(new Paragraph(auxiliar1.getCargo(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell debe = new PdfPCell(new Paragraph(auxiliar1.getDebe(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 debe.setBorderColorBottom(BaseColor.BLACK);
                 debe.setHorizontalAlignment(Element.ALIGN_CENTER);
                 debe.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 
                 /* sum of all total  -  haber*/
-                PdfPCell haber = new PdfPCell(new Paragraph(auxiliar1.getAbono(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell haber = new PdfPCell(new Paragraph(auxiliar1.getHaber(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 haber.setBorderColorBottom(BaseColor.BLACK);
                 haber.setHorizontalAlignment(Element.ALIGN_CENTER);
                 haber.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -198,7 +198,7 @@ public class CreateFilePDF {
                 fecha1.setBorderColor(BaseColor.WHITE);
                 fecha1.setBackgroundColor(new BaseColor(182, 208, 226));
 
-                PdfPCell folio = new PdfPCell(new Paragraph(auxiliar2.getFolio(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
+                PdfPCell folio = new PdfPCell(new Paragraph(auxiliar2.getPoliza(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
                 folio.setHorizontalAlignment(Element.ALIGN_CENTER);
                 folio.setPaddingRight(40);
                 folio.setBorderColor(BaseColor.WHITE);
@@ -210,7 +210,7 @@ public class CreateFilePDF {
                 referencia2.setBorderColor(BaseColor.WHITE);
                 referencia2.setBackgroundColor(new BaseColor(182, 208, 226));
 
-                PdfPCell concepto = new PdfPCell(new Paragraph(auxiliar2.getConcepto(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
+                PdfPCell concepto = new PdfPCell(new Paragraph(auxiliar2.getDescripcion(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
                 concepto.setHorizontalAlignment(Element.ALIGN_CENTER);
                 concepto.setBorderColor(BaseColor.WHITE);
                 concepto.setBackgroundColor(new BaseColor(182, 208, 226));
@@ -221,13 +221,13 @@ public class CreateFilePDF {
                 saldo_inicial2.setBackgroundColor(new BaseColor(182, 208, 226));
 
 
-                PdfPCell cargo = new PdfPCell(new Paragraph(auxiliar2.getCargo(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
+                PdfPCell cargo = new PdfPCell(new Paragraph(auxiliar2.getDebe(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
                 cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
                 cargo.setBorderColor(BaseColor.WHITE);
                 cargo.setBackgroundColor(new BaseColor(182, 208, 226));
 
 
-                PdfPCell abono = new PdfPCell(new Paragraph(auxiliar2.getAbono(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
+                PdfPCell abono = new PdfPCell(new Paragraph(auxiliar2.getHaber(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
                 abono.setHorizontalAlignment(Element.ALIGN_CENTER);
                 abono.setBorderColor(BaseColor.WHITE);
                 abono.setBackgroundColor(new BaseColor(182, 208, 226));

@@ -7,9 +7,11 @@ import org.example.users.model.ListAuxiliar;
 import org.example.users.service.AuxiliarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -26,9 +28,9 @@ public class AuxiliarController {
     }
 
     /*get all accounts to fill dropdown - Generar Auxiliar  */
-    @GetMapping("auxiliar/{account}")
+    @GetMapping(path = "auxiliar/{account}")
     public ResponseEntity<List<ListAuxiliar>> getAuxiliar(@PathVariable(name = "account") String account) {
-        List<ListAuxiliar>auxiliars = auxiliarService.getListAccounts(account);
+        List<ListAuxiliar> auxiliars = auxiliarService.getListAccounts(account);
         if (!auxiliars.isEmpty()) {
             return new ResponseEntity<>(auxiliars, HttpStatus.OK);
         } else {

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -24,13 +25,13 @@ public class AuxiliarService {
         if (list1 != null) {
             for (Auxiliar aux : list1) {
                 ListAuxiliar listAuxiliar = new ListAuxiliar();
-                listAuxiliar.setConcepto(aux.getConcepto());
+                listAuxiliar.setConcepto(aux.getDescripcion());
                 listAuxiliar.setCuenta(aux.getCuenta());
                 list.add(listAuxiliar);
             }
         }
 
-        return list;
+        return list.stream().distinct().collect(Collectors.toList());
     }
 
     public List<Auxiliar> getValuesofTable(String cuenta) {
@@ -55,7 +56,7 @@ public class AuxiliarService {
         for (Auxiliar listAuxiliar : listAuxiliars) {
             Balance balance = new Balance();
             balance.setCuenta(listAuxiliar.getCuenta());
-            balance.setConcepto(listAuxiliar.getConcepto());
+            balance.setConcepto(listAuxiliar.getDescripcion());
             balance.setCargo(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
             balance.setAbono(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
 

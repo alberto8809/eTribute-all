@@ -17,22 +17,22 @@ public class Auxiliar {
     private String usuario;
     @Column(name = "tipo")
     private String tipo;
-    @Column(name = "folio")
-    private String folio;
+    @Column(name = "poliza")
+    private String poliza;
     @Column(name = "cuenta")
     private String cuenta;
-    @Column(name = "concepto")
-    private String concepto;
-    @Column(name = "cargo")
-    private String cargo;
-    @Column(name = "abono")
-    private String abono;
+    @Column(name = "descripcion")
+    private String descripcion;
+    @Column(name = "debe")
+    private String debe;
+    @Column(name = "haber")
+    private String haber;
     @Column(name = "fecha")
     private String fecha;
     @Column(name = "proveedor")
     private String proveedor;
-    @Column(name = "folio_fiscal")
-    private String folio_fiscal;
+    @Column(name = "referencia")
+    private String referencia;
     @Column(name = "total")
     private String total;
 
@@ -64,13 +64,6 @@ public class Auxiliar {
         this.tipo = tipo;
     }
 
-    public String getFolio() {
-        return folio;
-    }
-
-    public void setFolio(String folio) {
-        this.folio = folio;
-    }
 
     public String getCuenta() {
         return cuenta;
@@ -78,30 +71,6 @@ public class Auxiliar {
 
     public void setCuenta(String cuenta) {
         this.cuenta = cuenta;
-    }
-
-    public String getConcepto() {
-        return concepto;
-    }
-
-    public void setConcepto(String concepto) {
-        this.concepto = concepto;
-    }
-
-    public String getCargo() {
-        return cargo;
-    }
-
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
-    }
-
-    public String getAbono() {
-        return abono;
-    }
-
-    public void setAbono(String abono) {
-        this.abono = abono;
     }
 
     public String getFecha() {
@@ -120,14 +89,6 @@ public class Auxiliar {
         this.proveedor = proveedor;
     }
 
-    public String getFolio_fiscal() {
-        return folio_fiscal;
-    }
-
-    public void setFolio_fiscal(String folio_fiscal) {
-        this.folio_fiscal = folio_fiscal;
-    }
-
     public String getTotal() {
         return total;
     }
@@ -136,6 +97,48 @@ public class Auxiliar {
         this.total = total;
     }
 
+
+    public String getPoliza() {
+        return poliza;
+    }
+
+    public void setPoliza(String poliza) {
+        this.poliza = poliza;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public String getDebe() {
+        return debe;
+    }
+
+    public void setDebe(String debe) {
+        this.debe = debe;
+    }
+
+    public String getHaber() {
+        return haber;
+    }
+
+    public void setHaber(String haber) {
+        this.haber = haber;
+    }
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
+
+
     @Override
     public String toString() {
         return "Auxiliar{" +
@@ -143,14 +146,14 @@ public class Auxiliar {
                 ", cliente='" + cliente + '\'' +
                 ", usuario='" + usuario + '\'' +
                 ", tipo='" + tipo + '\'' +
-                ", folio='" + folio + '\'' +
+                ", poliza='" + poliza + '\'' +
                 ", cuenta='" + cuenta + '\'' +
-                ", concepto='" + concepto + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", abono='" + abono + '\'' +
+                ", descripcion='" + descripcion + '\'' +
+                ", debe='" + debe + '\'' +
+                ", haber='" + haber + '\'' +
                 ", fecha='" + fecha + '\'' +
                 ", proveedor='" + proveedor + '\'' +
-                ", folio_fiscal='" + folio_fiscal + '\'' +
+                ", referencia='" + referencia + '\'' +
                 ", total='" + total + '\'' +
                 '}';
     }
