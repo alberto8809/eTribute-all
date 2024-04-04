@@ -73,7 +73,7 @@ public class AuxiliarController {
     }
 
 
-    @GetMapping("balancekkkFile/{token}")
+    @GetMapping("balanceFile/{token}")
     public ResponseEntity<HttpStatus> createFileBalance(@PathVariable(name = "token") String token) {
         if (auxiliarService.createFileBalance(token)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
