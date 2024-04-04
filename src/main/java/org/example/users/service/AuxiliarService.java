@@ -48,8 +48,8 @@ public class AuxiliarService {
     }
 
 
-    public List<Balance> getAllBalance(String token) {
-        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(token);
+    public List<Balance> getAllBalance(String cuenta) {
+        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(cuenta);
         List<Balance> values = new ArrayList<>();
 
         /*falta añadir inicial: deudor, acredor final: deudor, acredor*/

@@ -19,10 +19,10 @@ public interface AuxiliarRepository extends JpaRepository<Auxiliar, String> {
     @Query(value = "SELECT * FROM dbmaster.policyObjFile pof WHERE pof.cuenta=:cuenta", nativeQuery = true)
     List<Auxiliar> valuesOfTable(String cuenta);
 
-    @Query(value = "SELECT SUM(pof.cargo) FROM  dbmaster.policyObjFile pof where pof.cuenta=:cuenta", nativeQuery = true)
+    @Query(value = "SELECT SUM(pof.debe) FROM  dbmaster.policyObjFile pof where pof.cuenta=:cuenta", nativeQuery = true)
     String getSumCargo(String cuenta);
 
-    @Query(value = "SELECT SUM(pof.abono) FROM  dbmaster.policyObjFile pof where pof.cuenta=:cuenta", nativeQuery = true)
+    @Query(value = "SELECT SUM(pof.haber) FROM  dbmaster.policyObjFile pof where pof.cuenta=:cuenta", nativeQuery = true)
     String getSumAbono(String cuenta);
 
     @Query(value = "SELECT DISTINCT pof.fecha FROM  dbmaster.policyObjFile pof, dbmaster.user u  where u.token=:token", nativeQuery = true)

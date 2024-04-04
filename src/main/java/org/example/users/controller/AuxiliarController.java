@@ -61,9 +61,9 @@ public class AuxiliarController {
     }
 
 
-    @GetMapping("balance/{token}")
-    public ResponseEntity<List<Balance>> getBalance(@PathVariable(name = "token") String token) {
-        List<Balance> auxiliarList = auxiliarService.getAllBalance(token);
+    @GetMapping("balance/{cuenta}")
+    public ResponseEntity<List<Balance>> getBalance(@PathVariable(name = "cuenta") String cuenta) {
+        List<Balance> auxiliarList = auxiliarService.getAllBalance(cuenta);
         if (!auxiliarList.isEmpty()) {
             return new ResponseEntity<>(auxiliarList, HttpStatus.CREATED);
         } else {
@@ -73,7 +73,7 @@ public class AuxiliarController {
     }
 
 
-    @GetMapping("balanceFile/{token}")
+    @GetMapping("balancekkkFile/{token}")
     public ResponseEntity<HttpStatus> createFileBalance(@PathVariable(name = "token") String token) {
         if (auxiliarService.createFileBalance(token)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
