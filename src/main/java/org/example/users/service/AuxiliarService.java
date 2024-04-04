@@ -93,7 +93,7 @@ public class AuxiliarService {
                 "Pasivo Circulante : " + cuentaContableRepository.getValuestoBlanacePasivo() + " , " +
                 "Activo Fijo : " + cuentaContableRepository.getValuestoBlanaceActivoFijo() + " , " +
                 "Pasivo a Largo PLazo : " + " 0 " + " , " +
-                "Activo Diferido : " + cuentaContableRepository.getValuesBalanaceActivoDiferido() + " , " +
+                "Activo Diferido : " + cuentaContableRepository.getValuesBalanceActivoDiferido() + " , " +
                 "Capital Contable : " + cuentaContableRepository.getValuestoBlanaceCapital();
     }
 

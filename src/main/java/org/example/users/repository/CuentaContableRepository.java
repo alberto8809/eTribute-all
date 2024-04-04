@@ -20,8 +20,8 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT *  FROM dbmaster.cuentaContable WHERE codigo_agrupador='171'", nativeQuery = true)
     CuentaContable getValuestoBlanaceActivoFijo();
 
-    @Query(value = "SELECT *  FROM dbmaster.cuentaContable WHERE codigo_agrupador=184", nativeQuery = true)
-    CuentaContable getValuesBalanaceActivoDiferido();
+    @Query(value = "SELECT *  FROM dbmaster.cuentaContable WHERE codigo_agrupador='184'", nativeQuery = true)
+    CuentaContable getValuesBalanceActivoDiferido();
 
     @Query(value = "SELECT *  FROM dbmaster.cuentaContable WHERE codigo_agrupador='301' AND codigo_agrupador ='304'AND codigo_agrupador ='305'", nativeQuery = true)
     List<CuentaContable> getValuestoBlanaceCapital();

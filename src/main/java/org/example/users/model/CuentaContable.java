@@ -19,8 +19,6 @@ public class CuentaContable {
     @Column(name = "nombre_cuenta")
     private String nombre_cuenta;
 
-    public CuentaContable() {
-    }
 
     public String getNivel() {
         return nivel;
