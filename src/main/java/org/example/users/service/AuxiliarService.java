@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -88,13 +89,14 @@ public class AuxiliarService {
         return false;
     }
 
-    public String getListBalanceDate(String inicial_date, String final_date) {
-        return " Activo Circulante : " + cuentaContableRepository.getValuestoBlanaceActivo() + " , " +
-                "Pasivo Circulante : " + cuentaContableRepository.getValuestoBlanacePasivo() + " , " +
-                "Activo Fijo : " + cuentaContableRepository.getValuestoBlanaceActivoFijo() + " , " +
-                "Pasivo a Largo PLazo : " + " 0 " + " , " +
-                "Activo Diferido : " + cuentaContableRepository.getValuesBalanceActivoDiferido() + " , " +
-                "Capital Contable : " + cuentaContableRepository.getValuestoBlanaceCapital();
+    public HashMap<String, Object> getListBalanceDate(String inicial_date, String final_date) {
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("Activo Circulante", cuentaContableRepository.getValuestoBlanaceActivo());
+        response.put("Pasivo Circulante", cuentaContableRepository.getValuestoBlanacePasivo());
+        response.put("Activo Fijo", cuentaContableRepository.getValuestoBlanaceActivoFijo());
+        response.put("Pasivo a Largo PLazo", null);
+        response.put("Activo Diferido", cuentaContableRepository.getValuesBalanceActivoDiferido());
+        response.put("Capital Contable", cuentaContableRepository.getValuestoBlanaceCapital());
+        return response;
     }
-
 }

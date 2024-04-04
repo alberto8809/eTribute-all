@@ -85,8 +85,8 @@ public class AuxiliarController {
 
 
     @GetMapping("balanceGeneral/{inicial_date}/{final_date}")
-    public ResponseEntity<String> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
-        String bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
+    public ResponseEntity<HashMap<String, Object>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        HashMap<String, Object> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {
