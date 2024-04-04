@@ -4,6 +4,7 @@ import org.example.users.model.Auxiliar;
 import org.example.users.model.Balance;
 import org.example.users.model.ListAuxiliar;
 import org.example.users.repository.AuxiliarRepository;
+import org.example.users.repository.CuentaContableRepository;
 import org.example.users.util.CreateFilePDF;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ public class AuxiliarService {
 
     @Autowired
     AuxiliarRepository auxiliarRepository;
+    @Autowired
+    CuentaContableRepository cuentaContableRepository;
 
-    public List<ListAuxiliar> getListAccounts(String account) {
+    public List<ListAuxiliar> getListAccounts(String account, String inicial_date, String final_date) {
         List<ListAuxiliar> list = new ArrayList<>();
-        List<Auxiliar> list1 = auxiliarRepository.getAuxiliar(account);
+        List<Auxiliar> list1 = auxiliarRepository.getAuxiliar(account, inicial_date, final_date);
         if (list1 != null) {
             for (Auxiliar aux : list1) {
                 ListAuxiliar listAuxiliar = new ListAuxiliar();
@@ -48,17 +51,26 @@ public class AuxiliarService {
     }
 
 
-    public List<Balance> getAllBalance(String cuenta) {
-        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(cuenta);
+    public List<Balance> getAllBalance(String account_id) {
+        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliarById(account_id);
         List<Balance> values = new ArrayList<>();
 
-        /*falta añadir inicial: deudor, acredor final: deudor, acredor*/
         for (Auxiliar listAuxiliar : listAuxiliars) {
             Balance balance = new Balance();
             balance.setCuenta(listAuxiliar.getCuenta());
-            balance.setConcepto(listAuxiliar.getDescripcion());
-            balance.setCargo(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
-            balance.setAbono(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
+            balance.setNombre(listAuxiliar.getDescripcion());
+            //balance.setDeudor_inicial();
+            //balance.setAcredor_inicial();
+            balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
+            balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
+            //balance.setDeudorInicial_total();
+            //balance.setAcredorinical_total();
+            //balance.setDeudorInicial_total();
+            //balance.setAcredorinical_total();
+            balance.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
+            balance.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
+            //balance.setDeudorFinal_total();
+            //balance.setAcredorFinal_total();
 
             values.add(balance);
         }
@@ -76,13 +88,13 @@ public class AuxiliarService {
         return false;
     }
 
-
-    public List<String> getListBalanceByDate(String token) {
-        return auxiliarRepository.getDatesByUser(token);
-    }
-
-    public List<Auxiliar> getListBalanceDate(String inicial_date, String final_date) {
-        return auxiliarRepository.getValuestoBlanace(inicial_date, final_date);
+    public String getListBalanceDate(String inicial_date, String final_date) {
+        return " Activo Circulante : " + cuentaContableRepository.getValuestoBlanaceActivo() + " , " +
+                "Pasivo Circulante : " + cuentaContableRepository.getValuestoBlanacePasivo() + " , " +
+                "Activo Fijo : " + cuentaContableRepository.getValuestoBlanaceActivoFijo() + " , " +
+                "Pasivo a Largo PLazo : " + " 0 " + " , " +
+                "Activo Diferido : " + cuentaContableRepository.getValuesBalanaceActivoDiferido() + " , " +
+                "Capital Contable : " + cuentaContableRepository.getValuestoBlanaceCapital();
     }
 
 }

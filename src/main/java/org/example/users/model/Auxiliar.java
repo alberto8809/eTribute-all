@@ -36,6 +36,12 @@ public class Auxiliar {
     @Column(name = "total")
     private String total;
 
+    @Column(name = "saldo_inicial")
+    private String saldo_inicial;
+
+    @Column(name = "saldo_final")
+    private String saldo_final;
+
 
     public Auxiliar() {
     }
@@ -138,6 +144,21 @@ public class Auxiliar {
         this.referencia = referencia;
     }
 
+    public String getSaldo_inicial() {
+        return saldo_inicial == null || saldo_inicial.isEmpty() ? "0" : saldo_inicial;
+    }
+
+    public void setSaldo_inicial(String saldo_inicial) {
+        this.saldo_inicial = saldo_inicial;
+    }
+
+    public String getSaldo_final() {
+        return saldo_final;
+    }
+
+    public void setSaldo_final(String saldo_final) {
+        this.saldo_final = saldo_final;
+    }
 
     @Override
     public String toString() {
@@ -155,6 +176,8 @@ public class Auxiliar {
                 ", proveedor='" + proveedor + '\'' +
                 ", referencia='" + referencia + '\'' +
                 ", total='" + total + '\'' +
+                ", saldo_inicial='" + saldo_inicial + '\'' +
+                ", saldo_final='" + saldo_final + '\'' +
                 '}';
     }
 }

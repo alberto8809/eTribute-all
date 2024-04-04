@@ -3,13 +3,21 @@ package org.example.users.model;
 public class Balance {
 
     private String cuenta;
-    private String concepto;
+    private String nombre;
     private String deudor_inicial;
     private String acredor_inicial;
-    private String cargo;
-    private String abono;
+    private String debe;
+    private String haber;
     private String deudor_final;
     private String acredor_final;
+
+    private String deudorInicial_total;
+    private String acredorinical_total;
+
+    private String debe_total;
+    private String haber_total;
+    private String deudorFinal_total;
+    private String acredorFinal_total;
 
     public Balance() {
     }
@@ -22,12 +30,12 @@ public class Balance {
         this.cuenta = cuenta;
     }
 
-    public String getConcepto() {
-        return concepto;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setConcepto(String concepto) {
-        this.concepto = concepto;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDeudor_inicial() {
@@ -46,20 +54,20 @@ public class Balance {
         this.acredor_inicial = acredor_inicial;
     }
 
-    public String getCargo() {
-        return cargo;
+    public String getDebe() {
+        return debe;
     }
 
-    public void setCargo(String cargo) {
-        this.cargo = cargo;
+    public void setDebe(String debe) {
+        this.debe = debe;
     }
 
-    public String getAbono() {
-        return abono;
+    public String getHaber() {
+        return haber;
     }
 
-    public void setAbono(String abono) {
-        this.abono = abono;
+    public void setHaber(String haber) {
+        this.haber = haber;
     }
 
     public String getDeudor_final() {
@@ -78,18 +86,72 @@ public class Balance {
         this.acredor_final = acredor_final;
     }
 
+    public String getDeudorInicial_total() {
+        return deudorInicial_total;
+    }
+
+    public void setDeudorInicial_total(String deudorInicial_total) {
+        this.deudorInicial_total = deudorInicial_total;
+    }
+
+    public String getAcredorinical_total() {
+        return acredorinical_total;
+    }
+
+    public void setAcredorinical_total(String acredorinical_total) {
+        this.acredorinical_total = acredorinical_total;
+    }
+
+    public String getDebe_total() {
+        return debe_total;
+    }
+
+    public void setDebe_total(String debe_total) {
+        this.debe_total = debe_total;
+    }
+
+    public String getHaber_total() {
+        return haber_total;
+    }
+
+    public void setHaber_total(String haber_total) {
+        this.haber_total = haber_total;
+    }
+
+    public String getDeudorFinal_total() {
+        return deudorFinal_total;
+    }
+
+    public void setDeudorFinal_total(String deudorFinal_total) {
+        this.deudorFinal_total = deudorFinal_total;
+    }
+
+    public String getAcredorFinal_total() {
+        return acredorFinal_total;
+    }
+
+    public void setAcredorFinal_total(String acredorFinal_total) {
+        this.acredorFinal_total = acredorFinal_total;
+    }
+
 
     @Override
     public String toString() {
         return "Balance{" +
                 "cuenta='" + cuenta + '\'' +
-                ", concepto='" + concepto + '\'' +
+                ", nombre='" + nombre + '\'' +
                 ", deudor_inicial='" + deudor_inicial + '\'' +
                 ", acredor_inicial='" + acredor_inicial + '\'' +
-                ", cargo='" + cargo + '\'' +
-                ", abono='" + abono + '\'' +
+                ", debe='" + debe + '\'' +
+                ", haber='" + haber + '\'' +
                 ", deudor_final='" + deudor_final + '\'' +
                 ", acredor_final='" + acredor_final + '\'' +
+                ", deudorInicial_total='" + deudorInicial_total + '\'' +
+                ", acredorinical_total='" + acredorinical_total + '\'' +
+                ", debe_total='" + debe_total + '\'' +
+                ", haber_total='" + haber_total + '\'' +
+                ", deudorFinal_total='" + deudorFinal_total + '\'' +
+                ", acredorFinal_total='" + acredorFinal_total + '\'' +
                 '}';
     }
 }
