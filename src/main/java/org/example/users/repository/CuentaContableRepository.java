@@ -27,4 +27,18 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     List<CuentaContable> getValuestoBlanaceCapital();
 
 
+
+    @Query(value = "SELECT * FROM dbmaster.cuentaContable cc WHERE cc.codigo_agrupador =:codigo_agrupador ", nativeQuery = true)
+    CuentaContable getCuantaContable(String codigo_agrupador);
+
+    @Query(value = "SELECT cc.nombre_cuenta FROM dbmaster.cuentaContable cc WHERE cc.codigo_agrupador =:codigo_agrupador ", nativeQuery = true)
+    String getCuentaContableVenta(String codigo_agrupador);
+
+
+    @Query(value = "SELECT cc.nombre_cuenta FROM dbmaster.cuentaContable cc WHERE cc.codigo_agrupador =:codigo_agrupador ", nativeQuery = true)
+    String getCuantaContableMethod(String codigo_agrupador);
+
+    @Query(value = "SELECT c.nombre_cuenta FROM dbmaster.cuentaContable c WHERE c.codigo_agrupador =:tax_id ", nativeQuery = true)
+    String getCuantaContableTax(String tax_id);
+
 }

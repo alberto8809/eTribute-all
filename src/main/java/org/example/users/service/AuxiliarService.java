@@ -5,7 +5,7 @@ import org.example.users.model.Balance;
 import org.example.users.model.ListAuxiliar;
 import org.example.users.repository.AuxiliarRepository;
 import org.example.users.repository.CuentaContableRepository;
-import org.example.users.util.CreateFilePDF;
+import org.example.users.util.CreateFilePDFBalance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +45,7 @@ public class AuxiliarService {
     public boolean createFileByAccount(String cuenta) {
         List<Auxiliar> auxiliars = auxiliarRepository.valuesOfTable(cuenta);
         if (!auxiliars.isEmpty()) {
-            CreateFilePDF.makeFileAuxiliar(auxiliars);
+            CreateFilePDFBalance.makeFileAuxiliar(auxiliars);
             return true;
         }
         return false;
@@ -83,7 +83,7 @@ public class AuxiliarService {
     public boolean createFileBalance(String token) {
         List<Balance> balance = getAllBalance(token);
         if (!balance.isEmpty()) {
-            CreateFilePDF.makeFileBalance(balance);
+            CreateFilePDFBalance.makeFileBalance(balance);
             return true;
         }
         return false;

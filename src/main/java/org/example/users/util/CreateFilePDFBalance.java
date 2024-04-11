@@ -11,11 +11,11 @@ import java.io.FileOutputStream;
 import java.util.List;
 
 
-public class CreateFilePDF {
+public class CreateFilePDFBalance {
     private static final String FILENAME = "sample.pdf";
 
 
-    public CreateFilePDF() {
+    public CreateFilePDFBalance() {
     }
 
 
