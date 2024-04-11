@@ -24,8 +24,8 @@ import java.util.*;
 public class UploadFileToS3_Policies {
     private static String bucketName = "xmlfilesback";
 
-    private static String local_path = "/Users/marioalberto/IdeaProjects/polilzas_emitidas2/";
-    //private static String server_path= "/home/ubuntu/endpoints/";
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/polilzas_emitidas2/";
+    private static String server_path= "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3.class);
 
@@ -37,7 +37,7 @@ public class UploadFileToS3_Policies {
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(local_path + xml);
+            File file = new File(server_path + xml);
             PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
             s3Client.putObject(request);
 

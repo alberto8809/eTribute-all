@@ -34,8 +34,8 @@ public class CreateFileController {
     }
 
     @PostMapping("files")
-    public ResponseEntity<Map<String, List<Response>>> createFile(@RequestParam(name = "files") MultipartFile[] files, @RequestParam(name = "rfc") String rfc) throws IOException {
-        Map<String, List<Response>> re =createFileService.createFile(files, rfc);
+    public ResponseEntity<String> createFile(@RequestParam(name = "files") MultipartFile[] files, @RequestParam(name = "rfc") String rfc) throws IOException {
+        String re =createFileService.createFile(files, rfc);
         if (!re.isEmpty()) {
             return new ResponseEntity<>(re,HttpStatus.OK);
         }

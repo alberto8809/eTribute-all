@@ -29,6 +29,7 @@ import java.util.UUID;
 
 public class CreateFileService {
     private static String local_path = "/Users/marioalberto/IdeaProjects/polilzas_emitidas2/";
+    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     @Autowired
     CreateFileRepository createFileRepository;
@@ -120,16 +121,16 @@ public class CreateFileService {
         String fileName = "";
         for (MultipartFile file : files) {
             fileName = file.getOriginalFilename();
-            File uploadDir = new File(local_path);
+            File uploadDir = new File(server_path);
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            Path filePath = Paths.get(local_path, fileName);
+            Path filePath = Paths.get(server_path, fileName);
             Files.write(filePath, file.getBytes());
 
             //date is comming from xml
-            // UploadFileToS3.upload(fileName, rfc, date);
+            UploadFileToS3_Policies.upload(fileName, rfc, date);
 
 
         }
@@ -137,7 +138,7 @@ public class CreateFileService {
     }
 
 
-    public Map<String, List<Response>>  createFile(MultipartFile[] files, String rfc) throws IOException {
+    public String createFile(MultipartFile[] files, String rfc) throws IOException {
 
 
 //        //make logic to get all values and then pass to front
@@ -293,8 +294,8 @@ public class CreateFileService {
 //        }
 
 //        storeFile(files, rfc, "2022-02");
-
-        return UploadFileToS3_Policies.getFilelFromAWS(rfc);
+        //UploadFileToS3_Policies.getFilelFromAWS(rfc)
+        return storeFile(files, rfc, "2023-02");
 
     }
 
