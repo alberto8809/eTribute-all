@@ -1,10 +1,7 @@
 package org.example.users.service;
 
 
-import org.example.users.model.CuentaContable;
-import org.example.users.model.PolicyObjFile;
-import org.example.users.model.Regimen;
-import org.example.users.model.Response;
+import org.example.users.model.*;
 import org.example.users.repository.*;
 import org.example.users.util.CreateFilePDFPolicy;
 import org.example.users.util.ParserFile;
@@ -351,7 +348,7 @@ public class CreateFileService {
 
 
                     if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
-                        //guardar en DB
+                        saveObjRepository.save(new PolicytoDB());
                         System.out.println("inside to save into DB -- P ");
                     }
 
@@ -389,7 +386,7 @@ public class CreateFileService {
                     policyObjFile.setFolio(uuid + "-" + policyObjFile.getPolicyObj().getRfc());
 
                     if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
-                        //guardar en DB
+                        saveObjRepository.save(new PolicytoDB());
                         System.out.println("inside to save into DB --  I --");
                     }
 
@@ -416,7 +413,7 @@ public class CreateFileService {
                     policyObjFile.setFolio(uuid + "-" + policyObjFile.getPolicyObj().getRfc());
 
                     if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
-                        //guardar en DB
+                        saveObjRepository.save(new PolicytoDB());
                         System.out.println("inside to save into DB --  I");
                     }
 
@@ -446,7 +443,7 @@ public class CreateFileService {
                     policyObjFile.setFolio(uuid + "-" + policyObjFile.getPolicyObj().getRfc());
 
                     if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
-                        //guardar en DB
+                        saveObjRepository.save(new PolicytoDB());
                         System.out.println("inside to save into DB -- E");
                     }
 
@@ -470,7 +467,7 @@ public class CreateFileService {
                     policyObjFile.setFolio(uuid + "-" + policyObjFile.getPolicyObj().getRfc());
 
                     if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
-                        //guardar en DB
+                        saveObjRepository.save(new PolicytoDB());
                         System.out.println("inside to save into DB -- N");
                     }
 
@@ -482,7 +479,7 @@ public class CreateFileService {
                     policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
                     policyObjFile.setFolio(uuid + "-" + policyObjFile.getPolicyObj().getRfc());
                     if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
-                        //guardar en DB
+                        saveObjRepository.save(new PolicytoDB());
                         System.out.println("inside to save into DB --  else");
                     }
 
