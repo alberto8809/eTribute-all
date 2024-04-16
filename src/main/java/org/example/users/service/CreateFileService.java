@@ -161,7 +161,6 @@ public class CreateFileService {
                 policyObjFile.setCuenta_method("102.01");
                 policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
 
-
                 List<String> id = new ArrayList<>();
                 id.add("209.01");
                 id.add("105.99");
@@ -172,16 +171,11 @@ public class CreateFileService {
                 desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(1)));
 
                 policyObjFile.setTax_description(desc);
-
-
                 policyObjFile.getPolicyObj().setVenta_id("208.01");
                 policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
 
-
                 //policyObjFile.setFolio(uuid + "-" + policyObjFile.getPolicyObj().getRfc());
                 policyObjFile.setFolio(uuid.toString());
-
-
                 CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>());
 
                 return true;
@@ -213,10 +207,7 @@ public class CreateFileService {
                     cargo.add(cuentaContableRepository.getCuantaContableMethod(clv));
                 }
                 policyObjFile.getPolicyObj().setCargo(cargo);
-
-
                 policyObjFile.setFolio(uuid.toString());
-
                 CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>());
 
                 return true;
@@ -233,14 +224,9 @@ public class CreateFileService {
                 desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
 
                 policyObjFile.setTax_description(desc);
-
-
                 policyObjFile.getPolicyObj().setVenta_id("209.01");
                 policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
-
                 policyObjFile.setFolio(uuid.toString());
-
                 CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>());
 
                 return true;
@@ -250,24 +236,16 @@ public class CreateFileService {
 
                 policyObjFile.setCuenta_method("402.01");
                 policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-
-
                 List<String> id = new ArrayList<>();
                 id.add("105.99");
                 policyObjFile.setTax_id(id);
-
-
                 List<String> desc = new ArrayList<>();
                 desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
 
                 policyObjFile.setTax_description(desc);
-
-
                 policyObjFile.getPolicyObj().setVenta_id("209.01");
                 policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
                 policyObjFile.setFolio(uuid.toString());
-
                 CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>());
 
                 return true;
@@ -285,9 +263,7 @@ public class CreateFileService {
                 accounts.add(policyObjFile.getDescription_methods());
                 policyObjFile.setTax_id(claveProductoServ);
                 policyObjFile.setTax_description(accounts);
-
                 policyObjFile.setFolio(uuid.toString());
-
                 CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>());
 
                 return true;
@@ -324,8 +300,6 @@ public class CreateFileService {
 
                         policyObjFile.setCuenta_method("102.01");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-
-
                         List<String> id = new ArrayList<>();
                         id.add("209.01");
                         id.add("105.99");
@@ -334,16 +308,10 @@ public class CreateFileService {
                         List<String> desc = new ArrayList<>();
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(1)));
-
                         policyObjFile.setTax_description(desc);
-
-
                         policyObjFile.getPolicyObj().setVenta_id("208.01");
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
-
                         policyObjFile.setFolio(uuid.toString());
-
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
                             PolicytoDB policytoDB = new PolicytoDB();
@@ -352,7 +320,6 @@ public class CreateFileService {
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Integer.parseInt(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
-
 
                             List<String> debe = policyObjFile.getPolicyObj().getCargo();
                             int sumDebe = 0;
@@ -375,8 +342,6 @@ public class CreateFileService {
                             int fin = Integer.parseInt(policytoDB.getSaldo_inicial()) + Integer.parseInt(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
-
                             saveObjRepository.save(policytoDB);
                             System.out.println("inside to save into DB -- P ");
                         }
@@ -388,30 +353,21 @@ public class CreateFileService {
                         cuentaContable.add(cuentaContableRepository.getCuantaContable(policyObjFile.getPolicyObj().getVenta_id()));
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                         cuentaContable.add(cuentaContableRepository.getCuantaContable(claveProductoServ.isEmpty() || claveProductoServ == null ? "01" : claveProductoServ.get(0)));
-
-
                         policyObjFile.setCuenta_method("216.04");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-
-                        // (Cargo)
-
                         List<String> id = new ArrayList<>();
                         id.add("216.10");
                         policyObjFile.setTax_id(id);
 
                         List<String> desc = new ArrayList<>();
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-
                         policyObjFile.setTax_description(desc);
-
                         List<String> abonos = policyObjFile.getPolicyObj().getAbono();
                         List<String> cargo = new ArrayList<>();
                         for (String clv : abonos) {
                             cargo.add(cuentaContableRepository.getCuantaContableMethod(clv));
                         }
                         policyObjFile.getPolicyObj().setCargo(cargo);
-
-
                         policyObjFile.setFolio(uuid.toString());
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
@@ -444,7 +400,6 @@ public class CreateFileService {
                             int fin = Integer.parseInt(policytoDB.getSaldo_inicial()) + Integer.parseInt(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
 
                             saveObjRepository.save(policytoDB);
                             System.out.println("inside to save into DB --  I --");
@@ -455,21 +410,14 @@ public class CreateFileService {
 
                         policyObjFile.setCuenta_method("401.07");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-
                         List<String> id = new ArrayList<>();
                         id.add("205.99");
                         policyObjFile.setTax_id(id);
-
                         List<String> desc = new ArrayList<>();
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-
                         policyObjFile.setTax_description(desc);
-
-
                         policyObjFile.getPolicyObj().setVenta_id("209.01");
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
-
                         policyObjFile.setFolio(uuid.toString());
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
@@ -479,7 +427,6 @@ public class CreateFileService {
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Integer.parseInt(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
-
 
                             List<String> debe = policyObjFile.getPolicyObj().getCargo();
                             int sumDebe = 0;
@@ -502,8 +449,6 @@ public class CreateFileService {
                             int fin = Integer.parseInt(policytoDB.getSaldo_inicial()) + Integer.parseInt(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
-
                             saveObjRepository.save(policytoDB);
                             System.out.println("inside to save into DB --  I");
                         }
@@ -515,22 +460,15 @@ public class CreateFileService {
 
                         policyObjFile.setCuenta_method("402.01");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-
-
                         List<String> id = new ArrayList<>();
                         id.add("105.99");
                         policyObjFile.setTax_id(id);
-
-
                         List<String> desc = new ArrayList<>();
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
 
                         policyObjFile.setTax_description(desc);
-
-
                         policyObjFile.getPolicyObj().setVenta_id("209.01");
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
                         policyObjFile.setFolio(uuid.toString());
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
@@ -563,8 +501,6 @@ public class CreateFileService {
                             int fin = Integer.parseInt(policytoDB.getSaldo_inicial()) + Integer.parseInt(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
-
                             saveObjRepository.save(policytoDB);
                             System.out.println("inside to save into DB -- E");
                         }
@@ -585,9 +521,7 @@ public class CreateFileService {
                         accounts.add(policyObjFile.getDescription_methods());
                         policyObjFile.setTax_id(claveProductoServ);
                         policyObjFile.setTax_description(accounts);
-
                         policyObjFile.setFolio(uuid.toString());
-
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, new ArrayList<>())) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
@@ -595,8 +529,6 @@ public class CreateFileService {
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Integer.parseInt(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
-
-
                             List<String> debe = policyObjFile.getPolicyObj().getCargo();
                             int sumDebe = 0;
                             for (String db : debe) {
@@ -618,8 +550,6 @@ public class CreateFileService {
                             int fin = Integer.parseInt(policytoDB.getSaldo_inicial()) + Integer.parseInt(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
-
                             saveObjRepository.save(policytoDB);
                             System.out.println("inside to save into DB -- N");
                         }
@@ -638,7 +568,6 @@ public class CreateFileService {
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Integer.parseInt(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
-
 
                             List<String> debe = policyObjFile.getPolicyObj().getCargo();
                             int sumDebe = 0;
