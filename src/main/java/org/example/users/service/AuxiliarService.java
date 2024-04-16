@@ -92,11 +92,21 @@ public class AuxiliarService {
     public HashMap<String, Object> getListBalanceDate(String inicial_date, String final_date) {
         HashMap<String, Object> response = new HashMap<>();
         response.put("Activo Circulante", cuentaContableRepository.getValuestoBlanaceActivo());
+        response.put("Total  Activo Circulante", cuentaContableRepository.getSumBlanaceActivo());
         response.put("Pasivo Circulante", cuentaContableRepository.getValuestoBlanacePasivo());
+        response.put("Total  Pasivo Circulante", cuentaContableRepository.getSumBlanaceActivo());
         response.put("Activo Fijo", cuentaContableRepository.getValuestoBlanaceActivoFijo());
+        response.put("Total  de Activo Fijo", cuentaContableRepository.getSumBlanaceActivo());
         response.put("Pasivo a Largo PLazo", null);
+        response.put("Total  Pasivo a Largo PLazo", cuentaContableRepository.getSumBlanaceActivo());
         response.put("Activo Diferido", cuentaContableRepository.getValuesBalanceActivoDiferido());
+        response.put("Total Activo Diferido", cuentaContableRepository.getSumBlanaceActivo());
         response.put("Capital Contable", cuentaContableRepository.getValuestoBlanaceCapital());
+        response.put("Total Capital Contable", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("TOTAL DE ACTIVO", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("TOTAL PASIVO MÁS CAPITAL", cuentaContableRepository.getSumBlanaceActivo());
+
+
         return response;
     }
 }
