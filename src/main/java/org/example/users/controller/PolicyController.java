@@ -55,7 +55,7 @@ public class PolicyController {
     }
 
 
-    @GetMapping("policy/{rfc}/{account_id}")
+    @GetMapping("policies/{rfc}/{account_id}")
     public ResponseEntity<HttpStatus> createPolicy(@PathVariable(name = "rfc") String rfc, @PathVariable(name = "account_id") int account_id) {
         if (createFileService.createPolicy(rfc, account_id)) {
             return new ResponseEntity<>(HttpStatus.OK);
