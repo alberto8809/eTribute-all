@@ -3,6 +3,7 @@ package org.example.users.controller;
 
 import org.example.users.model.Auxiliar;
 import org.example.users.model.Balance;
+import org.example.users.model.CuentaContable;
 import org.example.users.model.ListAuxiliar;
 import org.example.users.service.AuxiliarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,8 +85,8 @@ public class AuxiliarController {
 
 
     @GetMapping("balanceGeneral/{inicial_date}/{final_date}")
-    public ResponseEntity<HashMap<String, Object>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
-        HashMap<String, Object> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
+    public ResponseEntity<HashMap<String, List<CuentaContable>>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        HashMap<String, List<CuentaContable>> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {

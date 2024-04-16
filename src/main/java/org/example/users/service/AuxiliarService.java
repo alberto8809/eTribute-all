@@ -2,6 +2,7 @@ package org.example.users.service;
 
 import org.example.users.model.Auxiliar;
 import org.example.users.model.Balance;
+import org.example.users.model.CuentaContable;
 import org.example.users.model.ListAuxiliar;
 import org.example.users.repository.AuxiliarRepository;
 import org.example.users.repository.CuentaContableRepository;
@@ -89,22 +90,22 @@ public class AuxiliarService {
         return false;
     }
 
-    public HashMap<String, Object> getListBalanceDate(String inicial_date, String final_date) {
-        HashMap<String, Object> response = new HashMap<>();
+    public HashMap<String, List<CuentaContable>> getListBalanceDate(String inicial_date, String final_date) {
+        HashMap<String, List<CuentaContable>> response = new HashMap<>();
         response.put("Activo Circulante", cuentaContableRepository.getValuestoBlanaceActivo());
-        response.put("Total  Activo Circulante", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("Total  Activo Circulante", new ArrayList<>());
         response.put("Pasivo Circulante", cuentaContableRepository.getValuestoBlanacePasivo());
-        response.put("Total  Pasivo Circulante", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("Total  Pasivo Circulante", new ArrayList<>());
         response.put("Activo Fijo", cuentaContableRepository.getValuestoBlanaceActivoFijo());
-        response.put("Total  de Activo Fijo", cuentaContableRepository.getSumBlanaceActivo());
-        response.put("Pasivo a Largo PLazo", null);
-        response.put("Total  Pasivo a Largo PLazo", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("Total  de Activo Fijo", new ArrayList<>());
+        response.put("Pasivo a Largo PLazo", new ArrayList<>());
+        response.put("Total  Pasivo a Largo PLazo", new ArrayList<>());
         response.put("Activo Diferido", cuentaContableRepository.getValuesBalanceActivoDiferido());
-        response.put("Total Activo Diferido", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("Total Activo Diferido", new ArrayList<>());
         response.put("Capital Contable", cuentaContableRepository.getValuestoBlanaceCapital());
-        response.put("Total Capital Contable", cuentaContableRepository.getSumBlanaceActivo());
-        response.put("TOTAL DE ACTIVO", cuentaContableRepository.getSumBlanaceActivo());
-        response.put("TOTAL PASIVO MÁS CAPITAL", cuentaContableRepository.getSumBlanaceActivo());
+        response.put("Total Capital Contable", new ArrayList<>());
+        response.put("TOTAL DE ACTIVO", new ArrayList<>());
+        response.put("TOTAL PASIVO MÁS CAPITAL",new ArrayList<>());
 
 
         return response;
