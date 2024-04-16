@@ -24,21 +24,23 @@ import java.util.*;
 public class UploadFileToS3_Policies {
     private static String bucketName = "xmlfilesback";
 
-    //private static String local_path = "/Users/marioalberto/IdeaProjects/polilzas_emitidas2/";
-    private static String server_path= "/home/ubuntu/endpoints/eTribute-all/";
+    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
+    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3.class);
 
 
-    public static void upload(String xml, String rfc, String date) {
+    // add  String date as a parameter from xml
+    public static void upload(String xml, String rfc) {
 
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(server_path + xml);
-            PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
+            File file = new File(server_path + rfc + "/" + xml);
+            //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
+            PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + xml, file);
             s3Client.putObject(request);
 
         } catch (SdkClientException e) {
