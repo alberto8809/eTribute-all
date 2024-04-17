@@ -1,9 +1,6 @@
 package org.example.users.service;
 
-import org.example.users.model.Auxiliar;
-import org.example.users.model.Balance;
-import org.example.users.model.CuentaContable;
-import org.example.users.model.ListAuxiliar;
+import org.example.users.model.*;
 import org.example.users.repository.AuxiliarRepository;
 import org.example.users.repository.CuentaContableRepository;
 import org.example.users.util.CreateFilePDFBalance;
@@ -39,12 +36,21 @@ public class AuxiliarService {
         return list.stream().distinct().collect(Collectors.toList());
     }
 
-    public List<Auxiliar> getValuesofTable(String cuenta) {
-        return auxiliarRepository.valuesOfTable(cuenta);
+    public List<Object> getValuesOfTable(String cuenta) {
+        List<Object> obj = new ArrayList<>();
+        List<Auxiliar> auxList = auxiliarRepository.valuesOfTable(cuenta);
+        HeaderAuxiliar headerAux = new HeaderAuxiliar();
+
+        headerAux.setCuenta(auxList.get(0).getCuenta());
+        headerAux.setNombre(auxList.get(0).getDescripcion());
+
+        obj.add(headerAux);
+        obj.add(auxList);
+        return obj;
     }
 
-    public boolean createFileByAccount(String cuenta) {
-        List<Auxiliar> auxiliars = auxiliarRepository.valuesOfTable(cuenta);
+    public boolean createFileByAccount(String cuenta, String inicial, String final_) {
+        List<Auxiliar> auxiliars = auxiliarRepository.valuesOfPDF(cuenta, inicial, final_);
         if (!auxiliars.isEmpty()) {
             CreateFilePDFBalance.makeFileAuxiliar(auxiliars);
             return true;
@@ -53,9 +59,10 @@ public class AuxiliarService {
     }
 
 
-    public List<Balance> getAllBalance(String account_id) {
+    public List<Object> getAllBalance(String account_id) {
         List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliarById(account_id);
         List<Balance> values = new ArrayList<>();
+        List<Object> obj = new ArrayList<>();
 
         for (Auxiliar listAuxiliar : listAuxiliars) {
             Balance balance = new Balance();
@@ -65,26 +72,23 @@ public class AuxiliarService {
             //balance.setAcredor_inicial();
             balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
             balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
-            //balance.setDeudorInicial_total();
-            //balance.setAcredorinical_total();
-            //balance.setDeudorInicial_total();
-            //balance.setAcredorinical_total();
-            balance.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
-            balance.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
-            //balance.setDeudorFinal_total();
-            //balance.setAcredorFinal_total();
-
             values.add(balance);
         }
 
-        return values;
+        BalanceTotal balanceTotal = new BalanceTotal();
+        balanceTotal.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
+        balanceTotal.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
+
+        obj.add(values);
+        obj.add(balanceTotal);
+        return obj;
     }
 
 
     public boolean createFileBalance(String token) {
-        List<Balance> balance = getAllBalance(token);
+        List<Object> balance = getAllBalance(token);
         if (!balance.isEmpty()) {
-            CreateFilePDFBalance.makeFileBalance(balance);
+            CreateFilePDFBalance.makeFileBalance((List<Balance>) balance.get(1));
             return true;
         }
         return false;
@@ -105,9 +109,14 @@ public class AuxiliarService {
         response.put("Capital Contable", cuentaContableRepository.getValuestoBlanaceCapital());
         response.put("Total Capital Contable", new ArrayList<>());
         response.put("TOTAL DE ACTIVO", new ArrayList<>());
-        response.put("TOTAL PASIVO MÁS CAPITAL",new ArrayList<>());
+        response.put("TOTAL PASIVO MÁS CAPITAL", new ArrayList<>());
 
 
         return response;
+    }
+
+
+    public List<CuentaContable> getValuesOfResults(String initial, String final_) {
+        return  cuentaContableRepository.getValuesOfResults();
     }
 }

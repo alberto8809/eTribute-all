@@ -43,4 +43,8 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT c.nombre_cuenta FROM dbmaster.cuentaContable c WHERE c.codigo_agrupador =:tax_id ", nativeQuery = true)
     String getCuantaContableTax(String tax_id);
 
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='401' OR codigo_agrupador ='501' OR codigo_agrupador ='503' OR codigo_agrupador ='601' OR codigo_agrupador ='603' OR codigo_agrupador ='704' OR codigo_agrupador ='701' OR codigo_agrupador ='504'", nativeQuery = true)
+    List<CuentaContable> getValuesOfResults();
+
 }

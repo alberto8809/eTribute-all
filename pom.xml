@@ -111,6 +111,11 @@
             <artifactId>spring-security-core</artifactId>
             <version>5.8.5</version>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>

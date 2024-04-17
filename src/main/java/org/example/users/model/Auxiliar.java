@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "policyObjFile")
 public class Auxiliar {
-
     @Id
     @Column(name = "id_policy")
     private int id_policy;

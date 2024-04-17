@@ -41,8 +41,8 @@ public class AuxiliarController {
 
     /* get all the values to fill the table - Generar Auxiliar*/
     @GetMapping("auxiliarTable/{cuenta}")
-    public ResponseEntity<List<Auxiliar>> getValuesoAccount(@PathVariable(name = "cuenta") String cuenta) {
-        List<Auxiliar> auxiliars = auxiliarService.getValuesofTable(cuenta);
+    public ResponseEntity<List<Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta) {
+        List<Object> auxiliars = auxiliarService.getValuesOfTable(cuenta);
         if (!auxiliars.isEmpty()) {
             return new ResponseEntity<>(auxiliars, HttpStatus.OK);
         } else {
@@ -50,9 +50,9 @@ public class AuxiliarController {
         }
     }
 
-    @GetMapping("auxiliarFile/{cuenta}")
-    public ResponseEntity<HttpStatus> createFile(@PathVariable(name = "cuenta") String cuenta) {
-        if (auxiliarService.createFileByAccount(cuenta)) {
+    @GetMapping("auxiliarFile/{cuenta}{inicial_date}/{final_date}")
+    public ResponseEntity<HttpStatus> createFile(@PathVariable(name = "cuenta") String cuenta, @PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        if (auxiliarService.createFileByAccount(cuenta, inicial_date, final_date)) {
             return new ResponseEntity<>(HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -62,8 +62,8 @@ public class AuxiliarController {
 
 
     @GetMapping("balance/{account_id}")
-    public ResponseEntity<List<Balance>> getBalance(@PathVariable(name = "account_id") String account_id) {
-        List<Balance> auxiliarList = auxiliarService.getAllBalance(account_id);
+    public ResponseEntity<List<Object>> getBalance(@PathVariable(name = "account_id") String account_id) {
+        List<Object> auxiliarList = auxiliarService.getAllBalance(account_id);
         if (!auxiliarList.isEmpty()) {
             return new ResponseEntity<>(auxiliarList, HttpStatus.CREATED);
         } else {
@@ -87,6 +87,18 @@ public class AuxiliarController {
     @GetMapping("balanceGeneral/{inicial_date}/{final_date}")
     public ResponseEntity<HashMap<String, List<CuentaContable>>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
         HashMap<String, List<CuentaContable>> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
+        if (!bodyBalance.isEmpty()) {
+            return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
+
+    @GetMapping("balanceGeneraEstados/{inicial_date}/{final_date}")
+    public ResponseEntity<List<CuentaContable>> getListValues(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        List<CuentaContable> bodyBalance = auxiliarService.getValuesOfResults(inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {

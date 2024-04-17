@@ -2,8 +2,6 @@ package org.example.users.repository;
 
 
 import org.example.users.model.Auxiliar;
-import org.example.users.model.CuentaContable;
-import org.example.users.model.ListAuxiliar;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -22,6 +20,9 @@ public interface AuxiliarRepository extends JpaRepository<Auxiliar, String> {
 
     @Query(value = "SELECT * FROM dbmaster.policyObjFile pof WHERE pof.cuenta=:cuenta", nativeQuery = true)
     List<Auxiliar> valuesOfTable(String cuenta);
+
+    @Query(value = "SELECT * FROM dbmaster.policyObjFile pof WHERE pof.cuenta=:cuenta AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
+    List<Auxiliar> valuesOfPDF(String cuenta, String initial_date, String final_date);
 
     @Query(value = "SELECT SUM(pof.debe) FROM  dbmaster.policyObjFile pof where pof.cuenta=:cuenta", nativeQuery = true)
     String getSumCargo(String cuenta);
