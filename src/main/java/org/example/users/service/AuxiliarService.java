@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -36,16 +37,17 @@ public class AuxiliarService {
         return list.stream().distinct().collect(Collectors.toList());
     }
 
-    public List<Object> getValuesOfTable(String cuenta) {
-        List<Object> obj = new ArrayList<>();
+    public Map<String,Object> getValuesOfTable(String cuenta) {
+        Map<String,Object> obj = new HashMap<>();
         List<Auxiliar> auxList = auxiliarRepository.valuesOfTable(cuenta);
         HeaderAuxiliar headerAux = new HeaderAuxiliar();
 
         headerAux.setCuenta(auxList.get(0).getCuenta());
         headerAux.setNombre(auxList.get(0).getDescripcion());
 
-        obj.add(headerAux);
-        obj.add(auxList);
+        obj.put("header", headerAux);
+        obj.put("body", auxList);
+
         return obj;
     }
 
@@ -117,6 +119,6 @@ public class AuxiliarService {
 
 
     public List<CuentaContable> getValuesOfResults(String initial, String final_) {
-        return  cuentaContableRepository.getValuesOfResults();
+        return cuentaContableRepository.getValuesOfResults();
     }
 }

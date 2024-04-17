@@ -1,8 +1,6 @@
 package org.example.users.controller;
 
 
-import org.example.users.model.Auxiliar;
-import org.example.users.model.Balance;
 import org.example.users.model.CuentaContable;
 import org.example.users.model.ListAuxiliar;
 import org.example.users.service.AuxiliarService;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -41,8 +40,8 @@ public class AuxiliarController {
 
     /* get all the values to fill the table - Generar Auxiliar*/
     @GetMapping("auxiliarTable/{cuenta}")
-    public ResponseEntity<List<Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta) {
-        List<Object> auxiliars = auxiliarService.getValuesOfTable(cuenta);
+    public ResponseEntity<Map<String, Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta) {
+        Map<String, Object> auxiliars = auxiliarService.getValuesOfTable(cuenta);
         if (!auxiliars.isEmpty()) {
             return new ResponseEntity<>(auxiliars, HttpStatus.OK);
         } else {
