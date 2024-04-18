@@ -13,9 +13,6 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='101' OR codigo_agrupador ='102' OR codigo_agrupador ='103' OR codigo_agrupador ='105' OR codigo_agrupador ='107' OR codigo_agrupador ='110' OR codigo_agrupador ='113' OR codigo_agrupador ='114' OR codigo_agrupador ='118' OR codigo_agrupador ='119'", nativeQuery = true)
     List<CuentaContable> getValuestoBlanaceActivo();
 
-    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='101' OR codigo_agrupador ='102' OR codigo_agrupador ='103' OR codigo_agrupador ='105' OR codigo_agrupador ='107' OR codigo_agrupador ='110' OR codigo_agrupador ='113' OR codigo_agrupador ='114' OR codigo_agrupador ='118' OR codigo_agrupador ='119'", nativeQuery = true)
-    String getSumBlanaceActivo();
-
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='201' OR codigo_agrupador ='205' OR codigo_agrupador ='208' OR codigo_agrupador ='209' OR codigo_agrupador ='210' OR codigo_agrupador ='213' OR codigo_agrupador ='216' OR codigo_agrupador ='218'", nativeQuery = true)
     List<CuentaContable> getValuestoBlanacePasivo();
 

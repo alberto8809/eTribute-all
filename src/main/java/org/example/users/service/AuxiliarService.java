@@ -61,10 +61,10 @@ public class AuxiliarService {
     }
 
 
-    public List<Object> getAllBalance(String account_id) {
+    public Map<String,Object>  getAllBalance(String account_id) {
         List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliarById(account_id);
         List<Balance> values = new ArrayList<>();
-        List<Object> obj = new ArrayList<>();
+        Map<String,Object>  obj = new HashMap<>();
 
         for (Auxiliar listAuxiliar : listAuxiliars) {
             Balance balance = new Balance();
@@ -81,14 +81,14 @@ public class AuxiliarService {
         balanceTotal.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
         balanceTotal.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
 
-        obj.add(values);
-        obj.add(balanceTotal);
+        obj.put("balanza",values);
+        obj.put("sumas",balanceTotal);
         return obj;
     }
 
 
     public boolean createFileBalance(String token) {
-        List<Object> balance = getAllBalance(token);
+        Map<String,Object>  balance = getAllBalance(token);
         if (!balance.isEmpty()) {
             CreateFilePDFBalance.makeFileBalance((List<Balance>) balance.get(1));
             return true;

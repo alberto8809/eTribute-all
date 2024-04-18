@@ -61,8 +61,8 @@ public class AuxiliarController {
 
 
     @GetMapping("balance/{account_id}")
-    public ResponseEntity<List<Object>> getBalance(@PathVariable(name = "account_id") String account_id) {
-        List<Object> auxiliarList = auxiliarService.getAllBalance(account_id);
+    public ResponseEntity<Map<String, Object>> getBalance(@PathVariable(name = "account_id") String account_id) {
+        Map<String, Object> auxiliarList = auxiliarService.getAllBalance(account_id);
         if (!auxiliarList.isEmpty()) {
             return new ResponseEntity<>(auxiliarList, HttpStatus.CREATED);
         } else {
