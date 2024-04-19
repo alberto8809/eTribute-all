@@ -38,7 +38,7 @@ public class UploadFileToS3_Policies {
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(local_path + rfc + "/xml/" + xml);
+            File file = new File(server_path + rfc + "/xml/" + xml);
             //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
             PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/xml/" + xml, file);
             s3Client.putObject(request);

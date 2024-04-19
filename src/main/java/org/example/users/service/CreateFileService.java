@@ -128,12 +128,12 @@ public class CreateFileService {
         String fileName = "";
         for (MultipartFile file : files) {
             fileName = file.getOriginalFilename();
-            File uploadDir = new File(local_path + rfc + "/xml");
+            File uploadDir = new File(server_path + rfc + "/xml");
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            Path filePath = Paths.get(local_path + rfc + "/xml", fileName);
+            Path filePath = Paths.get(server_path + rfc + "/xml", fileName);
             Files.write(filePath, file.getBytes());
 
             //date is comming from xml
