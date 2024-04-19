@@ -25,7 +25,7 @@ import java.util.UUID;
 @Service
 
 public class CreateFileService {
-    // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
+    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     @Autowired
@@ -128,12 +128,12 @@ public class CreateFileService {
         String fileName = "";
         for (MultipartFile file : files) {
             fileName = file.getOriginalFilename();
-            File uploadDir = new File(server_path + rfc);
+            File uploadDir = new File(local_path + rfc + "/xml");
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
-            Path filePath = Paths.get(server_path + rfc, fileName);
+            Path filePath = Paths.get(local_path + rfc + "/xml", fileName);
             Files.write(filePath, file.getBytes());
 
             //date is comming from xml
@@ -144,8 +144,8 @@ public class CreateFileService {
     }
 
 
-    public Map<String, List<Response>> getDescriptionPolicy(String rfc) {
-        return UploadFileToS3_Policies.getFilelFromAWS(rfc);
+    public Map<String, List<Response>> getDescriptionPolicy(String rfc, String initial_date, String final_date) {
+        return UploadFileToS3_Policies.getFilelFromAWS(rfc, initial_date, final_date);
     }
 
 

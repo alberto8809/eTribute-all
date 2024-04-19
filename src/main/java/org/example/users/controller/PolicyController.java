@@ -35,8 +35,8 @@ public class PolicyController {
 
 
     @PostMapping("policy/")
-    public ResponseEntity<Map<String, List<Response>>> getDescription(@RequestParam(name = "rfc") String rfc) {
-        Map<String, List<Response>> descriptions = createFileService.getDescriptionPolicy(rfc);
+    public ResponseEntity<Map<String, List<Response>>> getDescription(@RequestParam(name = "rfc") String rfc, @RequestParam(name = "initial_date") String initial_date,@RequestParam(name = "final_date") String final_date) {
+        Map<String, List<Response>> descriptions = createFileService.getDescriptionPolicy(rfc, initial_date, final_date);
         if (!descriptions.isEmpty()) {
             return new ResponseEntity<>(descriptions, HttpStatus.OK);
         }
@@ -65,6 +65,7 @@ public class PolicyController {
     }
 
 
+    /* upload files - xml , and create folder in S3 using rfc */
     @PostMapping("policy/upload")
     public ResponseEntity<HttpStatus> uploadFilesToS3(@RequestParam(name = "files") MultipartFile[] files, @RequestParam(name = "rfc") String rfc) throws IOException {
         if (createFileService.uploadToS3(files, rfc)) {

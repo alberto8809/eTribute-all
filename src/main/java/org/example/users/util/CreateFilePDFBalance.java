@@ -265,7 +265,7 @@ public class CreateFilePDFBalance {
 
     }
 
-    public static void makeFileBalance(List<Balance> balance) {
+    public static boolean makeFileBalance(List<Balance> balance) {
 
         try {
             Document document = new Document(PageSize.A4);
@@ -399,13 +399,13 @@ public class CreateFilePDFBalance {
             document.add(headerTable);
             document.add(bodyTable);
             document.close();
-
+            return true;
         } catch (Exception e) {
             System.out.println("Ex " + e.getMessage() + e.getCause() + e.getStackTrace());
 
 
         }
-
+        return false;
     }
 
 }

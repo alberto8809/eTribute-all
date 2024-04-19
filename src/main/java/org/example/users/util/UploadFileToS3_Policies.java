@@ -38,9 +38,9 @@ public class UploadFileToS3_Policies {
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(server_path + rfc + "/" + xml);
+            File file = new File(local_path + rfc + "/xml/" + xml);
             //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
-            PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + xml, file);
+            PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/xml/" + xml, file);
             s3Client.putObject(request);
 
         } catch (SdkClientException e) {
@@ -49,7 +49,8 @@ public class UploadFileToS3_Policies {
 
     }
 
-    public static Map<String, List<Response>> getFilelFromAWS(String rfc) {
+
+    public static Map<String, List<Response>> getFilelFromAWS(String rfc, String initial_date, String final_date) {
         List<Response> responses = new ArrayList<>();
         List<String> urls = new ArrayList<>();
         List<String> paths = new ArrayList<>();
@@ -86,7 +87,7 @@ public class UploadFileToS3_Policies {
 
                 String path = UploadFileToS3.createFile(paths.get(i));
                 Response response = ParserFile.getParseValues(path);
-                response.setUrl(urls.get(i));
+                response.setUrl_xml(urls.get(i));
                 //LOGGER.info("response from Util { " + response + " }");
                 responses.add(response);
                 localPath = path;

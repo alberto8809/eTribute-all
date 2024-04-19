@@ -2,24 +2,21 @@ package org.example.users.model;
 
 public class Response {
 
-    private String url;
+    private String url_xml;
 
     private Descripcion descripcion;
+    private String url_pdf;
 
 
     public Response() {
     }
 
-    public Response(String url) {
-        this.url = url;
+    public String getUrl_xml() {
+        return url_xml;
     }
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl_xml(String url_xml) {
+        this.url_xml = url_xml;
     }
 
     public Descripcion getDescripcion() {
@@ -30,11 +27,20 @@ public class Response {
         this.descripcion = descripcion;
     }
 
+    public String getUrl_pdf() {
+        return url_pdf;
+    }
+
+    public void setUrl_pdf(String url_pdf) {
+        this.url_pdf = url_pdf;
+    }
+
     @Override
     public String toString() {
         return "Response{" +
-                "url='" + url + '\'' +
+                "url_xml='" + url_xml + '\'' +
                 ", descripcion=" + descripcion +
+                ", url_pdf='" + url_pdf + '\'' +
                 '}';
     }
 }

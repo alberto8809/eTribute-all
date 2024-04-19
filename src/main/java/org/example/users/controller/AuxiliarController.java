@@ -2,6 +2,7 @@ package org.example.users.controller;
 
 
 import org.example.users.model.CuentaContable;
+import org.example.users.model.GeneraBalanceResponse;
 import org.example.users.model.ListAuxiliar;
 import org.example.users.service.AuxiliarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,22 +61,11 @@ public class AuxiliarController {
     }
 
 
-    @GetMapping("balance/{account_id}")
-    public ResponseEntity<Map<String, Object>> getBalance(@PathVariable(name = "account_id") String account_id) {
-        Map<String, Object> auxiliarList = auxiliarService.getAllBalance(account_id);
+    @GetMapping("balance/{account_id}/{inicial_date}/{final_date}")
+    public ResponseEntity<Map<String, Object>> getBalance(@PathVariable(name = "account_id") String account_id, @PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> auxiliarList = auxiliarService.getAllBalance(account_id, inicial_date, final_date);
         if (!auxiliarList.isEmpty()) {
-            return new ResponseEntity<>(auxiliarList, HttpStatus.CREATED);
-        } else {
-            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-        }
-
-    }
-
-
-    @GetMapping("balanceFile/{token}")
-    public ResponseEntity<HttpStatus> createFileBalance(@PathVariable(name = "token") String token) {
-        if (auxiliarService.createFileBalance(token)) {
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            return new ResponseEntity<>(auxiliarList, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }
@@ -84,8 +74,8 @@ public class AuxiliarController {
 
 
     @GetMapping("balanceGeneral/{inicial_date}/{final_date}")
-    public ResponseEntity<HashMap<String, List<CuentaContable>>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
-        HashMap<String, List<CuentaContable>> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
+    public ResponseEntity<Map<String, Object>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {
@@ -96,8 +86,8 @@ public class AuxiliarController {
 
 
     @GetMapping("balanceGeneraEstados/{inicial_date}/{final_date}")
-    public ResponseEntity<List<CuentaContable>> getListValues(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
-        List<CuentaContable> bodyBalance = auxiliarService.getValuesOfResults(inicial_date, final_date);
+    public ResponseEntity<Map<String, Object>> getListValues(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> bodyBalance = auxiliarService.getValuesOfResults(inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {
