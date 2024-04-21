@@ -49,9 +49,6 @@ public class AuxiliarService {
         headerAux.setSaldoInicial(headerAux.getSaldoInicial() == null ? "0" : auxiliarRepository.getSumInicial(cuenta));
         headerAux.setDebe(headerAux.getDebe() == null ? auxiliarRepository.getSumDebeByAccountId(cuenta) : "0");
         headerAux.setHaber(headerAux.getHaber() == null ? auxiliarRepository.getSumHaberByAccountId(cuenta) : "0");
-
-
-        System.out.println(headerAux.getSaldoInicial() + " --" + headerAux.getHaber() + "--" + headerAux.getDebe());
         float sumaFinal = (Float.valueOf(headerAux.getSaldoInicial() + Float.valueOf(headerAux.getHaber())) - Float.valueOf(headerAux.getDebe()));
         headerAux.setSaldoFinal(headerAux.getSaldoFinal() == null ? String.valueOf(sumaFinal) : headerAux.getSaldoFinal());
 
@@ -199,8 +196,6 @@ public class AuxiliarService {
         totales.put("Total_Capital_Diferido", total_capital);
         totales.put("TOTAL_ACTIVO", total_activoCirculante + total_activoDiferido);
         totales.put("TOTAL_PASIVO_MAS_CAPITAL", total_pasivoCirculante + total_capital);
-
-
         response.put("Totales", totales);
 
 

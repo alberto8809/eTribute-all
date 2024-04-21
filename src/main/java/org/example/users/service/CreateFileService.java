@@ -25,7 +25,7 @@ import java.util.UUID;
 @Service
 
 public class CreateFileService {
-    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     @Autowired
@@ -53,11 +53,6 @@ public class CreateFileService {
         this.methodOfPaymentRepository = methodOfPaymentRepository;
         this.saveObjRepository = saveObjRepository;
     }
-
-    public Regimen getRegimens(String regimen) {
-        return createFileRepository.getRegimen(regimen);
-    }
-
 
     public List<String> getClaveProductoService(List<String> c_claveprodserv, String type, List<String> nomine) {
         List<String> claveProductoServs = new ArrayList<>();
@@ -106,7 +101,6 @@ public class CreateFileService {
         List<String> iva = new ArrayList<>();
 
         if (type.equals("P")) {
-            System.out.println("here");
             for (String clv : claveProductoServ.keySet()) {
                 iva.add(methodOfPaymentRepository.getCuentaContableByTax(clv));
             }
@@ -232,7 +226,6 @@ public class CreateFileService {
                 return true;
 
             } else if (policyObjFile.getPolicyObj().getType_of_value().equals("E")) {
-                System.out.println("in");
 
                 policyObjFile.setCuenta_method("402.01");
                 policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
@@ -343,7 +336,7 @@ public class CreateFileService {
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
                             saveObjRepository.save(policytoDB);
-                            System.out.println("inside to save into DB -- P ");
+
                         }
 
                         return true;
@@ -402,7 +395,7 @@ public class CreateFileService {
                             policytoDB.setAccount_id(account_id);
 
                             saveObjRepository.save(policytoDB);
-                            System.out.println("inside to save into DB --  I --");
+
                         }
 
                         return true;
@@ -450,13 +443,12 @@ public class CreateFileService {
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
                             saveObjRepository.save(policytoDB);
-                            System.out.println("inside to save into DB --  I");
+
                         }
 
                         return true;
 
                     } else if (policyObjFile.getPolicyObj().getType_of_value().equals("E")) {
-                        System.out.println("in");
 
                         policyObjFile.setCuenta_method("402.01");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
@@ -502,7 +494,7 @@ public class CreateFileService {
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
                             saveObjRepository.save(policytoDB);
-                            System.out.println("inside to save into DB -- E");
+
                         }
 
 
@@ -551,7 +543,7 @@ public class CreateFileService {
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
                             saveObjRepository.save(policytoDB);
-                            System.out.println("inside to save into DB -- N");
+
                         }
 
                         return true;
@@ -590,10 +582,8 @@ public class CreateFileService {
                             int fin = Integer.parseInt(policytoDB.getSaldo_inicial()) + Integer.parseInt(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
-
                             saveObjRepository.save(policytoDB);
-                            System.out.println("inside to save into DB --  else");
+
                         }
 
                         return true;
