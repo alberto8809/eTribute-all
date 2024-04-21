@@ -19,6 +19,7 @@ import software.amazon.awssdk.services.s3.model.S3Exception;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class UploadFileToS3_Policies {
@@ -52,6 +53,7 @@ public class UploadFileToS3_Policies {
 
     public static Map<String, List<Response>> getFilelFromAWS(String rfc, String initial_date, String final_date) {
         List<Response> responses = new ArrayList<>();
+        List<Response> returned = new ArrayList<>();
         List<String> urls = new ArrayList<>();
         List<String> paths = new ArrayList<>();
         Map<String, List<Response>> facturas = new HashMap<>();
@@ -84,16 +86,23 @@ public class UploadFileToS3_Policies {
 
             String localPath = null;
             for (int i = 1; i < urls.size(); i++) {
-
                 String path = UploadFileToS3.createFile(paths.get(i));
-                Response response = ParserFile.getParseValues(path);
+                Response response = ParserFile.getParseValues(path, initial_date, final_date);
                 response.setUrl_xml(urls.get(i));
                 //LOGGER.info("response from Util { " + response + " }");
                 responses.add(response);
                 localPath = path;
             }
+
+            for (Response response : responses) {
+                if (response.getDescripcion() != null) {
+                    returned.add(response);
+                }
+            }
+
+
             String[] partes = localPath.split("/");
-            facturas.put("Emitidas", responses);
+            facturas.put("Emitidas", returned);
 
 
             FileUtils.deleteDirectory(new File(partes[0]));

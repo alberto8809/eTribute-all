@@ -46,7 +46,7 @@ public class UploadFileToS3 {
 
     }
 
-    public static Map<String, List<Response>> getFilelFromAWS(String user_id) {
+    public static Map<String, List<Response>> getFilelFromAWS(String user_id, String initial_date, String final_date) {
         List<Response> responses = new ArrayList<>();
         List<String> urls = new ArrayList<>();
         List<String> paths = new ArrayList<>();
@@ -83,7 +83,7 @@ public class UploadFileToS3 {
             for (int i = 1; i < urls.size(); i++) {
 
                 String path = UploadFileToS3.createFile(paths.get(i));
-                Response response = ParserFile.getParseValues(path);
+                Response response = ParserFile.getParseValues(path, initial_date, final_date);
                 response.setUrl_xml(urls.get(i));
                 //LOGGER.info("response from Util { " + response + " }");
                 responses.add(response);
@@ -107,13 +107,13 @@ public class UploadFileToS3 {
         try {
 
             String[] partes = fileName.split("/");
-            File directorio = new File(partes[1]+"/");
+            File directorio = new File(partes[1] + "/");
             if (!directorio.exists()) {
                 directorio.mkdirs();
             }
 
             S3Client s3 = S3Client.builder().region(Region.US_EAST_1).build();
-            localFilePath = directorio + "/" + partes[1]+"/";
+            localFilePath = directorio + "/" + partes[1] + "/";
             //LOGGER.info("Local path  " + localFilePath);
             GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                     .bucket(bucketName)

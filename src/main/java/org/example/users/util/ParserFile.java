@@ -14,6 +14,7 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -27,14 +28,13 @@ public class ParserFile {
     public ParserFile() {
     }
 
-    public static Response getParseValues(String localPath) {
+    public static Response getParseValues(String localPath, String initial_date, String final_date) {
 
         Response response = new Response();
         Descripcion descripcion = new Descripcion();
 
         try {
 
-            //LOGGER.info("path from AWS:  { " + path + " }");
             File archivoXML = new File(localPath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -43,19 +43,28 @@ public class ParserFile {
             Element comprobanteElement = doc.getDocumentElement();
 
 
-            /* get client from xml*/
-            NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
-            Element cliente = (Element) repectEgr.item(0);
-            descripcion.setCliente(cliente.getAttribute("Nombre"));
-
-            /* get amount from xml*/
-            Element total = doc.getDocumentElement();
-            descripcion.setCantidad(total.getAttribute("Total"));
 
             /* get date from xml*/
             Element date = doc.getDocumentElement();
             descripcion.setFecha(date.getAttribute("Fecha").substring(0, 10));
-            response.setDescripcion(descripcion);
+
+            LocalDate initial = LocalDate.parse(initial_date);
+            LocalDate ending = LocalDate.parse(final_date);
+            LocalDate dates = LocalDate.parse(descripcion.getFecha());
+
+
+            if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                /* get client from xml*/
+                NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
+                Element cliente = (Element) repectEgr.item(0);
+                descripcion.setCliente(cliente.getAttribute("Nombre"));
+
+                /* get amount from xml*/
+                Element total = doc.getDocumentElement();
+                descripcion.setCantidad(total.getAttribute("Total"));
+                response.setDescripcion(descripcion);
+            }
+
 
             archivoXML.delete();
 
