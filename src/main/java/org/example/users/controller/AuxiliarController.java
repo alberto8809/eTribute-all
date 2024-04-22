@@ -38,8 +38,8 @@ public class AuxiliarController {
 
     /* get all the values to fill the table - Generar Auxiliar*/
     @GetMapping("auxiliarTable/{cuenta}/{inicial_date}/{final_date}")
-    public ResponseEntity<Map<String, Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta,@PathVariable(name = "inicial_date") String inicial_date,@PathVariable(name = "final_date") String final_date) {
-        Map<String, Object> auxiliars = auxiliarService.getValuesOfTable(cuenta,inicial_date,final_date);
+    public ResponseEntity<Map<String, Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta, @PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> auxiliars = auxiliarService.getValuesOfTable(cuenta, inicial_date, final_date);
         if (!auxiliars.isEmpty()) {
             return new ResponseEntity<>(auxiliars, HttpStatus.OK);
         } else {
@@ -70,9 +70,9 @@ public class AuxiliarController {
     }
 
 
-    @GetMapping("balanceGeneral/{inicial_date}/{final_date}")
-    public ResponseEntity<Map<String, Object>> getListBalance(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
-        Map<String, Object> bodyBalance = auxiliarService.getListBalanceDate(inicial_date, final_date);
+    @GetMapping("balanceGeneral/{account_id}/{inicial_date}/{final_date}")
+    public ResponseEntity<Map<String, Object>> getListBalance(@PathVariable(name = "account_id") String account_id, @PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> bodyBalance = auxiliarService.getListBalanceDate(account_id, inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {
@@ -82,9 +82,9 @@ public class AuxiliarController {
     }
 
 
-    @GetMapping("balanceGeneraEstados/{inicial_date}/{final_date}")
-    public ResponseEntity<Map<String, Object>> getListValues(@PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
-        Map<String, Object> bodyBalance = auxiliarService.getValuesOfResults(inicial_date, final_date);
+    @GetMapping("balanceGeneraEstados/{account_id}/{inicial_date}/{final_date}")
+    public ResponseEntity<Map<String, Object>> getListValues(@PathVariable(name = "account_id") String account_id, @PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> bodyBalance = auxiliarService.getValuesOfResults(account_id, inicial_date, final_date);
         if (!bodyBalance.isEmpty()) {
             return new ResponseEntity<>(bodyBalance, HttpStatus.CREATED);
         } else {

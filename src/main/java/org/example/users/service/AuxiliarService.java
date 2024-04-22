@@ -70,7 +70,7 @@ public class AuxiliarService {
 
 
     public Map<String, Object> getAllBalance(String account_id, String initial_date, String final_date) {
-        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliarById(account_id);
+        List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(account_id, initial_date, final_date);
         List<Balance> values = new ArrayList<>();
         Map<String, Object> obj = new HashMap<>();
 
@@ -111,10 +111,10 @@ public class AuxiliarService {
         return path;
     }
 
-    public Map<String, Object> getListBalanceDate(String inicial_date, String final_date) {
+    public Map<String, Object> getListBalanceDate(String account_id, String inicial_date, String final_date) {
         HashMap<String, Object> response = new HashMap<>();
         List<Object> generaBalanceResponses = new ArrayList<>();
-        List<CuentaContable> list = cuentaContableRepository.getValuestoBlanaceActivo();
+        List<CuentaContable> list = cuentaContableRepository.getValuestoBlanaceActivo(account_id, inicial_date, final_date);
         double total_activoCirculante = 0;
         for (CuentaContable cuentaContable : list) {
             GeneraBalanceResponse generaBalanceResponse = new GeneraBalanceResponse();
@@ -128,7 +128,7 @@ public class AuxiliarService {
         response.put("Activo_Circulante", generaBalanceResponses);
 
 
-        List<CuentaContable> list1 = cuentaContableRepository.getValuestoBlanacePasivo();
+        List<CuentaContable> list1 = cuentaContableRepository.getValuestoBlanacePasivo(account_id, inicial_date, final_date);
         List<Object> pasivo = new ArrayList<>();
         double total_pasivoCirculante = 0;
         for (CuentaContable cuentaContable : list1) {
@@ -141,7 +141,7 @@ public class AuxiliarService {
         }
         response.put("Pasivo_Circulante", pasivo);
 
-        List<CuentaContable> list2 = cuentaContableRepository.getValuestoBlanaceActivoFijo();
+        List<CuentaContable> list2 = cuentaContableRepository.getValuestoBlanaceActivoFijo(account_id, inicial_date, final_date);
         List<Object> activo = new ArrayList<>();
         double total_activoFijo = 0;
         for (CuentaContable cuentaContable : list2) {
@@ -156,7 +156,7 @@ public class AuxiliarService {
         response.put("Activo_Fijo", activo);
 
 
-        List<CuentaContable> list3 = cuentaContableRepository.getValuesBalanceActivoDiferido();
+        List<CuentaContable> list3 = cuentaContableRepository.getValuesBalanceActivoDiferido(account_id, inicial_date, final_date);
         List<Object> activo_diferido = new ArrayList<>();
         double total_activoDiferido = 0;
         for (CuentaContable cuentaContable : list3) {
@@ -171,7 +171,7 @@ public class AuxiliarService {
         response.put("Activo_Diferido", activo_diferido);
 
 
-        List<CuentaContable> list4 = cuentaContableRepository.getValuestoBlanaceCapital();
+        List<CuentaContable> list4 = cuentaContableRepository.getValuestoBlanaceCapital(account_id, inicial_date, final_date);
         List<Object> capital = new ArrayList<>();
         double total_capital = 0;
         for (CuentaContable cuentaContable : list4) {
@@ -203,9 +203,9 @@ public class AuxiliarService {
     }
 
 
-    public Map<String, Object> getValuesOfResults(String initial, String final_) {
+    public Map<String, Object> getValuesOfResults(String account_id, String initial, String final_) {
         Map<String, Object> obj = new HashMap<>();
-        obj.put("body", cuentaContableRepository.getValuesOfResults());
+        obj.put("body", cuentaContableRepository.getValuesOfResults(account_id, initial, final_));
         //obj.put("url_pdf", createFileBalance(account_id, initial_date, final_date));
         obj.put("url_pdf", "");
         return obj;

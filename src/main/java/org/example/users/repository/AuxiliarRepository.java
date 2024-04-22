@@ -15,9 +15,6 @@ public interface AuxiliarRepository extends JpaRepository<Auxiliar, String> {
     @Query(value = "SELECT * from dbmaster.policy WHERE account_id=:account_id AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
     List<Auxiliar> getAuxiliar(String account_id, String initial_date, String final_date);
 
-    @Query(value = "SELECT * from dbmaster.policy WHERE account_id=:account_id ", nativeQuery = true)
-    List<Auxiliar> getAuxiliarById(String account_id);
-
     @Query(value = "SELECT * FROM dbmaster.policy pof WHERE pof.cuenta=:cuenta AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
     List<Auxiliar> valuesOfTable(String cuenta, String initial_date, String final_date);
     @Query(value = "SELECT SUM(pof.debe) FROM  dbmaster.policy pof where pof.cuenta=:cuenta", nativeQuery = true)
