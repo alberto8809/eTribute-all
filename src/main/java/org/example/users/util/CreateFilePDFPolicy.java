@@ -6,23 +6,32 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 import org.example.users.model.PolicyObjFile;
 
+import java.io.File;
 import java.io.FileOutputStream;
-import java.util.List;
+
 
 
 public class CreateFilePDFPolicy {
 
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
+    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public CreateFilePDFPolicy() {
     }
 
 
-    public static boolean makeFile(PolicyObjFile policyObjFile, List<CuentaContable> cuentaContable) {
+    public static boolean makeFile(PolicyObjFile policyObjFile, String fileName, String rfc) {
 
 
         try {
+
+            File uploadDir = new File(server_path + rfc + "/pdf");
+            if (!uploadDir.exists()) {
+                uploadDir.mkdirs();
+            }
+
             Document document = new Document(PageSize.A4);
-            PdfWriter.getInstance(document, new FileOutputStream(policyObjFile.getFolio() + ".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(server_path + rfc + "/pdf/" + fileName + ".pdf"));
             document.open();
 
 
@@ -403,9 +412,10 @@ public class CreateFilePDFPolicy {
                     document.add(new Paragraph("\n\n\n\n"));
                     document.add(headerLastValues);
                     document.add(lastValues);
-
-
                     document.close();
+
+                    UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
+
 
                 }
                 // -----------------------  Type of policy I and PPD   --------------------- //
@@ -569,9 +579,8 @@ public class CreateFilePDFPolicy {
                 document.add(new Paragraph("\n\n\n\n"));
                 document.add(headerLastValues);
                 document.add(lastValues);
-
-
                 document.close();
+                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
 
 
             } else if (policyObjFile.getPolicyObj().getType_of_value().equals("E")) {
@@ -783,7 +792,7 @@ public class CreateFilePDFPolicy {
 
 
                 document.close();
-
+                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
 
                 // -----------------------  Type of policy P  and N --------------------- //
 
@@ -968,6 +977,7 @@ public class CreateFilePDFPolicy {
 
 
                     document.close();
+                    UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
 
                 }
             } else if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
@@ -1193,6 +1203,8 @@ public class CreateFilePDFPolicy {
 
 
                 document.close();
+
+                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
 
 
             }

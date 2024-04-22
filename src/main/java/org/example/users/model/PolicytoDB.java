@@ -1,49 +1,45 @@
 package org.example.users.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "policyObjFile")
+@Table(name = "policy")
 public class PolicytoDB {
     @Id
-    @Column(name = "id_policy")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id_policy;
-    @Column(name = "cliente")
+
     private String cliente;
-    @Column(name = "usuario")
+
     private String usuario;
 
-    @Column(name = "tipo")
-    private String tipo;
-    @Column(name = "poliza")
-    private String poliza;
-    @Column(name = "cuenta")
-    private int cuenta;
 
-    @Column(name = "descripcion")
+    private String tipo;
+
+    private String poliza;
+
+    private double cuenta;
+
     private String descripcion;
-    @Column(name = "debe")
+
     private String debe;
-    @Column(name = "habe")
+
     private String haber;
-    @Column(name = "fecha")
+
     private String fecha;
-    @Column(name = "proveedor")
+
     private String proveedor;
-    @Column(name = "referencia")
+
     private String referencia;
-    @Column(name = "total")
+
     private String total;
-    @Column(name = "saldo_inicial")
+
     private String saldo_inicial;
-    @Column(name = "saldo_final")
+
     private String saldo_final;
-    @Column(name = "account_id")
+
     private int account_id;
 
     public String getCliente() {
@@ -78,11 +74,11 @@ public class PolicytoDB {
         this.poliza = poliza;
     }
 
-    public int getCuenta() {
+    public double getCuenta() {
         return cuenta;
     }
 
-    public void setCuenta(int cuenta) {
+    public void setCuenta(double cuenta) {
         this.cuenta = cuenta;
     }
 

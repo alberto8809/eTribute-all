@@ -66,7 +66,7 @@ public class ParserFile {
             }
 
 
-            archivoXML.delete();
+            //archivoXML.delete();
 
         } catch (Exception e) {
             LOGGER.error("error { " + e.getLocalizedMessage() + " }");

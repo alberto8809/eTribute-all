@@ -35,30 +35,10 @@ public class PolicyController {
 
 
     @PostMapping("policy/")
-    public ResponseEntity<Map<String, List<Response>>> getDescription(@RequestParam(name = "rfc") String rfc, @RequestParam(name = "initial_date") String initial_date,@RequestParam(name = "final_date") String final_date) {
+    public ResponseEntity<Map<String, List<Response>>> getDescription(@RequestParam(name = "rfc") String rfc, @RequestParam(name = "initial_date") String initial_date, @RequestParam(name = "final_date") String final_date) {
         Map<String, List<Response>> descriptions = createFileService.getDescriptionPolicy(rfc, initial_date, final_date);
         if (!descriptions.isEmpty()) {
             return new ResponseEntity<>(descriptions, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-    }
-
-
-    @GetMapping("policy/{rfc}/{fileName}")
-    public ResponseEntity<HttpStatus> createFileByNameOfFile(@PathVariable(name = "rfc") String rfc, @PathVariable(name = "fileName") String fileName) {
-        if (createFileService.createPolicyByFileName(rfc, fileName)) {
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-    }
-
-
-    @GetMapping("policies/{rfc}/{account_id}")
-    public ResponseEntity<HttpStatus> createPolicy(@PathVariable(name = "rfc") String rfc, @PathVariable(name = "account_id") int account_id) {
-        if (createFileService.createPolicy(rfc, account_id)) {
-            return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 

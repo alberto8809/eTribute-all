@@ -1,5 +1,6 @@
 package org.example.users.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import java.util.Map;
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 //@Table(name = "PolicyObjParser")
 public class PolicyObjParser {
-//    @Id
+    //    @Id
 //    @Column(name = "regimen")
     private String regimen;
     private String usoCFDI;
@@ -43,7 +44,6 @@ public class PolicyObjParser {
     private String rfc;
 
 
-
     public PolicyObjParser() {
     }
 
@@ -76,7 +76,7 @@ public class PolicyObjParser {
         this.usoCFDI = usoCFDI;
     }
 
-    public List<String>  getClaveProdServ() {
+    public List<String> getClaveProdServ() {
         return ClaveProdServ;
     }
 
@@ -178,7 +178,7 @@ public class PolicyObjParser {
     }
 
     public void setCargo(List<String> cargo) {
-        this.cargo = cargo;
+        this.cargo = cargo.isEmpty() ? new ArrayList<>() : cargo;
     }
 
     public List<String> getAbono() {
