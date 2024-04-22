@@ -37,9 +37,9 @@ public class AuxiliarController {
     }
 
     /* get all the values to fill the table - Generar Auxiliar*/
-    @GetMapping("auxiliarTable/{cuenta}")
-    public ResponseEntity<Map<String, Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta) {
-        Map<String, Object> auxiliars = auxiliarService.getValuesOfTable(cuenta);
+    @GetMapping("auxiliarTable/{cuenta}/{inicial_date}/{final_date}")
+    public ResponseEntity<Map<String, Object>> getValuesOfAccount(@PathVariable(name = "cuenta") String cuenta,@PathVariable(name = "inicial_date") String inicial_date,@PathVariable(name = "final_date") String final_date) {
+        Map<String, Object> auxiliars = auxiliarService.getValuesOfTable(cuenta,inicial_date,final_date);
         if (!auxiliars.isEmpty()) {
             return new ResponseEntity<>(auxiliars, HttpStatus.OK);
         } else {
@@ -47,7 +47,7 @@ public class AuxiliarController {
         }
     }
 
-    @GetMapping("auxiliarFile/{cuenta}{inicial_date}/{final_date}")
+    @GetMapping("auxiliarFile/{cuenta}/{inicial_date}/{final_date}")
     public ResponseEntity<HttpStatus> createFile(@PathVariable(name = "cuenta") String cuenta, @PathVariable(name = "inicial_date") String inicial_date, @PathVariable(name = "final_date") String final_date) {
         if (auxiliarService.createFileByAccount(cuenta, inicial_date, final_date)) {
             return new ResponseEntity<>(HttpStatus.CREATED);

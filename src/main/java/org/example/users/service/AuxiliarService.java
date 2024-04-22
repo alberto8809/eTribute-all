@@ -38,10 +38,10 @@ public class AuxiliarService {
         return list.stream().distinct().collect(Collectors.toList());
     }
 
-    public Map<String, Object> getValuesOfTable(String cuenta) {
+    public Map<String, Object> getValuesOfTable(String cuenta, String initial, String final_date) {
 
         Map<String, Object> obj = new HashMap<>();
-        List<Auxiliar> auxList = auxiliarRepository.valuesOfTable(cuenta);
+        List<Auxiliar> auxList = auxiliarRepository.valuesOfTable(cuenta, initial, final_date);
         HeaderAuxiliar headerAux = new HeaderAuxiliar();
 
         headerAux.setCuenta(auxList.get(0).getCuenta());
@@ -50,7 +50,7 @@ public class AuxiliarService {
         headerAux.setDebe(headerAux.getDebe() == null ? auxiliarRepository.getSumDebeByAccountId(cuenta) : "0");
         headerAux.setHaber(headerAux.getHaber() == null ? auxiliarRepository.getSumHaberByAccountId(cuenta) : "0");
         float sumaFinal = (Float.valueOf(headerAux.getSaldoInicial() + Float.valueOf(headerAux.getHaber())) - Float.valueOf(headerAux.getDebe()));
-        headerAux.setSaldoFinal(headerAux.getSaldoFinal() == null ? String.valueOf(sumaFinal) : headerAux.getSaldoFinal());
+        headerAux.setSaldoFinal(headerAux.getSaldoFinal() == null ? auxiliarRepository.getSaldoFinal(cuenta) : String.valueOf(sumaFinal));
 
         obj.put("header", headerAux);
         obj.put("body", auxList);
