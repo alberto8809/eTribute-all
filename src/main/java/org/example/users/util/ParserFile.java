@@ -397,7 +397,7 @@ public class ParserFile {
                 NodeList percep = comprobanteElement.getElementsByTagName("nomina12:Percepciones");
                 Element totalSueldos = (Element) percep.item(0);
 
-                retencion_importe.add(totalSueldos.getAttribute("TotalSueldos"));
+                retencion_importe.add(totalSueldos.getAttribute("TotalSueldos") == null ? "0" : totalSueldos.getAttribute("TotalSueldos"));
 
                 for (int i = 0; i < retencion.getLength(); i++) {
                     Element retencionR = (Element) retencion.item(i);
