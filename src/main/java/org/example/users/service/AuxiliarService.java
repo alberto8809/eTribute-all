@@ -47,8 +47,8 @@ public class AuxiliarService {
         headerAux.setCuenta(auxList.get(0).getCuenta());
         headerAux.setNombre(auxList.get(0).getDescripcion());
         headerAux.setSaldoInicial(headerAux.getSaldoInicial() == null ? "0" : auxiliarRepository.getSumInicial(cuenta));
-        headerAux.setDebe(headerAux.getDebe() == null ? auxiliarRepository.getSumDebeByAccountId(cuenta) : "0");
-        headerAux.setHaber(headerAux.getHaber() == null ? auxiliarRepository.getSumHaberByAccountId(cuenta) : "0");
+        headerAux.setDebe(headerAux.getDebe() == null ? auxiliarRepository.getSumDebeByAccountId(cuenta) : headerAux.getDebe());
+        headerAux.setHaber(headerAux.getHaber() == null ? auxiliarRepository.getSumHaberByAccountId(cuenta) : headerAux.getHaber() );
         float sumaFinal = (Float.valueOf(headerAux.getSaldoInicial() + Float.valueOf(headerAux.getHaber())) - Float.valueOf(headerAux.getDebe()));
         headerAux.setSaldoFinal(headerAux.getSaldoFinal() == null ? auxiliarRepository.getSaldoFinal(cuenta) : String.valueOf(sumaFinal));
 

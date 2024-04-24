@@ -102,7 +102,7 @@ public class UploadFileToS3_Policies {
             File folder = new File(server_path + rfc + "/xml");
             File[] listOfFiles = folder.listFiles();
             int i = 0;
-            System.out.println("sixe " + urls.size() + "  pdf" + urls_pdf.size());
+
             for (File file : listOfFiles) {
 
                 Response response = ParserFile.getParseValues(file.getPath(), initial_date, final_date);
