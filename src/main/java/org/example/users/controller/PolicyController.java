@@ -37,10 +37,16 @@ public class PolicyController {
     @PostMapping("policy/")
     public ResponseEntity<Map<String, List<Response>>> getDescription(@RequestParam(name = "rfc") String rfc, @RequestParam(name = "initial_date") String initial_date, @RequestParam(name = "final_date") String final_date) {
         Map<String, List<Response>> descriptions = createFileService.getDescriptionPolicy(rfc, initial_date, final_date);
-        if (!descriptions.isEmpty()) {
-            return new ResponseEntity<>(descriptions, HttpStatus.OK);
+        for (Map.Entry<String, List<Response>> map : descriptions.entrySet()) {
+            System.out.println(map.getKey() + map.getValue());
+
+            if (!map.getValue().isEmpty()) {
+                return new ResponseEntity<>(descriptions, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }
 

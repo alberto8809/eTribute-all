@@ -238,7 +238,7 @@ public class ParserFile {
 
 
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("E")) {
-                System.out.println("inside parserFile");
+
 
                 NodeList rcp2 = comprobanteElement.getElementsByTagName("cfdi:Receptor");
                 Element rcp3 = (Element) rcp2.item(0);
@@ -397,7 +397,9 @@ public class ParserFile {
                 NodeList percep = comprobanteElement.getElementsByTagName("nomina12:Percepciones");
                 Element totalSueldos = (Element) percep.item(0);
 
-                retencion_importe.add(totalSueldos.getAttribute("TotalSueldos") == null ? "0" : totalSueldos.getAttribute("TotalSueldos"));
+                String totaS = totalSueldos.getAttribute("TotalSueldos") == null ? "0" : totalSueldos.getAttribute("TotalSueldos");
+
+                retencion_importe.add(totaS.isEmpty() || totaS == null ? "0" : totaS);
 
                 for (int i = 0; i < retencion.getLength(); i++) {
                     Element retencionR = (Element) retencion.item(i);
@@ -423,8 +425,10 @@ public class ParserFile {
 
                 values.setMetodo(methodPayment);
 
+                String dou = totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16").isEmpty() || totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16") == null ? "0" : totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16");
 
-                values.setSubtotal(Double.parseDouble(totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16")));
+
+                values.setSubtotal(Double.parseDouble(dou.isEmpty() || dou == null ? "0" : dou));
 
                 NodeList pago = comprobanteElement.getElementsByTagName("pago20:Pago");
                 Element pay = (Element) pago.item(0);

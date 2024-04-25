@@ -102,18 +102,18 @@ public class UploadFileToS3_Policies {
             File folder = new File(server_path + rfc + "/xml");
             File[] listOfFiles = folder.listFiles();
             int i = 0;
+            if (!urls_pdf.isEmpty() && !urls.isEmpty()) {
+                for (File file : listOfFiles) {
 
-            for (File file : listOfFiles) {
+                    Response response = ParserFile.getParseValues(file.getPath(), initial_date, final_date);
+                    response.setUrl_xml(urls.get(i));
+                    response.setUrl_pdf(urls_pdf.get(i));
+                    //LOGGER.info("response from Util { " + response + " }");
+                    responses.add(response);
+                    i++;
+                }
 
-                Response response = ParserFile.getParseValues(file.getPath(), initial_date, final_date);
-                response.setUrl_xml(urls.get(i));
-                response.setUrl_pdf(urls_pdf.get(i));
-                //LOGGER.info("response from Util { " + response + " }");
-                responses.add(response);
-                i++;
             }
-
-
             for (Response response : responses) {
                 if (response.getDescripcion() != null) {
                     returned.add(response);
