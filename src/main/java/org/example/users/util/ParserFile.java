@@ -14,31 +14,34 @@ import org.w3c.dom.NodeList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.commons.io.FileUtils;
 
 
 public class ParserFile {
 
     public static Logger LOGGER = LogManager.getLogger(ParserFile.class);
+    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
+    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public ParserFile() {
     }
 
-    public static Response getParseValues(String localPath, String initial_date, String final_date) {
+    public static Response getParseValues(String pathFromAWS, String rfc, String type, String fileName, String initial_date, String final_date) {
 
         Response response = new Response();
         Descripcion descripcion = new Descripcion();
 
         try {
 
-            File archivoXML = new File(localPath);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(archivoXML);
+            Document doc = dBuilder.parse(createFileFromURL(pathFromAWS, rfc, type, fileName));
             doc.getDocumentElement().normalize();
             Element comprobanteElement = doc.getDocumentElement();
 
@@ -54,7 +57,6 @@ public class ParserFile {
 
 
             if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
-                /* get client from xml*/
                 NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
                 Element cliente = (Element) repectEgr.item(0);
                 descripcion.setCliente(cliente.getAttribute("Nombre"));
@@ -63,8 +65,8 @@ public class ParserFile {
                 Element total = doc.getDocumentElement();
                 descripcion.setCantidad(total.getAttribute("Total"));
                 response.setDescripcion(descripcion);
+                response.setUrl_xml(pathFromAWS);
             }
-
 
             //archivoXML.delete();
 
@@ -476,6 +478,21 @@ public class ParserFile {
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
+    public static File createFileFromURL(String urlFromAWS, String rfc, String type, String fileName) {
+        try {
+
+            URL url = new URL(urlFromAWS);
+            File file = new File(server_path + rfc + "/xml/" + type + "/" + fileName);
+            FileUtils.copyURLToFile(url, file);
+            return file;
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return null;
     }

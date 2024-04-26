@@ -17,7 +17,7 @@ import java.util.*;
 public class UploadFileToS3_Policies {
     private static String bucketName = "xmlfilesback";
 
-    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3_Policies.class);
@@ -62,10 +62,11 @@ public class UploadFileToS3_Policies {
 
     public static Map<String, List<Response>> getFilelFromAWS(String rfc, String initial_date, String final_date) {
         List<Response> responses = new ArrayList<>();
+        List<Response> ings = new ArrayList<>();
         List<Response> returned = new ArrayList<>();
-        List<String> urls = new ArrayList<>();
-        List<String> urls_pdf = new ArrayList<>();
-        List<String> paths = new ArrayList<>();
+        List<Response> recibidas = new ArrayList<>();
+        Map<String, String> egresados = new HashMap<>();
+        Map<String, String> ingresos = new HashMap<>();
         Map<String, List<Response>> facturas = new HashMap<>();
         int expirationTime = 3600;
         try {
@@ -82,47 +83,55 @@ public class UploadFileToS3_Policies {
             do {
                 objectListing = s3Client.listObjects(request2);
                 for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectSummary.getKey(), HttpMethod.GET);
-                    request.setExpiration(new Date(System.currentTimeMillis() + expirationTime * 1000));
-                    String objectUrl = s3Client.generatePresignedUrl(request).toString();
-                    request.getRequestParameters();
+                    if (objectSummary.getKey().contains(rfc + "/xml/EGRESOS/")) {
+                        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectSummary.getKey(), HttpMethod.GET);
+                        request.setExpiration(new Date(System.currentTimeMillis() + expirationTime * 1000));
+                        String objectUrl = s3Client.generatePresignedUrl(request).toString();
+                        request.getRequestParameters();
+                        String file = objectSummary.getKey().replace(rfc + "/xml/EGRESOS/", "");
+                        egresados.put(file, objectUrl);
 
-                    if (objectUrl.contains("pdf")) {
-                        urls_pdf.add(objectUrl);
-                    } else {
-                        urls.add(objectUrl);
+                    } else if (objectSummary.getKey().contains(rfc + "/xml/INGRESOS/")) {
+                        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectSummary.getKey(), HttpMethod.GET);
+                        request.setExpiration(new Date(System.currentTimeMillis() + expirationTime * 1000));
+                        String objectUrl = s3Client.generatePresignedUrl(request).toString();
+                        request.getRequestParameters();
+                        String file = objectSummary.getKey().replace(rfc + "/xml/INGRESOS/", "");
+                        ingresos.put(file, objectUrl);
                     }
 
-                    paths.add(objectSummary.getKey());
                 }
                 request2.setMarker(objectListing.getNextMarker());
             } while (objectListing.isTruncated());
 
-
-            File folder = new File(server_path + rfc + "/xml");
-            File[] listOfFiles = folder.listFiles();
-            int i = 0;
-            if (!urls_pdf.isEmpty() && !urls.isEmpty()) {
-                for (File file : listOfFiles) {
-
-                    Response response = ParserFile.getParseValues(file.getPath(), initial_date, final_date);
-                    response.setUrl_xml(urls.get(i));
-                    response.setUrl_pdf(urls_pdf.get(i));
-                    //LOGGER.info("response from Util { " + response + " }");
-                    responses.add(response);
-                    i++;
-                }
-
+            for (Map.Entry<String, String> egre : egresados.entrySet()) {
+                Response response = ParserFile.getParseValues(egre.getValue(), rfc, "EGRESOS", egre.getKey(), initial_date, final_date);
+                //response.setUrl_pdf(urls_pdf.get(i));
+                responses.add(response);
             }
+
+
+            for (Map.Entry<String, String> ing : ingresos.entrySet()) {
+                Response response = ParserFile.getParseValues(ing.getValue(), rfc, "INGRESOS", ing.getKey(), initial_date, final_date);
+                //response.setUrl_pdf(urls_pdf.get(i));
+                ings.add(response);
+            }
+
             for (Response response : responses) {
                 if (response.getDescripcion() != null) {
                     returned.add(response);
                 }
             }
+            for (Response ingsR : ings) {
+                if (ingsR.getDescripcion() != null) {
+                    recibidas.add(ingsR);
+                }
+            }
 
 
             facturas.put("Emitidas", returned);
-           // FileUtils.deleteDirectory(new File(rfc));
+            facturas.put("Recibidas", recibidas);
+            // FileUtils.deleteDirectory(new File(rfc));
 
 
         } catch (

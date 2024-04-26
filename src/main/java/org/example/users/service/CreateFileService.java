@@ -25,7 +25,7 @@ import java.util.UUID;
 @Service
 
 public class CreateFileService {
-    // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
+    // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     @Autowired
@@ -136,7 +136,7 @@ public class CreateFileService {
 
 
     public Map<String, List<Response>> getDescriptionPolicy(String rfc, String initial_date, String final_date) {
-        createPolicy(rfc);
+        //createPolicy(rfc);
         return UploadFileToS3_Policies.getFilelFromAWS(rfc, initial_date, final_date);
     }
 
