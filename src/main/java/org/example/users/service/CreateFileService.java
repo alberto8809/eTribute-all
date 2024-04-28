@@ -190,7 +190,7 @@ public class CreateFileService {
             File[] listOfFiles = folder.listFiles();
             for (File file : listOfFiles) {
                 if (file.isFile()) {
-                    PolicyObjFile policyObjFile = ParserFile.getParse(server_path + rfc + "/xml/" + file.getName());
+                    PolicyObjFile policyObjFile = ParserFile.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 
 
                     if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
