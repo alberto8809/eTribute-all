@@ -8,10 +8,10 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.example.users.model.Response;
 
 import java.io.File;
+import java.time.LocalDate;
 import java.util.*;
 
 public class UploadFileToS3_Policies {
@@ -41,8 +41,7 @@ public class UploadFileToS3_Policies {
 
     }
 
-    public static void uploadPDF(String pdf, String rfc) {
-        //System.out.println(pdf + rfc);
+    public static void uploadPDF(String pdf, String rfc, String type) {
         try {
             AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                     .withRegion(Regions.US_EAST_1)
@@ -50,7 +49,7 @@ public class UploadFileToS3_Policies {
 
             File file = new File(server_path + rfc + "/pdf/" + pdf);
             //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
-            PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/pdf/" + pdf, file);
+            PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/pdf/" + type + "/" + pdf, file);
             s3Client.putObject(request);
 
         } catch (SdkClientException e) {
@@ -60,14 +59,14 @@ public class UploadFileToS3_Policies {
     }
 
 
-    public static Map<String, List<Response>> getFilelFromAWS(String rfc, String initial_date, String final_date) {
+    public static Map<String, Object> getFileFromAWS(String rfc, String type, String initial_date, String final_date) {
         List<Response> responses = new ArrayList<>();
         List<Response> ings = new ArrayList<>();
-        List<Response> returned = new ArrayList<>();
+        List<Response> emitidas = new ArrayList<>();
         List<Response> recibidas = new ArrayList<>();
-        Map<String, String> egresados = new HashMap<>();
-        Map<String, String> ingresos = new HashMap<>();
-        Map<String, List<Response>> facturas = new HashMap<>();
+        Map<String, String> egresosXML = new HashMap<>();
+        Map<String, String> ingresosXML = new HashMap<>();
+        Map<String, Object> facturas = new HashMap<>();
         int expirationTime = 3600;
         try {
 
@@ -83,54 +82,67 @@ public class UploadFileToS3_Policies {
             do {
                 objectListing = s3Client.listObjects(request2);
                 for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
-                    if (objectSummary.getKey().contains(rfc + "/xml/EGRESOS/")) {
-                        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectSummary.getKey(), HttpMethod.GET);
-                        request.setExpiration(new Date(System.currentTimeMillis() + expirationTime * 1000));
-                        String objectUrl = s3Client.generatePresignedUrl(request).toString();
-                        request.getRequestParameters();
-                        String file = objectSummary.getKey().replace(rfc + "/xml/EGRESOS/", "");
-                        egresados.put(file, objectUrl);
 
-                    } else if (objectSummary.getKey().contains(rfc + "/xml/INGRESOS/")) {
+                    if (objectSummary.getKey().contains(rfc + "/" + type + "/EGRESOS/")) {
                         GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectSummary.getKey(), HttpMethod.GET);
                         request.setExpiration(new Date(System.currentTimeMillis() + expirationTime * 1000));
                         String objectUrl = s3Client.generatePresignedUrl(request).toString();
                         request.getRequestParameters();
-                        String file = objectSummary.getKey().replace(rfc + "/xml/INGRESOS/", "");
-                        ingresos.put(file, objectUrl);
+                        String file = objectSummary.getKey().replace(rfc + "/" + type + "/EGRESOS/", "");
+                        LocalDate dates = LocalDate.parse(file.substring(0, 10));
+                        LocalDate initial = LocalDate.parse(initial_date);
+                        LocalDate ending = LocalDate.parse(final_date);
+                        if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                            egresosXML.put(file, objectUrl);
+                        }
+                    } else if (objectSummary.getKey().contains(rfc + "/" + type + "/INGRESOS/")) {
+                        GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectSummary.getKey(), HttpMethod.GET);
+                        request.setExpiration(new Date(System.currentTimeMillis() + expirationTime * 1000));
+                        String objectUrl = s3Client.generatePresignedUrl(request).toString();
+                        request.getRequestParameters();
+                        String file = objectSummary.getKey().replace(rfc + "/" + type + "/INGRESOS/", "");
+                        LocalDate dates = LocalDate.parse(file.substring(0, 10));
+                        LocalDate initial = LocalDate.parse(initial_date);
+                        LocalDate ending = LocalDate.parse(final_date);
+                        if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                            ingresosXML.put(file, objectUrl);
+                        }
+
                     }
 
                 }
                 request2.setMarker(objectListing.getNextMarker());
             } while (objectListing.isTruncated());
 
-            for (Map.Entry<String, String> egre : egresados.entrySet()) {
-                Response response = ParserFile.getParseValues(egre.getValue(), rfc, "EGRESOS", egre.getKey(), initial_date, final_date);
-                //response.setUrl_pdf(urls_pdf.get(i));
-                responses.add(response);
-            }
+            if (type.equals("xml")) {
 
+                for (Map.Entry<String, String> egreXML : egresosXML.entrySet()) {
+                    Response response = ParserFile.getParseValues(egreXML.getValue(), rfc, "EGRESOS", egreXML.getKey());
+                    responses.add(response);
+                }
 
-            for (Map.Entry<String, String> ing : ingresos.entrySet()) {
-                Response response = ParserFile.getParseValues(ing.getValue(), rfc, "INGRESOS", ing.getKey(), initial_date, final_date);
-                //response.setUrl_pdf(urls_pdf.get(i));
-                ings.add(response);
-            }
+                for (Map.Entry<String, String> ingXML : ingresosXML.entrySet()) {
+                    Response response = ParserFile.getParseValues(ingXML.getValue(), rfc, "INGRESOS", ingXML.getKey());
+                    ings.add(response);
+                }
 
-            for (Response response : responses) {
-                if (response.getDescripcion() != null) {
-                    returned.add(response);
+                for (Response response : responses) {
+                    if (response.getDescripcion() != null) {
+                        emitidas.add(response);
+                    }
+                }
+                for (Response ingsR : ings) {
+                    if (ingsR.getDescripcion() != null) {
+                        recibidas.add(ingsR);
+                    }
                 }
             }
-            for (Response ingsR : ings) {
-                if (ingsR.getDescripcion() != null) {
-                    recibidas.add(ingsR);
-                }
-            }
 
 
-            facturas.put("Emitidas", returned);
+            facturas.put("Emitidas", emitidas);
             facturas.put("Recibidas", recibidas);
+            facturas.put("listOfEgresos" + type, egresosXML);
+            facturas.put("listOfIngresos" + type, ingresosXML);
             // FileUtils.deleteDirectory(new File(rfc));
 
 
@@ -140,6 +152,5 @@ public class UploadFileToS3_Policies {
         }
         return facturas;
     }
-
 
 }

@@ -15,24 +15,24 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.net.URL;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.io.FileUtils;
 
 
 public class ParserFile {
 
     public static Logger LOGGER = LogManager.getLogger(ParserFile.class);
-    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public ParserFile() {
     }
 
-    public static Response getParseValues(String pathFromAWS, String rfc, String type, String fileName, String initial_date, String final_date) {
+    public static Response getParseValues(String pathFromAWS, String rfc, String type, String fileName) {
 
         Response response = new Response();
         Descripcion descripcion = new Descripcion();
@@ -45,28 +45,21 @@ public class ParserFile {
             doc.getDocumentElement().normalize();
             Element comprobanteElement = doc.getDocumentElement();
 
-
-
             /* get date from xml*/
             Element date = doc.getDocumentElement();
             descripcion.setFecha(date.getAttribute("Fecha").substring(0, 10));
 
-            LocalDate initial = LocalDate.parse(initial_date);
-            LocalDate ending = LocalDate.parse(final_date);
-            LocalDate dates = LocalDate.parse(descripcion.getFecha());
 
+            NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
+            Element cliente = (Element) repectEgr.item(0);
+            descripcion.setCliente(cliente.getAttribute("Nombre"));
 
-            if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
-                NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
-                Element cliente = (Element) repectEgr.item(0);
-                descripcion.setCliente(cliente.getAttribute("Nombre"));
+            Element total = doc.getDocumentElement();
+            descripcion.setCantidad(total.getAttribute("Total"));
 
-                /* get amount from xml*/
-                Element total = doc.getDocumentElement();
-                descripcion.setCantidad(total.getAttribute("Total"));
-                response.setDescripcion(descripcion);
-                response.setUrl_xml(pathFromAWS);
-            }
+            response.setDescripcion(descripcion);
+            response.setUrl_xml(pathFromAWS);
+
 
             //archivoXML.delete();
 

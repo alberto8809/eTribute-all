@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 
-
 public class CreateFilePDFPolicy {
 
     //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all2/";
@@ -20,7 +19,7 @@ public class CreateFilePDFPolicy {
     }
 
 
-    public static boolean makeFile(PolicyObjFile policyObjFile, String fileName, String rfc) {
+    public static boolean makeFile(PolicyObjFile policyObjFile, String fileName, String rfc, String type) {
 
 
         try {
@@ -414,7 +413,7 @@ public class CreateFilePDFPolicy {
                     document.add(lastValues);
                     document.close();
 
-                    UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
+                    UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
 
 
                 }
@@ -580,7 +579,7 @@ public class CreateFilePDFPolicy {
                 document.add(headerLastValues);
                 document.add(lastValues);
                 document.close();
-                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
+                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
 
 
             } else if (policyObjFile.getPolicyObj().getType_of_value().equals("E")) {
@@ -792,7 +791,7 @@ public class CreateFilePDFPolicy {
 
 
                 document.close();
-                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
+                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
 
                 // -----------------------  Type of policy P  and N --------------------- //
 
@@ -977,7 +976,7 @@ public class CreateFilePDFPolicy {
 
 
                     document.close();
-                    UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
+                    UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
 
                 }
             } else if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
@@ -1204,7 +1203,7 @@ public class CreateFilePDFPolicy {
 
                 document.close();
 
-                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc);
+                UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
 
 
             }

@@ -2,7 +2,6 @@ package org.example.users.controller;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.example.users.model.Response;
 import org.example.users.service.CreateFileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
+
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -35,10 +34,10 @@ public class PolicyController {
 
 
     @PostMapping("policy/")
-    public ResponseEntity<Map<String, List<Response>>> getDescription(@RequestParam(name = "rfc") String rfc, @RequestParam(name = "initial_date") String initial_date, @RequestParam(name = "final_date") String final_date) {
-        Map<String, List<Response>> descriptions = createFileService.getDescriptionPolicy(rfc, initial_date, final_date);
-        for (Map.Entry<String, List<Response>> map : descriptions.entrySet()) {
-            if (!map.getValue().isEmpty()) {
+    public ResponseEntity<Map<String, Object>> getDescription(@RequestParam(name = "rfc") String rfc, @RequestParam(name = "initial_date") String initial_date, @RequestParam(name = "final_date") String final_date) {
+        Map<String, Object> descriptions = createFileService.getDescriptionPolicy(rfc, initial_date, final_date);
+        for (Map.Entry<String, Object> map : descriptions.entrySet()) {
+            if (map.getValue() != null) {
                 return new ResponseEntity<>(descriptions, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);

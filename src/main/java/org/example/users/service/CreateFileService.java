@@ -16,10 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
@@ -135,18 +132,61 @@ public class CreateFileService {
     }
 
 
-    public Map<String, List<Response>> getDescriptionPolicy(String rfc, String initial_date, String final_date) {
-        //createPolicy(rfc);
-        return UploadFileToS3_Policies.getFilelFromAWS(rfc, initial_date, final_date);
+    public Map<String, Object> getDescriptionPolicy(String rfc, String initial_date, String final_date) {
+
+        Map<String, Object> filesXMLFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "xml", initial_date, final_date);
+        createPolicy(rfc, "EGRESOS");
+        createPolicy(rfc, "INGRESOS");
+        Map<String, Object> filesPDFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "pdf", initial_date, final_date);
+        Map<String, Object> finalResult = new HashMap<>();
+
+        List<Response> eg = (List<Response>) filesXMLFromAWS.get("Emitidas");
+        List<Response> rv = (List<Response>) filesXMLFromAWS.get("Recibidas");
+        Map<String, String> obj = (Map<String, String>) filesXMLFromAWS.get("listOfEgresosxml");
+        Map<String, String> obj1 = (Map<String, String>) filesXMLFromAWS.get("listOfIngresosxml");
+        Map<String, String> obj3 = (Map<String, String>) filesPDFromAWS.get("listOfEgresospdf");
+        Map<String, String> obj4 = (Map<String, String>) filesPDFromAWS.get("listOfIngresospdf");
+
+        for (Map.Entry<String, String> result : obj.entrySet()) {
+            String fileName = result.getKey().replace(".xml", "");
+            for (Map.Entry<String, String> r : obj3.entrySet()) {
+                String filePDF = r.getKey().replace(".pdf", "");
+                if (filePDF.equals(fileName)) {
+                    for (Response rs : eg) {
+                        rs.setUrl_pdf(r.getValue());
+                    }
+                }
+
+            }
+
+        }
+        for (Map.Entry<String, String> result : obj1.entrySet()) {
+            String fileName = result.getKey().replace(".xml", "");
+            for (Map.Entry<String, String> r : obj4.entrySet()) {
+                String filePDF = r.getKey().replace(".pdf", "");
+                if (filePDF.equals(fileName)) {
+                    for (Response rd : rv) {
+                        rd.setUrl_pdf(r.getValue());
+                    }
+
+                }
+            }
+
+        }
+
+        finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
+        finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
+
+        return finalResult;
     }
 
 
-    public boolean createPolicy(String rfc) {
+    public boolean createPolicy(String rfc, String type) {
         try {
 
             int account_id = accountRepository.getAccountByAccount_id(rfc);
             List<CuentaContable> cuentaContable = new ArrayList<>();
-            File folder = new File(server_path + rfc + "/xml");
+            File folder = new File(server_path + rfc + "/xml/" + type + "/");
             File[] listOfFiles = folder.listFiles();
             for (File file : listOfFiles) {
                 if (file.isFile()) {
@@ -170,7 +210,7 @@ public class CreateFileService {
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                         policyObjFile.setFolio(uuid.toString());
 
-                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc)) {
+                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
@@ -205,7 +245,6 @@ public class CreateFileService {
                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
                             policytoDB.setAccount_id(account_id);
-
                             saveObjRepository.save(policytoDB);
                         }
                         //  return true;
@@ -233,7 +272,7 @@ public class CreateFileService {
                         policyObjFile.getPolicyObj().setCargo(cargo);
                         policyObjFile.setFolio(uuid.toString());
 
-                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc)) {
+                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
@@ -288,7 +327,7 @@ public class CreateFileService {
                         policyObjFile.setFolio(uuid.toString());
 
 
-                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc)) {
+                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
 
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
@@ -346,7 +385,7 @@ public class CreateFileService {
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                         policyObjFile.setFolio(uuid.toString());
 
-                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc)) {
+                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
@@ -401,7 +440,7 @@ public class CreateFileService {
                         policyObjFile.setTax_description(accounts);
                         policyObjFile.setFolio(uuid.toString());
 
-                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc)) {
+                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
@@ -448,7 +487,7 @@ public class CreateFileService {
                         policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getAmoubnt()));
                         policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
                         policyObjFile.setFolio(uuid.toString());
-                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc)) {
+                        if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
