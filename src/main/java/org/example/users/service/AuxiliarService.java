@@ -5,6 +5,7 @@ import org.example.users.repository.AuxiliarRepository;
 import org.example.users.repository.CuentaContableRepository;
 import org.example.users.util.CreateFilePDFBalance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -17,6 +18,8 @@ public class AuxiliarService {
     AuxiliarRepository auxiliarRepository;
     @Autowired
     CuentaContableRepository cuentaContableRepository;
+    @Autowired
+    JdbcClient jdbc;
 
 
     public Map<String, List<ListAuxiliar>> getListAccounts(String account, String inicial_date, String final_date) {
@@ -128,12 +131,14 @@ public class AuxiliarService {
     public Map<String, Object> getListBalanceDate(String account_id, String inicial_date, String final_date) {
         HashMap<String, Object> response = new HashMap<>();
         List<Object> generaBalanceResponses = new ArrayList<>();
-        List<CuentaContable> list = cuentaContableRepository.getValuestoBlanaceActivo(account_id, inicial_date, final_date);
+        List<Map<String, Object>> obj = jdbc.sql("SELECT * FROM dbmaster.cuentas WHERE codigo_agrupador='101' OR codigo_agrupador ='102' OR codigo_agrupador ='103' OR codigo_agrupador ='105' OR codigo_agrupador ='107' OR codigo_agrupador ='110' OR codigo_agrupador ='113' OR codigo_agrupador ='114' OR codigo_agrupador ='118' OR codigo_agrupador ='119'")
+                .query().listOfRows();
+
         double total_activoCirculante = 0;
-        for (CuentaContable cuentaContable : list) {
+        for (Map<String, Object> cuentaContable : obj) {
             GeneraBalanceResponse generaBalanceResponse = new GeneraBalanceResponse();
-            generaBalanceResponse.setCuenta_id(cuentaContable.getCodigo_agrupador());
-            generaBalanceResponse.setDescripcion(cuentaContable.getNombre_cuenta());
+            generaBalanceResponse.setCuenta_id(cuentaContable.get("codigo_agrupador").toString());
+            generaBalanceResponse.setDescripcion(cuentaContable.get("nombre_cuenta").toString());
             generaBalanceResponse.setTotal(0);
             total_activoCirculante += generaBalanceResponse.getTotal();
             generaBalanceResponses.add(generaBalanceResponse);
@@ -142,13 +147,15 @@ public class AuxiliarService {
         response.put("Activo_Circulante", generaBalanceResponses);
 
 
-        List<CuentaContable> list1 = cuentaContableRepository.getValuestoBlanacePasivo(account_id, inicial_date, final_date);
+        List<Map<String, Object>> obj2 = jdbc.sql("SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='201' OR codigo_agrupador ='205' OR codigo_agrupador ='208' OR codigo_agrupador ='209' OR codigo_agrupador ='210' OR codigo_agrupador ='213' OR codigo_agrupador ='216' OR codigo_agrupador ='218'")
+                .query().listOfRows();
+
         List<Object> pasivo = new ArrayList<>();
         double total_pasivoCirculante = 0;
-        for (CuentaContable cuentaContable : list1) {
+        for (Map<String, Object> cuentaContable : obj2) {
             GeneraBalanceResponse generaBalanceResponse = new GeneraBalanceResponse();
-            generaBalanceResponse.setCuenta_id(cuentaContable.getCodigo_agrupador());
-            generaBalanceResponse.setDescripcion(cuentaContable.getNombre_cuenta());
+            generaBalanceResponse.setCuenta_id(cuentaContable.get("codigo_agrupador").toString());
+            generaBalanceResponse.setDescripcion(cuentaContable.get("nombre_cuenta").toString());
             generaBalanceResponse.setTotal(0);
             total_pasivoCirculante += generaBalanceResponse.getTotal();
             pasivo.add(generaBalanceResponse);
@@ -184,14 +191,16 @@ public class AuxiliarService {
 
         response.put("Activo_Diferido", activo_diferido);
 
+        //List<CuentaContable> list4 = cuentaContableRepository.getValuestoBlanaceCapital(account_id, inicial_date, final_date);
+        List<Map<String, Object>> obj3 = jdbc.sql("SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='301' OR codigo_agrupador ='304' OR codigo_agrupador ='305'")
+                .query().listOfRows();
 
-        List<CuentaContable> list4 = cuentaContableRepository.getValuestoBlanaceCapital(account_id, inicial_date, final_date);
         List<Object> capital = new ArrayList<>();
         double total_capital = 0;
-        for (CuentaContable cuentaContable : list4) {
+        for (Map<String, Object> cuentaContable : obj3) {
             GeneraBalanceResponse generaBalanceResponse = new GeneraBalanceResponse();
-            generaBalanceResponse.setCuenta_id(cuentaContable.getCodigo_agrupador());
-            generaBalanceResponse.setDescripcion(cuentaContable.getNombre_cuenta());
+            generaBalanceResponse.setCuenta_id(cuentaContable.get("codigo_agrupador").toString());
+            generaBalanceResponse.setDescripcion(cuentaContable.get("nombre_cuenta").toString());
             generaBalanceResponse.setTotal(0);
             total_capital += generaBalanceResponse.getTotal();
             capital.add(generaBalanceResponse);
