@@ -292,7 +292,7 @@ public class AuxiliarService {
         list2.add(b8);
 
 
-        obj.put("registro ", list2);
+        obj.put("registro", list2);
         back.put("body", obj);
         back.put("url_pdf", "");
         return back;
