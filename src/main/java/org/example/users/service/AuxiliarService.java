@@ -226,11 +226,60 @@ public class AuxiliarService {
     }
 
 
-    public Map<String, Object> getValuesOfResults(String account_id, String initial, String final_) {
-        Map<String, Object> obj = new HashMap<>();
-        obj.put("body", cuentaContableRepository.getValuesOfResults(account_id, initial, final_));
-        //obj.put("url_pdf", createFileBalance(account_id, initial_date, final_date));
-        obj.put("url_pdf", "");
-        return obj;
+    public Map<Object, Object> getValuesOfResults(String account_id, String initial, String final_) {
+
+        Map<Object, Object> back = new HashMap<>();
+        Map<Object, Object> obj = new HashMap<>();
+        Map<Object, Object> obj2 = new HashMap<>();
+        Map<Object, Object> obj3 = new HashMap<>();
+        Map<Object, Object> obj4 = new HashMap<>();
+        Map<Object, Object> obj5 = new HashMap<>();
+        Map<Object, Object> obj6 = new HashMap<>();
+        Map<Object, Object> obj7 = new HashMap<>();
+        Map<Object, Object> obj8 = new HashMap<>();
+
+        List<Object> list = new ArrayList<>();
+
+        obj.put("cuenta ", cuentaContableRepository.getValuesOf401(account_id, initial, final_));
+        obj.put("valor", new BalanceGeneral());
+
+
+        obj2.put("cuenta ", cuentaContableRepository.getValuesOf501(account_id, initial, final_));
+        obj2.put("valor", new BalanceGeneral());
+
+
+        obj3.put("cuenta ", cuentaContableRepository.getValuesOf503(account_id, initial, final_));
+        obj3.put("valor", new BalanceGeneral());
+
+        obj4.put("cuenta ", cuentaContableRepository.getValuesOf601(account_id, initial, final_));
+        obj4.put("valor", new BalanceGeneral());
+
+
+        obj5.put("cuenta ", cuentaContableRepository.getValuesOf603(account_id, initial, final_));
+        obj5.put("valor", new BalanceGeneral());
+
+        obj6.put("cuenta ", cuentaContableRepository.getValuesOf704(account_id, initial, final_));
+        obj6.put("valor", new BalanceGeneral());
+
+        obj7.put("cuenta ", cuentaContableRepository.getValuesOf701(account_id, initial, final_));
+        obj7.put("valor", new BalanceGeneral());
+
+        obj8.put("cuenta ", cuentaContableRepository.getValuesOf304(account_id, initial, final_));
+        obj8.put("valor", new BalanceGeneral());
+
+
+        list.add(obj);
+        list.add(obj2);
+        list.add(obj3);
+        list.add(obj4);
+        list.add(obj5);
+        list.add(obj6);
+        list.add(obj7);
+        list.add(obj8);
+
+
+        back.put("body", list);
+        back.put("url_pdf", "");
+        return back;
     }
 }

@@ -16,10 +16,6 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT *  FROM dbmaster.cuentaContable WHERE codigo_agrupador='184'", nativeQuery = true)
     List<CuentaContable> getValuesBalanceActivoDiferido(String account_id, String initial, String final_date);
 
-    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='301' OR codigo_agrupador ='304' OR codigo_agrupador ='305'", nativeQuery = true)
-    List<CuentaContable> getValuestoBlanaceCapital(String account_id, String initial, String final_date);
-
-
     @Query(value = "SELECT * FROM dbmaster.cuentaContable cc WHERE cc.codigo_agrupador =:codigo_agrupador ", nativeQuery = true)
     CuentaContable getCuantaContable(String codigo_agrupador);
 
@@ -29,8 +25,28 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT cc.nombre_cuenta FROM dbmaster.cuentaContable cc WHERE cc.codigo_agrupador =:codigo_agrupador ", nativeQuery = true)
     String getCuantaContableMethod(String codigo_agrupador);
 
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='401'", nativeQuery = true)
+    CuentaContable getValuesOf401(String account_id, String initial, String final_date);
 
-    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='401' OR codigo_agrupador ='501' OR codigo_agrupador ='503' OR codigo_agrupador ='601' OR codigo_agrupador ='603' OR codigo_agrupador ='704' OR codigo_agrupador ='701' OR codigo_agrupador ='504'", nativeQuery = true)
-    List<CuentaContable> getValuesOfResults(String account_id, String initial, String final_date);
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='501'", nativeQuery = true)
+    CuentaContable getValuesOf501(String account_id, String initial, String final_date);
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='503'", nativeQuery = true)
+    CuentaContable getValuesOf503(String account_id, String initial, String final_date);
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='601'", nativeQuery = true)
+    CuentaContable getValuesOf601(String account_id, String initial, String final_date);
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='603'", nativeQuery = true)
+    CuentaContable getValuesOf603(String account_id, String initial, String final_date);
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='704'", nativeQuery = true)
+    CuentaContable getValuesOf704(String account_id, String initial, String final_date);
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='701'", nativeQuery = true)
+    CuentaContable getValuesOf701(String account_id, String initial, String final_date);
+
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='304'", nativeQuery = true)
+    CuentaContable getValuesOf304(String account_id, String initial, String final_date);
 
 }
