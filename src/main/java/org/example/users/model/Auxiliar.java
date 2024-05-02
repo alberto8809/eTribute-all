@@ -2,8 +2,14 @@ package org.example.users.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "policyObjFile")
 public class Auxiliar {
@@ -34,149 +40,10 @@ public class Auxiliar {
     private String referencia;
     @Column(name = "total")
     private String total;
-
     @Column(name = "saldo_inicial")
     private String saldo_inicial;
-
     @Column(name = "saldo_final")
     private String saldo_final;
 
 
-    public Auxiliar() {
-    }
-
-    public String getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(String cliente) {
-        this.cliente = cliente;
-    }
-
-    public String getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(String usuario) {
-        this.usuario = usuario;
-    }
-
-    public String getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
-    }
-
-
-    public String getCuenta() {
-        return cuenta;
-    }
-
-    public void setCuenta(String cuenta) {
-        this.cuenta = cuenta;
-    }
-
-    public String getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(String fecha) {
-        this.fecha = fecha;
-    }
-
-    public String getProveedor() {
-        return proveedor;
-    }
-
-    public void setProveedor(String proveedor) {
-        this.proveedor = proveedor;
-    }
-
-    public String getTotal() {
-        return total;
-    }
-
-    public void setTotal(String total) {
-        this.total = total;
-    }
-
-
-    public String getPoliza() {
-        return poliza;
-    }
-
-    public void setPoliza(String poliza) {
-        this.poliza = poliza;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getDebe() {
-        return debe;
-    }
-
-    public void setDebe(String debe) {
-        this.debe = debe;
-    }
-
-    public String getHaber() {
-        return haber;
-    }
-
-    public void setHaber(String haber) {
-        this.haber = haber;
-    }
-
-    public String getReferencia() {
-        return referencia;
-    }
-
-    public void setReferencia(String referencia) {
-        this.referencia = referencia;
-    }
-
-    public String getSaldo_inicial() {
-        return saldo_inicial == null || saldo_inicial.isEmpty() ? "0" : saldo_inicial;
-    }
-
-    public void setSaldo_inicial(String saldo_inicial) {
-        this.saldo_inicial = saldo_inicial;
-    }
-
-    public String getSaldo_final() {
-        return saldo_final;
-    }
-
-    public void setSaldo_final(String saldo_final) {
-        this.saldo_final = saldo_final;
-    }
-
-    @Override
-    public String toString() {
-        return "Auxiliar{" +
-                "id_policy=" + id_policy +
-                ", cliente='" + cliente + '\'' +
-                ", usuario='" + usuario + '\'' +
-                ", tipo='" + tipo + '\'' +
-                ", poliza='" + poliza + '\'' +
-                ", cuenta='" + cuenta + '\'' +
-                ", descripcion='" + descripcion + '\'' +
-                ", debe='" + debe + '\'' +
-                ", haber='" + haber + '\'' +
-                ", fecha='" + fecha + '\'' +
-                ", proveedor='" + proveedor + '\'' +
-                ", referencia='" + referencia + '\'' +
-                ", total='" + total + '\'' +
-                ", saldo_inicial='" + saldo_inicial + '\'' +
-                ", saldo_final='" + saldo_final + '\'' +
-                '}';
-    }
 }

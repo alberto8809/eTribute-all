@@ -7,11 +7,7 @@ import org.example.users.util.CreateFilePDFBalance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 
 @Service
@@ -23,40 +19,54 @@ public class AuxiliarService {
     CuentaContableRepository cuentaContableRepository;
 
 
-    public List<ListAuxiliar> getListAccounts(String account, String inicial_date, String final_date) {
-        List<ListAuxiliar> list = new ArrayList<>();
+    public Map<String, List<ListAuxiliar>> getListAccounts(String account, String inicial_date, String final_date) {
+        Map<String, List<ListAuxiliar>> list = new HashMap<>();
+        Map<String, ListAuxiliar> addingResponse = new HashMap<>();
+        List<ListAuxiliar> response = new ArrayList<>();
         List<Auxiliar> list1 = auxiliarRepository.getAuxiliar(account, inicial_date, final_date);
         if (list1 != null) {
             for (Auxiliar aux : list1) {
                 ListAuxiliar listAuxiliar = new ListAuxiliar();
                 listAuxiliar.setConcepto(aux.getDescripcion());
                 listAuxiliar.setCuenta(aux.getCuenta());
-                list.add(listAuxiliar);
+                addingResponse.put(aux.getCuenta(), listAuxiliar);
+
             }
         }
 
-        return list.stream().distinct().collect(Collectors.toList());
+        for (Map.Entry<String, ListAuxiliar> re : addingResponse.entrySet()) {
+            response.add(re.getValue());
+        }
+
+        list.put("cuentas", response);
+
+        return list;
     }
 
     public Map<String, Object> getValuesOfTable(String cuenta, String initial, String final_date) {
-
         Map<String, Object> obj = new HashMap<>();
         List<Auxiliar> auxList = auxiliarRepository.valuesOfTable(cuenta, initial, final_date);
         HeaderAuxiliar headerAux = new HeaderAuxiliar();
 
-        headerAux.setCuenta(auxList.get(0).getCuenta());
-        headerAux.setNombre(auxList.get(0).getDescripcion());
-        headerAux.setSaldoInicial(headerAux.getSaldoInicial() == null ? "0" : auxiliarRepository.getSumInicial(cuenta));
-        headerAux.setDebe(headerAux.getDebe() == null ? auxiliarRepository.getSumDebeByAccountId(cuenta) : headerAux.getDebe());
-        headerAux.setHaber(headerAux.getHaber() == null ? auxiliarRepository.getSumHaberByAccountId(cuenta) : headerAux.getHaber() );
-        float sumaFinal = (Float.valueOf(headerAux.getSaldoInicial() + Float.valueOf(headerAux.getHaber())) - Float.valueOf(headerAux.getDebe()));
-        headerAux.setSaldoFinal(headerAux.getSaldoFinal() == null ? auxiliarRepository.getSaldoFinal(cuenta) : String.valueOf(sumaFinal));
+        if (!auxList.isEmpty()) {
 
-        obj.put("header", headerAux);
-        obj.put("body", auxList);
-        obj.put("url_pdf", "");
+            headerAux.setCuenta(auxList.get(0).getCuenta());
+            headerAux.setNombre(auxList.get(0).getDescripcion());
+            headerAux.setSaldoInicial(headerAux.getSaldoInicial() == null ? "0" : auxiliarRepository.getSumInicial(cuenta));
+            headerAux.setDebe(headerAux.getDebe() == null ? auxiliarRepository.getSumDebeByAccountId(cuenta) : headerAux.getDebe());
+            headerAux.setHaber(headerAux.getHaber() == null ? auxiliarRepository.getSumHaberByAccountId(cuenta) : headerAux.getHaber());
+            float sumaFinal = (Float.valueOf(headerAux.getSaldoInicial() + Float.valueOf(headerAux.getHaber())) - Float.valueOf(headerAux.getDebe()));
+            headerAux.setSaldoFinal(headerAux.getSaldoFinal() == null ? auxiliarRepository.getSaldoFinal(cuenta) : String.valueOf(sumaFinal));
 
-        return obj;
+            obj.put("header", headerAux);
+            obj.put("body", auxList);
+            obj.put("url_pdf", "");
+            //revisar el debe y haber
+            return obj;
+        } else {
+            return null;
+        }
+
     }
 
     public boolean createFileByAccount(String cuenta, String inicial, String final_) {
@@ -73,27 +83,31 @@ public class AuxiliarService {
         List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(account_id, initial_date, final_date);
         List<Balance> values = new ArrayList<>();
         Map<String, Object> obj = new HashMap<>();
+        if (!listAuxiliars.isEmpty()) {
+            for (Auxiliar listAuxiliar : listAuxiliars) {
+                Balance balance = new Balance();
+                balance.setCuenta(listAuxiliar.getCuenta());
+                balance.setNombre(listAuxiliar.getDescripcion());
+                //balance.setDeudor_inicial();
+                //balance.setAcredor_inicial();
+                balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
+                balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
+                values.add(balance);
+            }
 
-        for (Auxiliar listAuxiliar : listAuxiliars) {
-            Balance balance = new Balance();
-            balance.setCuenta(listAuxiliar.getCuenta());
-            balance.setNombre(listAuxiliar.getDescripcion());
-            //balance.setDeudor_inicial();
-            //balance.setAcredor_inicial();
-            balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
-            balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
-            values.add(balance);
+            BalanceTotal balanceTotal = new BalanceTotal();
+            balanceTotal.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
+            balanceTotal.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
+
+            obj.put("balanza", values);
+            obj.put("sumas", balanceTotal);
+            //obj.put("url_pdf", createFileBalance(account_id, initial_date, final_date));
+            obj.put("url_pdf", "");
+            return obj;
+        } else {
+            return null;
         }
 
-        BalanceTotal balanceTotal = new BalanceTotal();
-        balanceTotal.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
-        balanceTotal.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
-
-        obj.put("balanza", values);
-        obj.put("sumas", balanceTotal);
-        //obj.put("url_pdf", createFileBalance(account_id, initial_date, final_date));
-        obj.put("url_pdf", "");
-        return obj;
     }
 
 
