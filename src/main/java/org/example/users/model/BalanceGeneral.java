@@ -8,6 +8,9 @@ import lombok.*;
 @Setter
 @ToString
 public class BalanceGeneral {
+    private String nivel;
+    private String codigo_agrupador;
+    private String nombre_cuenta;
     private String importe_mensual;
     private String porcentaje_mensual;
     private String importe_anual;

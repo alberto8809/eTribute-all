@@ -230,55 +230,70 @@ public class AuxiliarService {
 
         Map<Object, Object> back = new HashMap<>();
         Map<Object, Object> obj = new HashMap<>();
-        Map<Object, Object> obj2 = new HashMap<>();
-        Map<Object, Object> obj3 = new HashMap<>();
-        Map<Object, Object> obj4 = new HashMap<>();
-        Map<Object, Object> obj5 = new HashMap<>();
-        Map<Object, Object> obj6 = new HashMap<>();
-        Map<Object, Object> obj7 = new HashMap<>();
-        Map<Object, Object> obj8 = new HashMap<>();
-
-        List<Object> list = new ArrayList<>();
-
-        obj.put("cuenta ", cuentaContableRepository.getValuesOf401(account_id, initial, final_));
-        obj.put("valor", new BalanceGeneral());
+        List<Object> list2 = new ArrayList<>();
 
 
-        obj2.put("cuenta ", cuentaContableRepository.getValuesOf501(account_id, initial, final_));
-        obj2.put("valor", new BalanceGeneral());
+        CuentaContable c = cuentaContableRepository.getValuesOf401(account_id, initial, final_);
+        BalanceGeneral b = new BalanceGeneral();
+        b.setNivel(c.getNivel());
+        b.setCodigo_agrupador(c.getCodigo_agrupador());
+        b.setNombre_cuenta(c.getNombre_cuenta());
+
+        CuentaContable d = cuentaContableRepository.getValuesOf501(account_id, initial, final_);
+        BalanceGeneral b2 = new BalanceGeneral();
+        b2.setNivel(d.getNivel());
+        b2.setCodigo_agrupador(d.getCodigo_agrupador());
+        b2.setNombre_cuenta(d.getNombre_cuenta());
+
+        CuentaContable c3 = cuentaContableRepository.getValuesOf503(account_id, initial, final_);
+        BalanceGeneral b3 = new BalanceGeneral();
+        b3.setNivel(c3.getNivel());
+        b3.setCodigo_agrupador(c3.getCodigo_agrupador());
+        b3.setNombre_cuenta(c3.getNombre_cuenta());
+
+        CuentaContable c4 = cuentaContableRepository.getValuesOf601(account_id, initial, final_);
+        BalanceGeneral b4 = new BalanceGeneral();
+        b4.setNivel(c4.getNivel());
+        b4.setCodigo_agrupador(c4.getCodigo_agrupador());
+        b4.setNombre_cuenta(c4.getNombre_cuenta());
 
 
-        obj3.put("cuenta ", cuentaContableRepository.getValuesOf503(account_id, initial, final_));
-        obj3.put("valor", new BalanceGeneral());
+        CuentaContable c5 = cuentaContableRepository.getValuesOf603(account_id, initial, final_);
+        BalanceGeneral b5 = new BalanceGeneral();
+        b5.setNivel(c5.getNivel());
+        b5.setCodigo_agrupador(c5.getCodigo_agrupador());
+        b5.setNombre_cuenta(c5.getNombre_cuenta());
 
-        obj4.put("cuenta ", cuentaContableRepository.getValuesOf601(account_id, initial, final_));
-        obj4.put("valor", new BalanceGeneral());
+        CuentaContable c6 = cuentaContableRepository.getValuesOf704(account_id, initial, final_);
+        BalanceGeneral b6 = new BalanceGeneral();
+        b6.setNivel(c6.getNivel());
+        b6.setCodigo_agrupador(c6.getCodigo_agrupador());
+        b6.setNombre_cuenta(c6.getNombre_cuenta());
+
+        CuentaContable c7 = cuentaContableRepository.getValuesOf701(account_id, initial, final_);
+        BalanceGeneral b7 = new BalanceGeneral();
+        b7.setNivel(c7.getNivel());
+        b7.setCodigo_agrupador(c7.getCodigo_agrupador());
+        b7.setNombre_cuenta(c7.getNombre_cuenta());
+
+        CuentaContable c8 = cuentaContableRepository.getValuesOf304(account_id, initial, final_);
+        BalanceGeneral b8 = new BalanceGeneral();
+        b8.setNivel(c8.getNivel());
+        b8.setCodigo_agrupador(c8.getCodigo_agrupador());
+        b8.setNombre_cuenta(c8.getNombre_cuenta());
+
+        list2.add(b);
+        list2.add(b2);
+        list2.add(b3);
+        list2.add(b4);
+        list2.add(b5);
+        list2.add(b6);
+        list2.add(b7);
+        list2.add(b8);
 
 
-        obj5.put("cuenta ", cuentaContableRepository.getValuesOf603(account_id, initial, final_));
-        obj5.put("valor", new BalanceGeneral());
-
-        obj6.put("cuenta ", cuentaContableRepository.getValuesOf704(account_id, initial, final_));
-        obj6.put("valor", new BalanceGeneral());
-
-        obj7.put("cuenta ", cuentaContableRepository.getValuesOf701(account_id, initial, final_));
-        obj7.put("valor", new BalanceGeneral());
-
-        obj8.put("cuenta ", cuentaContableRepository.getValuesOf304(account_id, initial, final_));
-        obj8.put("valor", new BalanceGeneral());
-
-
-        list.add(obj);
-        list.add(obj2);
-        list.add(obj3);
-        list.add(obj4);
-        list.add(obj5);
-        list.add(obj6);
-        list.add(obj7);
-        list.add(obj8);
-
-
-        back.put("body", list);
+        obj.put("registro ", list2);
+        back.put("body", obj);
         back.put("url_pdf", "");
         return back;
     }
