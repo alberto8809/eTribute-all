@@ -214,11 +214,13 @@ public class CreateFileService {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
+                            policytoDB.setTipo(type);
+                            policytoDB.setProveedor(policyObjFile.getCompanyName());
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Double.parseDouble(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
 
-                            List<String> debe = policyObjFile.getPolicyObj().getCargo();
+                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
                             int sumDebe = 0;
                             if (debe != null) {
                                 for (String db : debe) {
@@ -226,8 +228,8 @@ public class CreateFileService {
 
                                 }
                             }
-                            policytoDB.setDebe(String.valueOf(sumDebe));
-                            List<String> haber = policyObjFile.getPolicyObj().getAbono();
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
@@ -237,7 +239,7 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -264,7 +266,7 @@ public class CreateFileService {
                         List<String> desc = new ArrayList<>();
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
                         policyObjFile.setTax_description(desc);
-                        List<String> abonos = policyObjFile.getPolicyObj().getAbono();
+                        List<String> abonos = policyObjFile.getPolicyObj().getRetencion_importe();
                         List<String> cargo = new ArrayList<>();
                         for (String clv : abonos) {
                             cargo.add(cuentaContableRepository.getCuantaContableMethod(clv));
@@ -276,11 +278,13 @@ public class CreateFileService {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
+                            policytoDB.setTipo(type);
+                            policytoDB.setProveedor(policyObjFile.getCompanyName());
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Double.parseDouble(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
 
-                            List<String> debe = policyObjFile.getPolicyObj().getCargo();
+                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
                             int sumDebe = 0;
                             if (debe != null) {
                                 for (String db : debe) {
@@ -288,8 +292,9 @@ public class CreateFileService {
 
                                 }
                             }
-                            policytoDB.setDebe(String.valueOf(sumDebe));
-                            List<String> haber = policyObjFile.getPolicyObj().getAbono();
+                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
@@ -299,7 +304,8 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(String.valueOf(sumHaber));
+                            //policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -332,11 +338,13 @@ public class CreateFileService {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
+                            policytoDB.setTipo(type);
+                            policytoDB.setProveedor(policyObjFile.getCompanyName());
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Double.parseDouble(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
 
-                            List<String> debe = policyObjFile.getPolicyObj().getCargo();
+                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
                             int sumDebe = 0;
                             if (debe != null) {
                                 for (String db : debe) {
@@ -344,8 +352,9 @@ public class CreateFileService {
 
                                 }
                             }
-                            policytoDB.setDebe(String.valueOf(sumDebe));
-                            List<String> haber = policyObjFile.getPolicyObj().getAbono();
+                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
@@ -355,7 +364,8 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(String.valueOf(sumHaber));
+                           // policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -389,11 +399,13 @@ public class CreateFileService {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
+                            policytoDB.setTipo(type);
+                            policytoDB.setProveedor(policyObjFile.getCompanyName());
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Double.parseDouble(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
 
-                            List<String> debe = policyObjFile.getPolicyObj().getCargo();
+                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
                             int sumDebe = 0;
                             if (debe != null) {
                                 for (String db : debe) {
@@ -401,8 +413,9 @@ public class CreateFileService {
 
                                 }
                             }
+                            //policytoDB.setDebe(String.valueOf(sumDebe));
                             policytoDB.setDebe(String.valueOf(sumDebe));
-                            List<String> haber = policyObjFile.getPolicyObj().getAbono();
+                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
@@ -412,7 +425,8 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(String.valueOf(sumHaber));
+                            //policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -444,11 +458,13 @@ public class CreateFileService {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
+                            policytoDB.setTipo(type);
+                            policytoDB.setProveedor(policyObjFile.getCompanyName());
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Double.parseDouble(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
 
-                            List<String> debe = policyObjFile.getPolicyObj().getCargo();
+                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
                             int sumDebe = 0;
                             if (debe != null) {
                                 for (String db : debe) {
@@ -456,8 +472,9 @@ public class CreateFileService {
 
                                 }
                             }
-                            policytoDB.setDebe(String.valueOf(sumDebe));
-                            List<String> haber = policyObjFile.getPolicyObj().getAbono();
+                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
@@ -467,7 +484,8 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(String.valueOf(sumHaber));
+                            //policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -491,11 +509,13 @@ public class CreateFileService {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
                             policytoDB.setUsuario(rfc);
+                            policytoDB.setTipo(type);
+                            policytoDB.setProveedor(policyObjFile.getCompanyName());
                             policytoDB.setPoliza(policyObjFile.getFolio());
                             policytoDB.setCuenta(Double.parseDouble(policyObjFile.getCuenta_method()));
                             policytoDB.setDescripcion(policyObjFile.getDescription_methods());
 
-                            List<String> debe = policyObjFile.getPolicyObj().getCargo();
+                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
                             int sumDebe = 0;
                             if (debe != null) {
                                 for (String db : debe) {
@@ -503,8 +523,8 @@ public class CreateFileService {
 
                                 }
                             }
-                            policytoDB.setDebe(String.valueOf(sumDebe));
-                            List<String> haber = policyObjFile.getPolicyObj().getAbono();
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
@@ -514,7 +534,8 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(String.valueOf(sumHaber));
+                           // policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());

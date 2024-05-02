@@ -190,8 +190,7 @@ public class AuxiliarService {
         }
 
         response.put("Activo_Diferido", activo_diferido);
-
-        //List<CuentaContable> list4 = cuentaContableRepository.getValuestoBlanaceCapital(account_id, inicial_date, final_date);
+        
         List<Map<String, Object>> obj3 = jdbc.sql("SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='301' OR codigo_agrupador ='304' OR codigo_agrupador ='305'")
                 .query().listOfRows();
 
