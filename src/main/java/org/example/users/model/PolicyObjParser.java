@@ -16,13 +16,11 @@ import java.util.Map;
 @Setter
 @ToString
 public class PolicyObjParser {
-    //    @Id
-//    @Column(name = "regimen")
     private String regimen;
     private String usoCFDI;
     private List<String> ClaveProdServ;
     private String concepto_Descripcion;
-    private String amoubnt;
+    private String amount;
     private List<String> traslado;
     private String impuestos;
     private List<String> retencion_importe;

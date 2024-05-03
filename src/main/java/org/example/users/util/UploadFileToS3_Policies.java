@@ -47,7 +47,7 @@ public class UploadFileToS3_Policies {
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(server_path + rfc + "/pdf/" + pdf);
+            File file = new File(server_path + rfc + "/pdf/" + type + "/" + pdf);
             //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
             PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/pdf/" + type + "/" + pdf, file);
             s3Client.putObject(request);

@@ -159,7 +159,7 @@ public class ParserFile {
 
                 //"------------- amount ----------------
                 Element amount = (Element) conceptosList.item(0);
-                values.setAmoubnt(amount.getAttribute("Importe"));
+                values.setAmount(amount.getAttribute("Importe"));
 
 
                 //"------------- ClaveProdServ ----------------
@@ -266,7 +266,7 @@ public class ParserFile {
 
                 //"------------- amount ----------------
                 Element amount = (Element) conceptosList.item(0);
-                values.setAmoubnt(amount.getAttribute("Importe"));
+                values.setAmount(amount.getAttribute("Importe"));
 
 
                 //"------------- ClaveProdServ ----------------
@@ -337,7 +337,7 @@ public class ParserFile {
 
                 //"------------- amount ----------------
                 Element amount = (Element) conceptosList.item(0);
-                values.setAmoubnt(amount.getAttribute("Importe"));
+                values.setAmount(amount.getAttribute("Importe"));
 
                 NodeList imp = comprobanteElement.getElementsByTagName("cfdi:Traslado");
 
@@ -433,7 +433,8 @@ public class ParserFile {
 
 
                 values.setType_of_value(pay.getAttribute("TipoCambioP"));
-                values.setAmoubnt(pay.getAttribute("Monto"));
+                values.setAmount(pay.getAttribute("Monto"));
+
 
                 NodeList docu = comprobanteElement.getElementsByTagName("pago20:DoctoRelacionado");
                 Element d = (Element) docu.item(0);

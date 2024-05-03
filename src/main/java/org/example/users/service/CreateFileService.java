@@ -239,7 +239,7 @@ public class CreateFileService {
                             }
 
 
-                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
+                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -305,7 +305,7 @@ public class CreateFileService {
 
 
                             //policytoDB.setHaber(String.valueOf(sumHaber));
-                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
+                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -364,8 +364,8 @@ public class CreateFileService {
                             }
 
 
-                           // policytoDB.setHaber(String.valueOf(sumHaber));
-                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
+                            // policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -414,7 +414,7 @@ public class CreateFileService {
                                 }
                             }
                             //policytoDB.setDebe(String.valueOf(sumDebe));
-                            policytoDB.setDebe(String.valueOf(sumDebe));
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                             List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
@@ -426,7 +426,7 @@ public class CreateFileService {
 
 
                             //policytoDB.setHaber(String.valueOf(sumHaber));
-                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
+                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -473,7 +473,7 @@ public class CreateFileService {
                                 }
                             }
                             //policytoDB.setDebe(String.valueOf(sumDebe));
-                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                             List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
@@ -485,7 +485,7 @@ public class CreateFileService {
 
 
                             //policytoDB.setHaber(String.valueOf(sumHaber));
-                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
+                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
@@ -502,7 +502,7 @@ public class CreateFileService {
                     } else {
                         // (Cargo)
                         UUID uuid = UUID.randomUUID();
-                        policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getAmoubnt()));
+                        policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getAmount()));
                         policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
                         policyObjFile.setFolio(uuid.toString());
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
@@ -523,7 +523,7 @@ public class CreateFileService {
 
                                 }
                             }
-                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                            policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                             List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
                             int sumHaber = 0;
                             if (haber != null) {
@@ -534,8 +534,8 @@ public class CreateFileService {
                             }
 
 
-                           // policytoDB.setHaber(String.valueOf(sumHaber));
-                            policytoDB.setHaber(policyObjFile.getPolicyObj().getTotalAmount());
+                            // policytoDB.setHaber(String.valueOf(sumHaber));
+                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                             policytoDB.setFecha(policyObjFile.getDate());
                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                             policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
