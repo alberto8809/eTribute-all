@@ -245,7 +245,26 @@ public class AuxiliarService {
         Map<Object, Object> back = new HashMap<>();
         Map<Object, Object> obj = new HashMap<>();
         List<Object> list2 = new ArrayList<>();
+        List<ListAuxiliar> uax = new ArrayList<>();
+        Map<String, List<ListAuxiliar>> map = getListAccounts(account_id, initial, final_);
 
+        for (Map.Entry<String, List<ListAuxiliar>> ob : map.entrySet()) {
+            uax = ob.getValue();
+        }
+
+        String final_date = initial.substring(0, 4) + "-12-31";
+
+        for (ListAuxiliar a : uax) {
+            BalanceGeneral b = new BalanceGeneral();
+            b.setCodigo_agrupador(a.getCuenta());
+            b.setNombre_cuenta(a.getConcepto());
+            b.setImporte_mensual(cuentaContableRepository.getValuesMontly(a.getCuenta(), initial, final_));
+            b.setImporte_anual(cuentaContableRepository.getValuesAnual(a.getCuenta(), initial, final_date));
+            b.setPorcentaje_mensual("0");
+            b.setPorcentaje_anual("0");
+            list2.add(b);
+
+        }
 
         CuentaContable c = cuentaContableRepository.getValuesOf401(account_id, initial, final_);
         BalanceGeneral b = new BalanceGeneral();
@@ -289,6 +308,14 @@ public class AuxiliarService {
         b3.setNivel(c3.getNivel());
         b3.setCodigo_agrupador(c3.getCodigo_agrupador());
         b3.setNombre_cuenta(c3.getNombre_cuenta());
+
+
+        CuentaContable c9 = cuentaContableRepository.getValuesOf605(account_id, initial, final_);
+        BalanceGeneral b9 = new BalanceGeneral();
+        b9.setNivel(c9.getNivel());
+        b9.setCodigo_agrupador(c9.getCodigo_agrupador());
+        b9.setNombre_cuenta(c9.getNombre_cuenta());
+
 
 //        b3.setImporte_anual(cuentaContableRepository.getValuesOf401Anual(initial, final_));
 //        b3.setImporte_mensual(cuentaContableRepository.getImporte_mensual401(initial, final_));
@@ -392,6 +419,7 @@ public class AuxiliarService {
         list2.add(b);
         list2.add(b2);
         list2.add(b3);
+        list2.add(b9);
         list2.add(b4);
         list2.add(b5);
         list2.add(b6);
