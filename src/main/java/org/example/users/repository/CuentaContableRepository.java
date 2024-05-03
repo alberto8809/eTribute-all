@@ -29,19 +29,19 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     CuentaContable getValuesOf401(String account_id, String initial, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.policy WHERE cuentas='401' AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
-    String getValuesOf401Anual( String initial, String final_date);
+    String getValuesOf401Anual( String initial_date, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.policy WHERE cuenta='401' AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
-    String getImporte_mensual401(String initial, String final_date);
+    String getImporte_mensual401(String initial_date, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.policy WHERE cuenta='401' AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
-    String getPorcentaje_mensual401(String initial, String final_date);
+    String getPorcentaje_mensual401(String initial_date, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.policy WHERE cuenta='401' AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
-    String getImporte_anual401( String initial, String final_date);
+    String getImporte_anual401( String initial_date, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.policy WHERE cuenta='401' AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
-    String getPorcentaje_anual401(String initial, String final_date);
+    String getPorcentaje_anual401(String initial_date, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='501'", nativeQuery = true)
     CuentaContable getValuesOf501(String account_id, String initial, String final_date);
