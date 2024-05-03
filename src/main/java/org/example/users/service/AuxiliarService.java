@@ -84,23 +84,53 @@ public class AuxiliarService {
 
     public Map<String, Object> getAllBalance(String account_id, String initial_date, String final_date) {
         List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(account_id, initial_date, final_date);
-        List<Balance> values = new ArrayList<>();
+        List<Object> values = new ArrayList<>();
         Map<String, Object> obj = new HashMap<>();
+        Map<String, Object> obj2 = new HashMap<>();
         if (!listAuxiliars.isEmpty()) {
             for (Auxiliar listAuxiliar : listAuxiliars) {
                 Balance balance = new Balance();
                 balance.setCuenta(listAuxiliar.getCuenta());
                 balance.setNombre(listAuxiliar.getDescripcion());
-                //balance.setDeudor_inicial();
-                //balance.setAcredor_inicial();
+                balance.setDeudor_inicial(auxiliarRepository.getDeudor_inicial(listAuxiliar.getCuenta(), initial_date, final_date));
+                balance.setAcredor_inicial(auxiliarRepository.getAcredor_final(listAuxiliar.getCuenta(), initial_date, final_date));
                 balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
                 balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
-                values.add(balance);
+                float sum = Float.parseFloat(balance.getDeudor_inicial()) + Float.parseFloat(balance.getDebe());
+                balance.setDeudor_final(String.valueOf(sum));
+                float sum1 = Float.parseFloat(balance.getAcredor_inicial()) + Float.parseFloat(balance.getHaber());
+                balance.setAcredor_final(String.valueOf(sum1));
+                obj2.put(listAuxiliar.getCuenta(), balance);
             }
 
+            float deudorInicial_total = 0;
+            float acredorinical_total = 0;
+            float debe_total = 0;
+            float haber_total = 0;
+            float deudorFinal_total = 0;
+            float acredorFinal_total = 0;
+            int i = 0;
+            for (Map.Entry<String, Object> ob : obj2.entrySet()) {
+                values.add(ob.getValue());
+                Balance b = (Balance) values.get(i);
+                deudorInicial_total += Float.parseFloat(b.getDebe());
+                acredorinical_total += Float.parseFloat(b.getHaber());
+                debe_total = Float.parseFloat(b.getDebe());
+                haber_total = Float.parseFloat(b.getHaber());
+                deudorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
+                acredorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
+                i++;
+            }
+
+
             BalanceTotal balanceTotal = new BalanceTotal();
-            balanceTotal.setDebe_total(auxiliarRepository.getSumDebeByAccountId(account_id));
-            balanceTotal.setHaber_total(auxiliarRepository.getSumHaberByAccountId(account_id));
+            balanceTotal.setDeudorInicial_total(String.valueOf(deudorInicial_total));
+            balanceTotal.setAcredorinical_total(String.valueOf(acredorinical_total));
+            balanceTotal.setDebe_total(String.valueOf(debe_total));
+            balanceTotal.setHaber_total(String.valueOf(haber_total));
+            balanceTotal.setDeudorFinal_total(String.valueOf(deudorFinal_total));
+            balanceTotal.setAcredorFinal_total(String.valueOf(acredorFinal_total));
+
 
             obj.put("balanza", values);
             obj.put("sumas", balanceTotal);
@@ -113,20 +143,6 @@ public class AuxiliarService {
 
     }
 
-
-    public String createFileBalance(String account_id, String initial_date, String final_date) {
-        Map<String, Object> balance = getAllBalance(account_id, initial_date, final_date);
-        String path = null;
-        if (!balance.isEmpty()) {
-            if (CreateFilePDFBalance.makeFileBalance((List<Balance>) balance.get(1))) {
-
-                path = "";
-                return path;
-            }
-
-        }
-        return path;
-    }
 
     public Map<String, Object> getListBalanceDate(String account_id, String inicial_date, String final_date) {
         HashMap<String, Object> response = new HashMap<>();
