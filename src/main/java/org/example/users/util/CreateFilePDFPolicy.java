@@ -24,13 +24,13 @@ public class CreateFilePDFPolicy {
 
         try {
 
-            File uploadDir = new File(server_path + rfc + "/pdf");
+            File uploadDir = new File(server_path + rfc + "/pdf/" + type + "/");
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
             }
 
             Document document = new Document(PageSize.A4);
-            PdfWriter.getInstance(document, new FileOutputStream(server_path + rfc + "/pdf/" + fileName + ".pdf"));
+            PdfWriter.getInstance(document, new FileOutputStream(server_path + rfc + "/pdf/" + type + "/" + fileName + ".pdf"));
             document.open();
 
 
