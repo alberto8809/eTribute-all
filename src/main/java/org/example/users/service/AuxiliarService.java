@@ -146,16 +146,36 @@ public class AuxiliarService {
     public Map<String, Object> getListBalanceDate(String account_id, String inicial_date, String final_date) {
         HashMap<String, Object> response = new HashMap<>();
         List<Object> generaBalanceResponses = new ArrayList<>();
+        List<ListAuxiliar> uax = new ArrayList<>();
         List<Map<String, Object>> obj = jdbc.sql("SELECT * FROM dbmaster.cuentas WHERE codigo_agrupador='101' OR codigo_agrupador ='102' OR codigo_agrupador ='103' OR codigo_agrupador ='105' OR codigo_agrupador ='107' OR codigo_agrupador ='110' OR codigo_agrupador ='113' OR codigo_agrupador ='114' OR codigo_agrupador ='118' OR codigo_agrupador ='119'")
                 .query().listOfRows();
+
+        Map<String, List<ListAuxiliar>> map = getListAccounts(account_id, inicial_date, final_date);
+
+        for (Map.Entry<String, List<ListAuxiliar>> ob : map.entrySet()) {
+            uax = ob.getValue();
+        }
+
+        List<String> uax2 = new ArrayList<>();
+        for (ListAuxiliar list : uax) {
+            uax2.add(list.getCuenta().substring(0, 3));
+        }
+
 
         double total_activoCirculante = 0;
         for (Map<String, Object> cuentaContable : obj) {
             GeneraBalanceResponse generaBalanceResponse = new GeneraBalanceResponse();
             generaBalanceResponse.setCuenta_id(cuentaContable.get("codigo_agrupador").toString());
             generaBalanceResponse.setDescripcion(cuentaContable.get("nombre_cuenta").toString());
-            generaBalanceResponse.setTotal(0);
+
             total_activoCirculante += generaBalanceResponse.getTotal();
+
+            for (String id : uax2) {
+                if (generaBalanceResponse.getCuenta_id().contains(id)) {
+                    generaBalanceResponse.setTotal(Float.parseFloat(auxiliarRepository.getSaldoFinalBalance(id)));
+                }
+            }
+
             generaBalanceResponses.add(generaBalanceResponse);
         }
 
@@ -328,7 +348,6 @@ public class AuxiliarService {
         b3.setPorcentaje_mensual("0");
         b3.setImporte_anual("0");
         b3.setPorcentaje_anual("0");
-
 
 
         CuentaContable c4 = cuentaContableRepository.getValuesOf601(account_id, initial, final_);

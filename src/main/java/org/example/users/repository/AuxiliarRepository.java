@@ -39,11 +39,12 @@ public interface AuxiliarRepository extends JpaRepository<Auxiliar, String> {
     @Query(value = "SELECT SUM(pof.saldo_final) FROM  dbmaster.policy pof where pof.cuenta=:account_id", nativeQuery = true)
     String getSaldoFinal(String account_id);
 
+    @Query(value = "SELECT SUM(pof.saldo_final) FROM  dbmaster.policy pof where pof.cuenta LIKE :account_id%", nativeQuery = true)
+    String getSaldoFinalBalance(String account_id);
+
     @Query(value = "SELECT SUM(pof.debe) FROM  dbmaster.policy pof where pof.cuenta=:account_id AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
     String getDeudor_inicial(String account_id, String initial_date, String final_date);
     @Query(value = "SELECT SUM(pof.haber) FROM  dbmaster.policy pof where pof.cuenta=:account_id AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
     String getAcredor_final(String account_id, String initial_date, String final_date);
-
-
 
 }
