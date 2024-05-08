@@ -49,10 +49,15 @@ public class ParserFile {
             Element date = doc.getDocumentElement();
             descripcion.setFecha(date.getAttribute("Fecha").substring(0, 10));
 
-
-            NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
-            Element cliente = (Element) repectEgr.item(0);
-            descripcion.setCliente(cliente.getAttribute("Nombre"));
+            if (type.equals("EGRESOS")) {
+                NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Emisor");
+                Element cliente = (Element) repectEgr.item(0);
+                descripcion.setCliente(cliente.getAttribute("Nombre"));
+            } else if (type.equals("INGRESOS")) {
+                NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
+                Element cliente = (Element) repectEgr.item(0);
+                descripcion.setCliente(cliente.getAttribute("Nombre"));
+            }
 
             Element total = doc.getDocumentElement();
             descripcion.setCantidad(total.getAttribute("Total"));
