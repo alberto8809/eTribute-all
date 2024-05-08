@@ -174,8 +174,8 @@ public class CreateFileService {
 
         }
 
-        finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
-        finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
+        finalResult.put("Emitidas", filesXMLFromAWS.get("Recibidas"));
+        finalResult.put("Recibidas", filesXMLFromAWS.get("Emitidas"));
 
         return finalResult;
     }
