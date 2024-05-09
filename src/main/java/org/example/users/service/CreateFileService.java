@@ -147,28 +147,21 @@ public class CreateFileService {
         Map<String, String> obj3 = (Map<String, String>) filesPDFromAWS.get("listOfEgresospdf");
         Map<String, String> obj4 = (Map<String, String>) filesPDFromAWS.get("listOfIngresospdf");
 
-        for (Map.Entry<String, String> result : obj.entrySet()) {
-            String fileName = result.getKey().replace(".xml", "");
-            for (Map.Entry<String, String> r : obj3.entrySet()) {
-                String filePDF = r.getKey().replace(".pdf", "");
-                if (filePDF.equals(fileName)) {
-                    for (Response rs : eg) {
-                        rs.setUrl_pdf(r.getValue());
-                    }
+        for (Map.Entry<String, String> r : obj3.entrySet()) {
+            String filePDF = r.getKey().replace(".pdf", "");
+            for (Response r1 : eg) {
+                if (r1.getUrl_xml().contains(filePDF)) {
+                    r1.setUrl_pdf(r.getValue());
                 }
-
             }
 
         }
-        for (Map.Entry<String, String> result : obj1.entrySet()) {
-            String fileName = result.getKey().replace(".xml", "");
-            for (Map.Entry<String, String> r : obj4.entrySet()) {
-                String filePDF = r.getKey().replace(".pdf", "");
-                if (filePDF.equals(fileName)) {
-                    for (Response rd : rv) {
-                        rd.setUrl_pdf(r.getValue());
-                    }
 
+        for (Map.Entry<String, String> r : obj4.entrySet()) {
+            String filePDF = r.getKey().replace(".pdf", "");
+            for (Response rd : rv) {
+                if (rd.getUrl_xml().contains(filePDF)) {
+                    rd.setUrl_pdf(r.getValue());
                 }
             }
 
