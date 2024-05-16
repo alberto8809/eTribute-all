@@ -192,7 +192,7 @@ public class ParserFileEgresos {
 
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("ParserFileEgresos " + e.getMessage() + e.getLocalizedMessage());
         }
         return null;
     }

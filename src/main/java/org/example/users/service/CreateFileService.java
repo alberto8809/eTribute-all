@@ -192,7 +192,7 @@ public class CreateFileService {
                     if (type.equals("EGRESOS")) {
                         policyObjFile = ParserFileEgresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 
-                        System.out.println("EGRESOS -- "+ policyObjFile);
+                        System.out.println("EGRESOS -- " + policyObjFile);
 
                         if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
                             policyObjFile.setCuenta_method("102.01");
@@ -630,7 +630,7 @@ public class CreateFileService {
                 }
             }
         } catch (Exception e) {
-            System.out.println(" e:   " + e.getMessage());
+            System.out.println(" createFile :   " + e.getMessage() + e.getLocalizedMessage());
         }
         return false;
     }

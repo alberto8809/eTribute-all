@@ -267,7 +267,7 @@ public class ParserFileIngresos {
 
                 clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
-                
+
                 System.out.println(" parserFileIngresos ---  " + values.getClaveProdServ());
 
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("E")) {
@@ -509,7 +509,7 @@ public class ParserFileIngresos {
 
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println("ParserFileIngresos " + e.getMessage() + e.getLocalizedMessage());
         }
         return null;
     }
