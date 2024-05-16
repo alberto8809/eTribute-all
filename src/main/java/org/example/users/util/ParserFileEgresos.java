@@ -180,7 +180,7 @@ public class ParserFileEgresos {
             NodeList timbre = comprobanteElement.getElementsByTagName("tfd:TimbreFiscalDigital");
             Element uudi = (Element) timbre.item(0);
             values.setTimbreFiscalDigital_UUID(uudi.getAttribute("UUID"));
-            System.out.println(typeOfCom + " --- " + methodPayment);
+            //System.out.println(typeOfCom + " --- " + methodPayment);
             if (!typeOfCom.equals("I") && !methodPayment.equals("PPD")) {
                 NodeList imp = comprobanteElement.getElementsByTagName("pago20:Totales");
                 Element ip = (Element) imp.item(0);

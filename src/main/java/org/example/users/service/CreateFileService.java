@@ -185,11 +185,14 @@ public class CreateFileService {
             File[] listOfFiles = folder.listFiles();
             for (File file : listOfFiles) {
                 if (file.isFile()) {
-                    PolicyObjFile policyObjFile = new PolicyObjFile();
+                    PolicyObjFile policyObjFile;
+
+                    System.out.println(type);
 
                     if (type.equals("EGRESOS")) {
                         policyObjFile = ParserFileEgresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 
+                        System.out.println("EGRESOS -- "+ policyObjFile);
 
                         if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
                             policyObjFile.setCuenta_method("102.01");
@@ -565,8 +568,10 @@ public class CreateFileService {
                         }
 
                     } else if (type.equals("INGRESOS")) {
+                        System.out.println(type);
                         policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 
+                        System.out.println("INGRESOS -- " + policyObjFile);
                         List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getTraslado());
                         List<String> accounts = getCuentaCobtableList(claveProductoServ);
 
