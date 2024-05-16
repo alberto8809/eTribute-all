@@ -213,7 +213,7 @@ public class ParserFileIngresos {
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("I") && methodPayment.equals("PPD")) {
                 values.setMetodo(methodPayment);
 
-
+                System.out.println("here");
                 values.setRetencion_importe(new ArrayList<>());
 
 
@@ -258,6 +258,17 @@ public class ParserFileIngresos {
 
                 values.setIva(iva2);
 
+                //"------------- ClaveProdServ ----------------
+
+                NodeList ClaveProdServ = comprobanteElement.getElementsByTagName("cfdi:Concepto");
+                Element claveProdServ = (Element) ClaveProdServ.item(0);
+
+                List<String> clv = new ArrayList<>();
+
+                clv.add(claveProdServ.getAttribute("ClaveProdServ"));
+                values.setClaveProdServ(clv);
+                
+                System.out.println(" parserFileIngresos ---  " + values.getClaveProdServ());
 
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("E")) {
 
@@ -305,8 +316,6 @@ public class ParserFileIngresos {
 
                 clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
-
-                System.out.println(" parserFileIngresos ---  " + values.getClaveProdServ());
 
 
                 //"------------- Traslado ----------------
