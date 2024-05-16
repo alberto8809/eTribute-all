@@ -314,7 +314,7 @@ public class CreateFileService {
 //                        return true;
                     } else if (policyObjFile.getPolicyObj().getType_of_value().equals("I") && policyObjFile.getPolicyObj().getMetodo().equals("PPD")) {
 
-                        policyObjFile.setCuenta_method("401.07");
+                        policyObjFile.setCuenta_method("401.01");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
                         List<String> id = new ArrayList<>();
                         id.add("105.01");
