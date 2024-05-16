@@ -230,10 +230,10 @@ public class CreateFileService {
                                 }
                                 policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
                                 List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                int sumHaber = 0;
+                                double sumHaber = 0;
                                 if (haber != null) {
                                     for (String db : haber) {
-                                        sumHaber += Integer.parseInt(db);
+                                        sumHaber += Double.parseDouble(db);
 
                                     }
                                 }
@@ -295,10 +295,10 @@ public class CreateFileService {
                                 //policytoDB.setDebe(String.valueOf(sumDebe));
                                 policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
                                 List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                int sumHaber = 0;
+                                double sumHaber = 0;
                                 if (haber != null) {
                                     for (String db : haber) {
-                                        sumHaber += Integer.parseInt(db);
+                                        sumHaber += Double.parseDouble(db);
 
                                     }
                                 }
@@ -377,10 +377,10 @@ public class CreateFileService {
                                 //policytoDB.setDebe(String.valueOf(sumDebe));
                                 policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
                                 List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                int sumHaber = 0;
+                                double sumHaber = 0;
                                 if (haber != null) {
                                     for (String db : haber) {
-                                        sumHaber += Integer.parseInt(db);
+                                        sumHaber += Double.parseDouble(db);
 
                                     }
                                 }
@@ -438,10 +438,10 @@ public class CreateFileService {
                                 //policytoDB.setDebe(String.valueOf(sumDebe));
                                 policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                                 List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                int sumHaber = 0;
+                                double sumHaber = 0;
                                 if (haber != null) {
                                     for (String db : haber) {
-                                        sumHaber += Integer.parseInt(db);
+                                        sumHaber += Double.parseDouble(db);
 
                                     }
                                 }
@@ -496,10 +496,10 @@ public class CreateFileService {
                                 //policytoDB.setDebe(String.valueOf(sumDebe));
                                 policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                                 List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                int sumHaber = 0;
+                                double sumHaber = 0;
                                 if (haber != null) {
                                     for (String db : haber) {
-                                        sumHaber += Integer.parseInt(db);
+                                        sumHaber += Double.parseDouble(db);
 
                                     }
                                 }
@@ -544,10 +544,10 @@ public class CreateFileService {
                                 }
                                 policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                                 List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                int sumHaber = 0;
+                                double sumHaber = 0;
                                 if (haber != null) {
                                     for (String db : haber) {
-                                        sumHaber += Integer.parseInt(db);
+                                        sumHaber += Double.parseDouble(db);
 
                                     }
                                 }
@@ -605,10 +605,10 @@ public class CreateFileService {
                             }
                             policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
                             List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                            int sumHaber = 0;
+                            double sumHaber = 0;
                             if (haber != null) {
                                 for (String db : haber) {
-                                    sumHaber += Integer.parseInt(db);
+                                    sumHaber += Double.parseDouble(db);
 
                                 }
                             }
@@ -630,7 +630,7 @@ public class CreateFileService {
                 }
             }
         } catch (Exception e) {
-            System.out.println(" createFile :   " + e.getMessage() + e.getLocalizedMessage());
+            System.out.println(" createFile :   " + e.getMessage() + e.getCause());
         }
         return false;
     }
