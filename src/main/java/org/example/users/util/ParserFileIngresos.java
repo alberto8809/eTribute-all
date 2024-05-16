@@ -23,14 +23,10 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 
 
-public class ParserFile {
+public class ParserFileIngresos {
 
-    public static Logger LOGGER = LogManager.getLogger(ParserFile.class);
-    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
+    public static Logger LOGGER = LogManager.getLogger(ParserFileIngresos.class);
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
-
-    public ParserFile() {
-    }
 
     public static Response getParseValues(String pathFromAWS, String rfc, String type, String fileName) {
 
@@ -64,9 +60,8 @@ public class ParserFile {
 
             response.setDescripcion(descripcion);
             response.setUrl_xml(pathFromAWS);
-
-
             //archivoXML.delete();
+
 
         } catch (Exception e) {
             LOGGER.error("error { " + e.getLocalizedMessage() + " }");
@@ -74,12 +69,12 @@ public class ParserFile {
         return response;
     }
 
-    public static PolicyObjFile getParse(String path) {
 
+    public static PolicyObjFile getParse(String path) {
         PolicyObjParser values = new PolicyObjParser();
-        //String localPath;
+
         try {
-            //localPath = createFile(FileName);
+
             File archivoXML = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -522,5 +517,4 @@ public class ParserFile {
         }
         return null;
     }
-
 }

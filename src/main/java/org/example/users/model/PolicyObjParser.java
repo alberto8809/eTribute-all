@@ -36,5 +36,6 @@ public class PolicyObjParser {
     private Map<String, String> iva;
     private List<String> tax_amount;
     private String rfc;
+    private String methodPayment;
 
 }

@@ -19,9 +19,15 @@ public enum Regimen {
     RG625("625"),
     RG610("610"),
     RG616("616"),
-    RG621("621");
-
-
+    RG621("621"),
+    CFDI("G03"),
+    CFD("G02"),
+    REGIMEN("612"),
+    REGIMEN2("602"),
+    REGIMEN20("620"),
+    REGIMEN22("622"),
+    REGIMEN23("623"),
+    REGIMEN24("624");
     private String value;
 
 

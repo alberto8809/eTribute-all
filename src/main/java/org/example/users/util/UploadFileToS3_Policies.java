@@ -17,7 +17,7 @@ import java.util.*;
 public class UploadFileToS3_Policies {
     private static String bucketName = "xmlfilesback";
 
-    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all5/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3_Policies.class);
@@ -117,12 +117,12 @@ public class UploadFileToS3_Policies {
             if (type.equals("xml")) {
 
                 for (Map.Entry<String, String> egreXML : egresosXML.entrySet()) {
-                    Response response = ParserFile.getParseValues(egreXML.getValue(), rfc, "EGRESOS", egreXML.getKey());
+                    Response response = ParserFileIngresos.getParseValues(egreXML.getValue(), rfc, "EGRESOS", egreXML.getKey());
                     responses.add(response);
                 }
 
                 for (Map.Entry<String, String> ingXML : ingresosXML.entrySet()) {
-                    Response response = ParserFile.getParseValues(ingXML.getValue(), rfc, "INGRESOS", ingXML.getKey());
+                    Response response = ParserFileIngresos.getParseValues(ingXML.getValue(), rfc, "INGRESOS", ingXML.getKey());
                     ings.add(response);
                 }
 
