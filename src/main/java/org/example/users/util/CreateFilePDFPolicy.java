@@ -8,6 +8,7 @@ import org.example.users.model.PolicyObjFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.Map;
 
 
 public class CreateFilePDFPolicy {
@@ -469,7 +470,7 @@ public class CreateFilePDFPolicy {
                 cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 
-                PdfPCell cargo = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTotalAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell cargo = new PdfPCell(new Paragraph(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 cargo.setBorderColorBottom(BaseColor.BLACK);
                 cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
                 cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -480,6 +481,77 @@ public class CreateFilePDFPolicy {
                 cargoTable.addCell(cargoCargo);
                 cargoTable.addCell(cargo);
 
+
+
+                PdfPTable Table = new PdfPTable(4);
+                Table.setWidthPercentage(100);
+
+                PdfPCell ta = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getVenta_id(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                ta.setBorderColorBottom(BaseColor.BLACK);
+                ta.setHorizontalAlignment(Element.ALIGN_CENTER);
+                ta.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                PdfPCell iva = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getVenta_descripcion(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                iva.setBorderColorBottom(BaseColor.BLACK);
+                iva.setHorizontalAlignment(Element.ALIGN_CENTER);
+                iva.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                PdfPCell ca = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                ca.setBorderColorBottom(BaseColor.BLACK);
+                ca.setHorizontalAlignment(Element.ALIGN_CENTER);
+                ca.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                PdfPCell cargoT = new PdfPCell(new Paragraph(String.valueOf(policyObjFile.getPolicyObj().getTraslado().get(0)), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                cargoT.setBorderColorBottom(BaseColor.BLACK);
+                cargoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+                cargoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                Table.addCell(ta);
+                Table.addCell(iva);
+                Table.addCell(ca);
+                Table.addCell(cargoT);
+
+
+                //--- iva
+
+
+                PdfPTable TableIva = new PdfPTable(4);
+                TableIva.setWidthPercentage(100);
+
+                int j = 0;
+                for (Map.Entry<String, String> i : policyObjFile.getPolicyObj().getIva().entrySet()) {
+
+
+                    PdfPCell id = new PdfPCell(new Paragraph(i.getKey(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    id.setBorderColorBottom(BaseColor.BLACK);
+                    id.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    id.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    PdfPCell a = new PdfPCell(new Paragraph(i.getValue(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    a.setBorderColorBottom(BaseColor.BLACK);
+                    a.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    a.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell car = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getRetencion_importe().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    car.setBorderColorBottom(BaseColor.BLACK);
+                    car.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    car.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell carg = new PdfPCell(new Paragraph("0", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    carg.setBorderColorBottom(BaseColor.BLACK);
+                    carg.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    carg.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    TableIva.addCell(id);
+                    TableIva.addCell(a);
+                    TableIva.addCell(car);
+                    TableIva.addCell(carg);
+                    j++;
+                }
 
                 //------------ footer
 
@@ -573,7 +645,9 @@ public class CreateFilePDFPolicy {
                 document.add(new Paragraph("\n"));
                 document.add(headerTable);
                 document.add(bodyTable);
+                document.add(TableIva);
                 document.add(cargoTable);
+                document.add(Table);
                 document.add(footer);
                 document.add(new Paragraph("\n\n\n\n"));
                 document.add(headerLastValues);

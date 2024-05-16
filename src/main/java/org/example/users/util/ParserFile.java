@@ -236,6 +236,33 @@ public class ParserFile {
                 Element uudi = (Element) timbre.item(0);
                 values.setTimbreFiscalDigital_UUID(uudi.getAttribute("UUID"));
 
+                NodeList traslados = comprobanteElement.getElementsByTagName("cfdi:Traslado");
+
+                List<String> translado = new ArrayList<>();
+                for (int i = 0; i < traslados.getLength(); i++) {
+                    Element retencionR = (Element) traslados.item(i);
+                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
+
+                }
+
+                values.setTraslado(translado);
+
+                values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
+
+                //si iva es 002 setear a 006 siempre y cuando sea Retencion
+
+                NodeList iva = comprobanteElement.getElementsByTagName("cfdi:Retencion");
+
+
+                Map<String, String> iva2 = new HashMap<>();
+
+                for (int j = 0; j < iva.getLength(); j++) {
+                    Element clv = (Element) iva.item(j);
+                    iva2.put(clv.getAttribute("Impuesto"), clv.getAttribute("Importe"));
+                }
+
+                values.setIva(iva2);
+
 
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("E")) {
 

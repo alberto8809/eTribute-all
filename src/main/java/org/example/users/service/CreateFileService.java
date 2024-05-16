@@ -66,15 +66,17 @@ public class CreateFileService {
 
                     }
 
-                } else {
-
-                    List<String> clave = claveProductoServRepository.getClaveProductoS(clv);
-                    for (String cl : clave) {
-                        claveProductoServs.add(cl);
-                    }
-
-
                 }
+
+//                else {
+//
+//                    List<String> clave = claveProductoServRepository.getClaveProductoS(clv);
+//                    for (String cl : clave) {
+//                        claveProductoServs.add(cl);
+//                    }
+//
+//
+//                }
             }
         }
         return claveProductoServs;
@@ -142,8 +144,6 @@ public class CreateFileService {
 
         List<Response> eg = (List<Response>) filesXMLFromAWS.get("Emitidas");
         List<Response> rv = (List<Response>) filesXMLFromAWS.get("Recibidas");
-        Map<String, String> obj = (Map<String, String>) filesXMLFromAWS.get("listOfEgresosxml");
-        Map<String, String> obj1 = (Map<String, String>) filesXMLFromAWS.get("listOfIngresosxml");
         Map<String, String> obj3 = (Map<String, String>) filesPDFromAWS.get("listOfEgresospdf");
         Map<String, String> obj4 = (Map<String, String>) filesPDFromAWS.get("listOfIngresospdf");
 
@@ -176,7 +176,8 @@ public class CreateFileService {
 
     public boolean createPolicy(String rfc, String type) {
         try {
-
+            Random rand = new Random();
+            int rand_int1 = rand.nextInt(1000000000);
             int account_id = accountRepository.getAccountByAccount_id(rfc);
             List<CuentaContable> cuentaContable = new ArrayList<>();
             File folder = new File(server_path + rfc + "/xml/" + type + "/");
@@ -201,7 +202,7 @@ public class CreateFileService {
                         policyObjFile.setTax_description(desc);
                         policyObjFile.getPolicyObj().setVenta_id("208.01");
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-                        policyObjFile.setFolio(uuid.toString());
+                        policyObjFile.setFolio(String.valueOf(rand_int1));
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
@@ -245,7 +246,7 @@ public class CreateFileService {
                         //  return true;
                     } else if (policyObjFile.getPolicyObj().getType_of_value().equals("I") && policyObjFile.getPolicyObj().getMetodo().equals("PUE")) {
 
-                        UUID uuid = UUID.randomUUID();
+
                         List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getTraslado());
                         cuentaContable.add(cuentaContableRepository.getCuantaContable(policyObjFile.getPolicyObj().getVenta_id()));
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
@@ -265,7 +266,7 @@ public class CreateFileService {
                             cargo.add(cuentaContableRepository.getCuantaContableMethod(clv));
                         }
                         policyObjFile.getPolicyObj().setCargo(cargo);
-                        policyObjFile.setFolio(uuid.toString());
+                        policyObjFile.setFolio(String.valueOf(rand_int1));
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
@@ -312,19 +313,41 @@ public class CreateFileService {
 
 //                        return true;
                     } else if (policyObjFile.getPolicyObj().getType_of_value().equals("I") && policyObjFile.getPolicyObj().getMetodo().equals("PPD")) {
-                        UUID uuid = UUID.randomUUID();
+
                         policyObjFile.setCuenta_method("401.07");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
                         List<String> id = new ArrayList<>();
-                        id.add("205.99");
+                        id.add("105.01");
                         policyObjFile.setTax_id(id);
                         List<String> desc = new ArrayList<>();
                         desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
                         policyObjFile.setTax_description(desc);
                         policyObjFile.getPolicyObj().setVenta_id("209.01");
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-                        policyObjFile.setFolio(uuid.toString());
 
+
+                        Map<String, String> i = policyObjFile.getPolicyObj().getIva();
+                        Map<String, String> result = new HashMap<>();
+                        List<String> retencion = new ArrayList<>();
+
+                        for (Map.Entry<String, String> r : i.entrySet()) {
+                            if (r.getKey().equals("001")) {
+                                String c = cuentaContableRepository.getCuentaContableVenta("216.04");
+                                result.put("216.04", c);
+                                retencion.add(r.getValue());
+
+                            }
+                            if (r.getKey().equals("002")) {
+                                String c1 = cuentaContableRepository.getCuentaContableVenta("216.10");
+                                result.put("216.10", c1);
+                                retencion.add(r.getValue());
+
+                            }
+                        }
+
+                        policyObjFile.getPolicyObj().setRetencion_importe(retencion);
+                        policyObjFile.getPolicyObj().setIva(result);
+                        policyObjFile.setFolio(String.valueOf(rand_int1));
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
 
@@ -374,7 +397,7 @@ public class CreateFileService {
                         //return true;
 
                     } else if (policyObjFile.getPolicyObj().getType_of_value().equals("E")) {
-                        UUID uuid = UUID.randomUUID();
+
                         policyObjFile.setCuenta_method("402.01");
                         policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
                         List<String> id = new ArrayList<>();
@@ -386,7 +409,7 @@ public class CreateFileService {
                         policyObjFile.setTax_description(desc);
                         policyObjFile.getPolicyObj().setVenta_id("209.01");
                         policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-                        policyObjFile.setFolio(uuid.toString());
+                        policyObjFile.setFolio(String.valueOf(rand_int1));
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
@@ -433,7 +456,7 @@ public class CreateFileService {
                         //return true;
 
                     } else if (policyObjFile.getPolicyObj().getType_of_value().equals("N")) {
-                        UUID uuid = UUID.randomUUID();
+
                         List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getTraslado());
                         List<String> accounts = getCuentaCobtableList(claveProductoServ);
 
@@ -445,7 +468,7 @@ public class CreateFileService {
                         accounts.add(policyObjFile.getDescription_methods());
                         policyObjFile.setTax_id(claveProductoServ);
                         policyObjFile.setTax_description(accounts);
-                        policyObjFile.setFolio(uuid.toString());
+                        policyObjFile.setFolio(String.valueOf(rand_int1));
 
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
@@ -494,10 +517,9 @@ public class CreateFileService {
 
                     } else {
                         // (Cargo)
-                        UUID uuid = UUID.randomUUID();
                         policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getAmount()));
                         policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
-                        policyObjFile.setFolio(uuid.toString());
+                        policyObjFile.setFolio(String.valueOf(rand_int1));
                         if (CreateFilePDFPolicy.makeFile(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
