@@ -306,6 +306,8 @@ public class ParserFileIngresos {
                 clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
 
+                System.out.println(" parserFileIngresos ---  " + values.getClaveProdServ());
+
 
                 //"------------- Traslado ----------------
                 NodeList traslados = comprobanteElement.getElementsByTagName("cfdi:Traslado");
