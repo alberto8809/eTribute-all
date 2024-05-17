@@ -205,7 +205,6 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println("folio --- "+policyObjFile.getFolio());
 
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
@@ -272,7 +271,6 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setCargo(cargo);
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -354,7 +352,6 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setIva(result);
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
 
                                 PolicytoDB policytoDB = new PolicytoDB();
@@ -417,7 +414,6 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -476,7 +472,6 @@ public class CreateFileService {
                             policyObjFile.setTax_description(accounts);
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -527,7 +522,6 @@ public class CreateFileService {
                             policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -589,7 +583,6 @@ public class CreateFileService {
                         policyObjFile.setTax_description(accounts);
                         int rand_int1 = rand.nextInt(1000000000);
                         policyObjFile.setFolio(String.valueOf(rand_int1));
-                        System.out.println("folio --- "+policyObjFile.getFolio());
 
                         if (CreateFilePDFPolicy.makeFileIngreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
