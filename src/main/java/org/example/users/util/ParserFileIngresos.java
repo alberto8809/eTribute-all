@@ -213,7 +213,6 @@ public class ParserFileIngresos {
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("I") && methodPayment.equals("PPD")) {
                 values.setMetodo(methodPayment);
 
-                System.out.println("here");
                 values.setRetencion_importe(new ArrayList<>());
 
 
@@ -268,7 +267,6 @@ public class ParserFileIngresos {
                 clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
 
-                System.out.println(" parserFileIngresos ---  " + values.getClaveProdServ());
 
             } else if (comprobante.getAttribute("TipoDeComprobante").equals("E")) {
 

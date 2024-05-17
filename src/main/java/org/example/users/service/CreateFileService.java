@@ -204,7 +204,7 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setVenta_id("208.01");
                             policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println(policyObjFile.getFolio());
+                            System.out.println("folio --- "+policyObjFile.getFolio());
 
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
@@ -270,7 +270,7 @@ public class CreateFileService {
                             }
                             policyObjFile.getPolicyObj().setCargo(cargo);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println(policyObjFile.getFolio());
+                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -351,7 +351,7 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setRetencion_importe(retencion);
                             policyObjFile.getPolicyObj().setIva(result);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println(policyObjFile.getFolio());
+                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
 
                                 PolicytoDB policytoDB = new PolicytoDB();
@@ -413,7 +413,7 @@ public class CreateFileService {
                             policyObjFile.getPolicyObj().setVenta_id("209.01");
                             policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println(policyObjFile.getFolio());
+                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -471,7 +471,7 @@ public class CreateFileService {
                             policyObjFile.setTax_id(claveProductoServ);
                             policyObjFile.setTax_description(accounts);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println(policyObjFile.getFolio());
+                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -521,7 +521,7 @@ public class CreateFileService {
                             policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getType_of_value(), policyObjFile.getPolicyObj().getAmount()));
                             policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
                             policyObjFile.setFolio(String.valueOf(rand_int1));
-                            System.out.println(policyObjFile.getFolio());
+                            System.out.println("folio --- "+policyObjFile.getFolio());
                             if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                 PolicytoDB policytoDB = new PolicytoDB();
                                 policytoDB.setCliente(policyObjFile.getClient());
@@ -566,7 +566,7 @@ public class CreateFileService {
                         }
 
                     } else if (type.equals("INGRESOS")) {
-                        System.out.println(type);
+
                         PolicyObjFile policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 
 
@@ -582,7 +582,7 @@ public class CreateFileService {
                         policyObjFile.setTax_id(claveProductoServ);
                         policyObjFile.setTax_description(accounts);
                         policyObjFile.setFolio(String.valueOf(rand_int1));
-
+                        System.out.println("folio --- "+policyObjFile.getFolio());
                         if (CreateFilePDFPolicy.makeFileIngreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                             PolicytoDB policytoDB = new PolicytoDB();
                             policytoDB.setCliente(policyObjFile.getClient());
