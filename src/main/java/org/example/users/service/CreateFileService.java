@@ -242,7 +242,7 @@ public class CreateFileService {
                                 policytoDB.setSaldo_inicial("0");
                                 double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                 policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                                policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                                 System.out.println("EGRESOS -- " + policytoDB);
                                 saveObjRepository.save(policytoDB);
                             }
@@ -309,7 +309,7 @@ public class CreateFileService {
                                 policytoDB.setSaldo_inicial("0");
                                 double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                 policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                                policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                                 System.out.println("EGRESOS -- " + policytoDB);
                                 saveObjRepository.save(policytoDB);
                             }
@@ -391,7 +391,7 @@ public class CreateFileService {
                                 policytoDB.setSaldo_inicial("0");
                                 double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                 policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                                policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                                 System.out.println("EGRESOS -- " + policytoDB);
                                 saveObjRepository.save(policytoDB);
 
@@ -452,7 +452,7 @@ public class CreateFileService {
                                 policytoDB.setSaldo_inicial("0");
                                 double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                 policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                                policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                                 System.out.println("EGRESOS -- " + policytoDB);
                                 saveObjRepository.save(policytoDB);
                             }
@@ -510,7 +510,7 @@ public class CreateFileService {
                                 policytoDB.setSaldo_inicial("0");
                                 double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                 policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                                policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                                 System.out.println("EGRESOS -- " + policytoDB);
                                 saveObjRepository.save(policytoDB);
 
@@ -559,7 +559,7 @@ public class CreateFileService {
                                 policytoDB.setSaldo_inicial("0");
                                 double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                 policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                                policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                                 System.out.println("EGRESOS -- " + policytoDB);
                                 saveObjRepository.save(policytoDB);
                             }
@@ -621,7 +621,7 @@ public class CreateFileService {
                             policytoDB.setSaldo_inicial("0");
                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                             policytoDB.setSaldo_final(String.valueOf(fin));
-                            policytoDB.setAccount_id(Integer.parseInt(policyObjFile.getCuenta_method()));
+                            policytoDB.setAccount_id(Double.parseDouble(policyObjFile.getCuenta_method()));
                             System.out.println("INGRESOS -- " + policytoDB);
                             saveObjRepository.save(policytoDB);
                         }

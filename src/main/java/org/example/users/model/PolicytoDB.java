@@ -30,6 +30,6 @@ public class PolicytoDB {
     private String total;
     private String saldo_inicial;
     private String saldo_final;
-    private int account_id;
+    private double account_id;
 
 }
