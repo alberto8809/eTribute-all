@@ -35,6 +35,8 @@ public class ParserFileEgresos {
             //System.out.println(date.getAttribute("Fecha"));
             String currentDate = date.getAttribute("Fecha");
 
+            Element payment1 = doc.getDocumentElement();
+            String typeOfPayment = payment1.getAttribute("FormaPago").isEmpty() || payment1.getAttribute("FormaPago") == null ? "99" : payment1.getAttribute("FormaPago");
             //System.out.println(currentDate.substring(0,10));
             //System.out.println("newdate: "+currentDate.replace("T"," "));
 
@@ -42,8 +44,11 @@ public class ParserFileEgresos {
             Element payment = doc.getDocumentElement();
             //System.out.println("payment --- "+payment.getAttribute("FormaPago"));
             Element comprobante = doc.getDocumentElement();
+
+
+            values.setType_of_value(comprobante.getAttribute("TipoDeComprobante"));
             //System.out.println("comprobante --- "+comprobante.getAttribute("TipoDeComprobante"));
-            String methodPayment = null;
+            String methodPayment = "";
             String typeOfCom = comprobante.getAttribute("TipoDeComprobante");
             if (typeOfCom.equals("P")) {
                 NodeList py = comprobanteElement.getElementsByTagName("pago20:Pago");
@@ -56,6 +61,7 @@ public class ParserFileEgresos {
                 values.setMethodPayment(methodPayment);
             }
 
+            values.setMetodo(typeOfCom);
 
             NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
             Element rEgr = (Element) repectEgr.item(0);
@@ -190,7 +196,7 @@ public class ParserFileEgresos {
                 values.setAmount(d.getAttribute("ImporteDR"));
             }
 
-
+            return new PolicyObjFile(values, path, companyName, cli, currentDate.substring(0, 10), typeOf, typeOfPayment);
         } catch (Exception e) {
             System.out.println("ParserFileEgresos " + e.getMessage() + e.getLocalizedMessage());
         }
