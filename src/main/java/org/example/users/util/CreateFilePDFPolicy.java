@@ -1510,40 +1510,40 @@ public class CreateFilePDFPolicy {
 
             //}
             // ----------- cargoTable
-            PdfPTable cargoTable = new PdfPTable(4);
-            cargoTable.setWidthPercentage(100);
-
-            // si es PUE es porque ya esta pago y va a las 118.01
-
-            //si es ppd es porque va a 119.01
-
-            PdfPCell accountCargo = new PdfPCell(new Paragraph("118.01", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            accountCargo.setBorderColorBottom(BaseColor.BLACK);
-            accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-            accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-            PdfPCell descripcionCargo = new PdfPCell(new Paragraph("IVA acreditable pagado", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            descripcionCargo.setBorderColorBottom(BaseColor.BLACK);
-            descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-            descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-            PdfPCell cargoCargo = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            cargoCargo.setBorderColorBottom(BaseColor.BLACK);
-            cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-            PdfPCell cargo = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            cargo.setBorderColorBottom(BaseColor.BLACK);
-            cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-            cargoTable.addCell(accountCargo);
-            cargoTable.addCell(descripcionCargo);
-            cargoTable.addCell(cargoCargo);
-            cargoTable.addCell(cargo);
+//            PdfPTable cargoTable = new PdfPTable(4);
+//            cargoTable.setWidthPercentage(100);
+//
+//            // si es PUE es porque ya esta pago y va a las 118.01
+//
+//            //si es ppd es porque va a 119.01
+//
+//            PdfPCell accountCargo = new PdfPCell(new Paragraph("118.01", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            accountCargo.setBorderColorBottom(BaseColor.BLACK);
+//            accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//            PdfPCell descripcionCargo = new PdfPCell(new Paragraph("IVA acreditable pagado", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            descripcionCargo.setBorderColorBottom(BaseColor.BLACK);
+//            descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//
+//            PdfPCell cargoCargo = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            cargoCargo.setBorderColorBottom(BaseColor.BLACK);
+//            cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//
+//            PdfPCell cargo = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            cargo.setBorderColorBottom(BaseColor.BLACK);
+//            cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//
+//            cargoTable.addCell(accountCargo);
+//            cargoTable.addCell(descripcionCargo);
+//            cargoTable.addCell(cargoCargo);
+//            cargoTable.addCell(cargo);
 
 
             //------- abonoTable
@@ -1589,39 +1589,39 @@ public class CreateFilePDFPolicy {
             }
 
 
-            PdfPTable abonoT = new PdfPTable(4);
-            abonoT.setWidthPercentage(100);
-
-            //la forma de pago depenede el valor por ejemplo 99 va a 205.99
-            //revision para cuando es el caso de tipo de cpomprobantye P
-
-            PdfPCell accountAbonoT = new PdfPCell(new Paragraph("102.01", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            accountAbonoT.setBorderColorBottom(BaseColor.BLACK);
-            accountAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-            accountAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-            PdfPCell descripcionAbonoT = new PdfPCell(new Paragraph("Bancos nacionales", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            descripcionAbonoT.setBorderColorBottom(BaseColor.BLACK);
-            descripcionAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-            descripcionAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-            PdfPCell cargoAbonoT = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            cargoAbonoT.setBorderColorBottom(BaseColor.BLACK);
-            cargoAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-            cargoAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-            PdfPCell abnoT = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getImpuestos(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-            abnoT.setBorderColorBottom(BaseColor.BLACK);
-            abnoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-            abnoT.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-            abonoT.addCell(accountAbonoT);
-            abonoT.addCell(descripcionAbonoT);
-            abonoT.addCell(cargoAbonoT);
-            abonoT.addCell(abnoT);
+//            PdfPTable abonoT = new PdfPTable(4);
+//            abonoT.setWidthPercentage(100);
+//
+//            //la forma de pago depenede el valor por ejemplo 99 va a 205.99
+//            //revision para cuando es el caso de tipo de cpomprobantye P
+//
+//            PdfPCell accountAbonoT = new PdfPCell(new Paragraph("102.01", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            accountAbonoT.setBorderColorBottom(BaseColor.BLACK);
+//            accountAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            accountAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//            PdfPCell descripcionAbonoT = new PdfPCell(new Paragraph("Bancos nacionales", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            descripcionAbonoT.setBorderColorBottom(BaseColor.BLACK);
+//            descripcionAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            descripcionAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//
+//            PdfPCell cargoAbonoT = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            cargoAbonoT.setBorderColorBottom(BaseColor.BLACK);
+//            cargoAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            cargoAbonoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//
+//            PdfPCell abnoT = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getImpuestos(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+//            abnoT.setBorderColorBottom(BaseColor.BLACK);
+//            abnoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//            abnoT.setHorizontalAlignment(Element.ALIGN_CENTER);
+//
+//
+//            abonoT.addCell(accountAbonoT);
+//            abonoT.addCell(descripcionAbonoT);
+//            abonoT.addCell(cargoAbonoT);
+//            abonoT.addCell(abnoT);
 
 
             double suma = Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos());
@@ -1718,9 +1718,9 @@ public class CreateFilePDFPolicy {
             document.add(new Paragraph("\n"));
             document.add(headerTable);
             document.add(bodyTable);
-            document.add(cargoTable);
+           // document.add(cargoTable);
             document.add(abonoTable);
-            document.add(abonoT);
+            //document.add(abonoT);
             document.add(footer);
             document.add(new Paragraph("\n\n\n\n"));
             document.add(headerLastValues);
