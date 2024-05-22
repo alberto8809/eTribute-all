@@ -22,7 +22,7 @@ import java.util.*;
 
 @Service
 public class CreateFileService {
-    // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all3/";
+    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all5/";
     private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     @Autowired
@@ -166,6 +166,22 @@ public class CreateFileService {
             }
 
         }
+
+
+        for (int i = 0; i < eg.size(); i++) {
+            if (eg.get(i).getUrl_pdf() == null || eg.get(i).getUrl_pdf().isEmpty()) {
+                eg.remove(i);
+            }
+        }
+
+
+        for (int i = 0; i < rv.size(); i++) {
+            if (rv.get(i).getUrl_pdf() == null || rv.get(i).getUrl_pdf().isEmpty()) {
+                rv.remove(i);
+
+            }
+        }
+
 
         finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
         finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
