@@ -167,20 +167,8 @@ public class CreateFileService {
 
         }
 
-
-        for (int i = 0; i < eg.size(); i++) {
-            if (eg.get(i).getUrl_pdf() == null || eg.get(i).getUrl_pdf().isEmpty()) {
-                eg.remove(i);
-            }
-        }
-
-
-        for (int i = 0; i < rv.size(); i++) {
-            if (rv.get(i).getUrl_pdf() == null || rv.get(i).getUrl_pdf().isEmpty()) {
-                rv.remove(i);
-
-            }
-        }
+        eg.removeIf(n -> n.getUrl_pdf() == null);
+        rv.removeIf(n -> n.getUrl_pdf() == null);
 
 
         finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
