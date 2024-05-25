@@ -28,6 +28,10 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='401'", nativeQuery = true)
     CuentaContable getValuesOf401(String account_id, String initial, String final_date);
 
+    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='613'", nativeQuery = true)
+    CuentaContable getValuesOf613(String account_id, String initial, String final_date);
+
+
     @Query(value = "SELECT SUM(saldo_final)  FROM dbmaster.policy WHERE cuenta=:account_id AND fecha BETWEEN :initial AND :final_date", nativeQuery = true)
     String getValuesMontly(String account_id, String initial, String final_date);
 
@@ -61,16 +65,11 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='601'", nativeQuery = true)
     CuentaContable getValuesOf601(String account_id, String initial, String final_date);
 
-    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='603'", nativeQuery = true)
-    CuentaContable getValuesOf603(String account_id, String initial, String final_date);
-
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='704'", nativeQuery = true)
     CuentaContable getValuesOf704(String account_id, String initial, String final_date);
 
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='701'", nativeQuery = true)
     CuentaContable getValuesOf701(String account_id, String initial, String final_date);
 
-    @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='304'", nativeQuery = true)
-    CuentaContable getValuesOf304(String account_id, String initial, String final_date);
 
 }
