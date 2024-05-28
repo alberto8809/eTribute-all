@@ -1554,7 +1554,7 @@ public class CreateFilePDFPolicy {
             //la forma de pago depenede el valor por ejemplo 99 va a 205.99
             //revision para cuando es el caso de tipo de cpomprobantye P
 
-            for (int i = 0; i < policyObjFile.getTax_id().size(); i++) {
+/*           for (int i = 0; i < policyObjFile.getTax_id().size(); i++) {
 
 
                 PdfPCell accountAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
@@ -1587,7 +1587,7 @@ public class CreateFilePDFPolicy {
                 abonoTable.addCell(abono);
 
             }
-
+*/
 
 //            PdfPTable abonoT = new PdfPTable(4);
 //            abonoT.setWidthPercentage(100);
