@@ -189,8 +189,10 @@ public class ParserFileEgresos {
             //System.out.println(typeOfCom + " --- " + methodPayment);
             if (!typeOfCom.equals("I") && !methodPayment.equals("PPD")) {
                 NodeList imp = comprobanteElement.getElementsByTagName("pago20:Totales");
-                Element ip = (Element) imp.item(0);
-                values.setImpuestos(ip.getAttribute("MontoTotalPagos"));
+                if (imp.getLength() > 0) {
+                    Element ip = (Element) imp.item(0);
+                    values.setImpuestos(ip.getAttribute("MontoTotalPagos"));
+                }
                 NodeList dr = comprobanteElement.getElementsByTagName("pago20:TrasladoDR");
                 Element d = (Element) dr.item(0);
                 values.setAmount(d.getAttribute("ImporteDR"));
