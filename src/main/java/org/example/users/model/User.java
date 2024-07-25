@@ -7,7 +7,8 @@ import lombok.*;
 
 import java.io.Serializable;
 
-@Entity@AllArgsConstructor
+@Entity
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
@@ -19,7 +20,6 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long user_id;
-
     private String user_name;
     private String user_maternal_lastname;
     private String user_lastname;

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -32,7 +33,7 @@ public class UserController {
 
     /* Get User by Id */
     @GetMapping("users/{user_id}")
-    public User getUserById(@PathVariable(name = "user_id") int user_id) {
+    public Optional<User> getUserById(@PathVariable(name = "user_id") int user_id) {
         return userService.getUserById(user_id);
     }
 
