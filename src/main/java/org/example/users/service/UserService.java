@@ -24,7 +24,9 @@ public class UserService {
     }
 
     public User createUser(User user) {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         user.setToken(EncryptionUtil.encrypt(user.getUser_mail() + ":" + user.getUser_password()));
+        user.setUser_password(passwordEncoder.encode(user.getUser_password()));
         user.setUser_type("U");
         return userRepository.save(user);
     }
@@ -38,6 +40,7 @@ public class UserService {
     }
 
     public User getUserLogin(String token) {
+
         String decodedString = EncryptionUtil.decrypt(token);
         String[] user_pass = decodedString.split(":");
         User user = userRepository.getUserByMail(user_pass[0]);
