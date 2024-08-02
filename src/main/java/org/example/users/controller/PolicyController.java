@@ -46,7 +46,7 @@ public class PolicyController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    /* upload files - xml , and create folder in S3 using rfc */
+    /* upload files - xml , and create folder in S3 using rfc  numbers 7*/
     @PostMapping("policy/upload")
     public ResponseEntity<HttpStatus> uploadFilesToS3(@RequestParam(name = "files") MultipartFile[] files, @RequestParam(name = "rfc") String rfc) throws IOException {
         if (createFileService.uploadToS3(files, rfc)) {

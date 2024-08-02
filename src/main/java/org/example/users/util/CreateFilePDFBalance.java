@@ -258,7 +258,7 @@ public class CreateFilePDFBalance {
             document.close();
 
         } catch (Exception e) {
-            System.out.println("Ex " + e.getMessage() + e.getCause() + e.getStackTrace());
+            System.out.println("Ex " + e.getMessage() + e.getCause());
 
 
         }
@@ -401,7 +401,7 @@ public class CreateFilePDFBalance {
             document.close();
             return true;
         } catch (Exception e) {
-            System.out.println("Ex " + e.getMessage() + e.getCause() + e.getStackTrace());
+            System.out.println("Ex " + e.getMessage() + e.getCause());
 
 
         }

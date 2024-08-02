@@ -17,8 +17,8 @@ import java.util.*;
 public class UploadFileToS3_Policies {
     private static String bucketName = "xmlfilesback";
 
-    //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all5/";
-    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
+    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
+    //private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3_Policies.class);
 
@@ -30,7 +30,7 @@ public class UploadFileToS3_Policies {
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(server_path + rfc + "/xml/" + xml);
+            File file = new File(local_path + rfc + "/xml/" + xml);
             //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
             PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/xml/" + xml, file);
             s3Client.putObject(request);
@@ -47,7 +47,7 @@ public class UploadFileToS3_Policies {
                     .withRegion(Regions.US_EAST_1)
                     .build();
 
-            File file = new File(server_path + rfc + "/pdf/" + type + "/" + pdf);
+            File file = new File(local_path + rfc + "/pdf/" + type + "/" + pdf);
             //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
             PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/pdf/" + type + "/" + pdf, file);
             s3Client.putObject(request);
@@ -138,13 +138,11 @@ public class UploadFileToS3_Policies {
                 }
             }
 
-
             facturas.put("Emitidas", emitidas);
             facturas.put("Recibidas", recibidas);
             facturas.put("listOfEgresos" + type, egresosXML);
             facturas.put("listOfIngresos" + type, ingresosXML);
             // FileUtils.deleteDirectory(new File(rfc));
-
 
         } catch (
                 Exception e) {

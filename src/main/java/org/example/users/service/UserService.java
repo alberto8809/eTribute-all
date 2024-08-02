@@ -38,7 +38,7 @@ public class UserService {
 
 
     public Optional<User> getUserById(int id) {
-        return userRepository.findById(Long.valueOf(id));
+        return userRepository.findById((long) id);
     }
 
     public User getUserLogin(String token) {
@@ -68,7 +68,7 @@ public class UserService {
         String decodedString = EncryptionUtil.decrypt(user.getToken());
         String[] user_pass = decodedString.split(":");
 
-        LOGGER.info("pass {" + user_pass[0] + "} { " + user_pass[1] + "}");
+        LOGGER.info("pass {{}} { {}}", user_pass[0], user_pass[1]);
 
         User userFromDB = userRepository.getUserByMail(user_pass[0]);
 
@@ -79,7 +79,7 @@ public class UserService {
             userFromDB.setUser_phone(user.getUser_phone());
             userFromDB.setUser_city(user.getUser_city());
             userFromDB.setUser_mail(user.getUser_mail());
-            LOGGER.info("new token {" + EncryptionUtil.encrypt(user.getUser_mail() + ":" + userFromDB.getUser_password()) + "}");
+            LOGGER.info("new token {{}}", EncryptionUtil.encrypt(user.getUser_mail() + ":" + userFromDB.getUser_password()));
             userFromDB.setToken(EncryptionUtil.encrypt(user.getUser_mail() + ":" + userFromDB.getUser_password()));
 
             return userRepository.save(userFromDB);

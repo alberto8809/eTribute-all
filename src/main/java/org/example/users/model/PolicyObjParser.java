@@ -26,7 +26,7 @@ public class PolicyObjParser {
     private List<String> retencion_importe;
     private String timbreFiscalDigital_UUID;
     private String totalAmount;
-    private String type_of_value;
+    private String typeOfComprobante;
     private String venta_id;
     private String venta_descripcion;
     private String metodo;
@@ -37,5 +37,8 @@ public class PolicyObjParser {
     private List<String> tax_amount;
     private String rfc;
     private String methodPayment;
+    private String typeOfPayment;
+    private String client;
+    private String companyName;
 
 }
