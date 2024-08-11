@@ -72,7 +72,7 @@ public class UserController {
     public ResponseEntity<User> updateUser(@RequestBody User user) {
 
         User newUser = userService.updateUser(user);
-        if (!newUser.equals(null)) {
+        if (newUser != null) {
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
         }
         return new ResponseEntity<>(user, HttpStatus.NOT_FOUND);

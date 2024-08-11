@@ -13,8 +13,8 @@ public interface ClaveProductoServRepository extends JpaRepository<ClaveProducto
     @Query(value = "SELECT *  FROM dbmaster.claveProdServ cp WHERE cp.c_claveprodserv=:c_claveprodserv " ,nativeQuery = true)
     ClaveProductoServ getClaveProducto(String c_claveprodserv);
 
-    @Query(value = "SELECT *  FROM dbmaster.claveProdServ cp WHERE cp.c_claveprodserv=:c_claveprodserv " ,nativeQuery = true)
-    List<String> getClaveProductoS(String c_claveprodserv);
+    @Query(value = "SELECT DISTINCT c_contable  FROM dbmaster.claveProdServ cp WHERE cp.c_claveprodserv=:c_claveprodserv " ,nativeQuery = true)
+    String getClaveProductoS(String c_claveprodserv);
 
 
 
