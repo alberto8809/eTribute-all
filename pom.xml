@@ -23,9 +23,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-            <scope>runtime</scope>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.33</version> <!-- Replace with the version appropriate for your setup -->
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
