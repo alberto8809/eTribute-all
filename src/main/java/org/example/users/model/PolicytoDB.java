@@ -31,5 +31,6 @@ public class PolicytoDB {
     private String saldo_inicial;
     private String saldo_final;
     private int account_id;
+    private String file_name;
 
 }

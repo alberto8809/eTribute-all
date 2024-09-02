@@ -26,10 +26,10 @@ import java.util.*;
 @Service
 public class CreateFileService {
    // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
-    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
-    public static long count2 = 1;
-    public static long count = 0;
-    public static Logger LOGGER = LogManager.getLogger(CreateFileService.class);
+    private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
+    //public static long count2 = 1;
+    //public static long count = 0;
+    public static final Logger LOGGER = LogManager.getLogger(CreateFileService.class);
 
     @Autowired
     private AccountRepository accountRepository;
@@ -150,524 +150,581 @@ public class CreateFileService {
     public Map<String, Object> getDescriptionPolicy(String rfc, String initial_date, String final_date) {
 
         Map<String, Object> filesXMLFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "xml", initial_date, final_date);
-        createPolicy(rfc, "EGRESOS");
-        createPolicy(rfc, "INGRESOS");
-        Map<String, Object> filesPDFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "pdf", initial_date, final_date);
         Map<String, Object> finalResult = new HashMap<>();
 
-        List<Response> eg = (List<Response>) filesXMLFromAWS.get("Emitidas");
-        List<Response> rv = (List<Response>) filesXMLFromAWS.get("Recibidas");
-        Map<String, String> obj3 = (Map<String, String>) filesPDFromAWS.get("listOfEgresospdf");
-        Map<String, String> obj4 = (Map<String, String>) filesPDFromAWS.get("listOfIngresospdf");
+        int value = createPolicy(rfc, "EGRESOS");
+        if (value == 1) {
 
-        for (Map.Entry<String, String> r : obj3.entrySet()) {
-            String filePDF = r.getKey().replace(".pdf", "");
-            for (Response r1 : eg) {
-                if (r1.getUrl_xml().contains(filePDF)) {
-                    r1.setUrl_pdf(r.getValue());
+            Map<String, Object> filesPDFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "pdf", initial_date, final_date);
+
+            List<Response> eg = (List<Response>) filesXMLFromAWS.get("Emitidas");
+            List<Response> rv = (List<Response>) filesXMLFromAWS.get("Recibidas");
+            Map<String, String> obj3 = (Map<String, String>) filesPDFromAWS.get("listOfEgresospdf");
+            Map<String, String> obj4 = (Map<String, String>) filesPDFromAWS.get("listOfIngresospdf");
+
+            for (Map.Entry<String, String> r : obj3.entrySet()) {
+                String filePDF = r.getKey().replace(".pdf", "");
+                for (Response r1 : eg) {
+                    if (r1.getUrl_xml().contains(filePDF)) {
+                        r1.setUrl_pdf(r.getValue());
+                    }
                 }
+
             }
 
-        }
-
-        for (Map.Entry<String, String> r : obj4.entrySet()) {
-            String filePDF = r.getKey().replace(".pdf", "");
-            for (Response rd : rv) {
-                if (rd.getUrl_xml().contains(filePDF)) {
-                    rd.setUrl_pdf(r.getValue());
+            for (Map.Entry<String, String> r : obj4.entrySet()) {
+                String filePDF = r.getKey().replace(".pdf", "");
+                for (Response rd : rv) {
+                    if (rd.getUrl_xml().contains(filePDF)) {
+                        rd.setUrl_pdf(r.getValue());
+                    }
                 }
+
             }
 
+            eg.removeIf(n -> n.getUrl_pdf() == null);
+            rv.removeIf(n -> n.getUrl_pdf() == null);
+
+
+            finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
+            finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
+
+        } else if (value == 2) {
+            createPolicy(rfc, "INGRESOS");
+
+            Map<String, Object> filesPDFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "pdf", initial_date, final_date);
+
+            List<Response> eg = (List<Response>) filesXMLFromAWS.get("Emitidas");
+            List<Response> rv = (List<Response>) filesXMLFromAWS.get("Recibidas");
+            Map<String, String> obj3 = (Map<String, String>) filesPDFromAWS.get("listOfEgresospdf");
+            Map<String, String> obj4 = (Map<String, String>) filesPDFromAWS.get("listOfIngresospdf");
+
+            for (Map.Entry<String, String> r : obj3.entrySet()) {
+                String filePDF = r.getKey().replace(".pdf", "");
+                for (Response r1 : eg) {
+                    if (r1.getUrl_xml().contains(filePDF)) {
+                        r1.setUrl_pdf(r.getValue());
+                    }
+                }
+
+            }
+
+            for (Map.Entry<String, String> r : obj4.entrySet()) {
+                String filePDF = r.getKey().replace(".pdf", "");
+                for (Response rd : rv) {
+                    if (rd.getUrl_xml().contains(filePDF)) {
+                        rd.setUrl_pdf(r.getValue());
+                    }
+                }
+
+            }
+
+
+            eg.removeIf(n -> n.getUrl_pdf() == null);
+            rv.removeIf(n -> n.getUrl_pdf() == null);
+
+
+            finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
+            finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
+
+
         }
-
-//        eg.removeIf(n -> n.getUrl_pdf() == null);
-//        rv.removeIf(n -> n.getUrl_pdf() == null);
-
-
-        finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
-        finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
-
         return finalResult;
     }
 
 
-    public boolean createPolicy(String rfc, String type) {
+    public int createPolicy(String rfc, String type) {
         try {
             Random rand = new Random();
             int account_id = accountRepository.getAccountByAccount_id(rfc);
             List<CuentaContable> cuentaContable = new ArrayList<>();
             File folder = new File(server_path + rfc + "/xml/" + type + "/");
             File[] listOfFiles = folder.listFiles();
-            for (File file : listOfFiles) {
-                if (file.isFile()) {
-                    if (type.equals("EGRESOS")) {
+            List<String> po = saveObjRepository.getObjFromDB(rfc, type);
+
+            if (!po.isEmpty()) {
+                if (Arrays.stream(listOfFiles).anyMatch(n -> n.getName().equals(po.get(0)))) {
+                    return 1;
+                }
+            } else {
+                for (File file : listOfFiles) {
+                    if (file.isFile()) {
+                        if (file.getAbsolutePath().contains("EGRESOS")) {
 //                        count++;
 //                        LOGGER.info("egresos {}", count);
-                        PolicyObjFile policyObjFile = ParserFileEgresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
+                            PolicyObjFile policyObjFile = ParserFileEgresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 
 //                        if (policyObjFile == null) {
 //                            //CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type);
-//                            createTextFile(file.getName(), policyObjFile.getPolicyObj().getRfc(), "EGRESOS");
+//                            createTextFile(file.getName(), rfc, type);
 //
 //                        }
 
-                        if (policyObjFile != null) {
-                            if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("P")) {
-                                policyObjFile.setCuenta_method("102.01");
-                                policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-                                List<String> id = new ArrayList<>();
-                                id.add("209.01");
-                                id.add("105.99");
-                                policyObjFile.setTax_id(id);
+                            if (policyObjFile != null) {
+                                if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("P")) {
+                                    policyObjFile.setCuenta_method("102.01");
+                                    policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
+                                    List<String> id = new ArrayList<>();
+                                    id.add("209.01");
+                                    id.add("105.99");
+                                    policyObjFile.setTax_id(id);
 
-                                List<String> desc = new ArrayList<>();
-                                desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-                                desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(1)));
-                                policyObjFile.setTax_description(desc);
-                                policyObjFile.getPolicyObj().setVenta_id("208.01");
-                                policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-                                int rand_int1 = rand.nextInt(1000000000);
-                                policyObjFile.setFolio(String.valueOf(rand_int1));
+                                    List<String> desc = new ArrayList<>();
+                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
+                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(1)));
+                                    policyObjFile.setTax_description(desc);
+                                    policyObjFile.getPolicyObj().setVenta_id("208.01");
+                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
+                                    int rand_int1 = rand.nextInt(1000000000);
+                                    policyObjFile.setFolio(String.valueOf(rand_int1));
 
-                                //policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
+                                    //policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
 
-                                if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+                                    if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
 
-                                    List<String> taxId = policyObjFile.getTax_id();
-                                    taxId.add(policyObjFile.getCuenta_method());
-                                    policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
-                                    // LOGGER.info("PDF creado y se actualizaron los valores correctamente");
+                                        List<String> taxId = policyObjFile.getTax_id();
+                                        taxId.add(policyObjFile.getCuenta_method());
+                                        policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+                                        // LOGGER.info("PDF creado y se actualizaron los valores correctamente");
 
-                                    for (int i = 0; i < taxId.size(); i++) {
+                                        for (int i = 0; i < taxId.size(); i++) {
 
-                                        PolicytoDB policytoDB = new PolicytoDB();
-                                        policytoDB.setCliente(policyObjFile.getClient());
-                                        policytoDB.setUsuario(rfc);
-                                        policytoDB.setTipo(type);
-                                        policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                        policytoDB.setPoliza(policyObjFile.getFolio());
-                                        policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
-                                        policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+                                            PolicytoDB policytoDB = new PolicytoDB();
+                                            policytoDB.setCliente(policyObjFile.getClient());
+                                            policytoDB.setUsuario(rfc);
+                                            policytoDB.setTipo(type);
+                                            policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                            policytoDB.setPoliza(policyObjFile.getFolio());
+                                            policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
+                                            policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
 
-                                        List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                        double sumDebe = 0;
-                                        if (debe != null) {
-                                            for (String db : debe) {
-                                                sumDebe += Double.parseDouble(db);
-
-                                            }
-                                        }
-                                        policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
-                                        if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                            double sumHaber = 0;
-                                            if (haber != null) {
-                                                for (String db : haber) {
-                                                    sumHaber += Double.parseDouble(db);
+                                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                            double sumDebe = 0;
+                                            if (debe != null) {
+                                                for (String db : debe) {
+                                                    sumDebe += Double.parseDouble(db);
 
                                                 }
                                             }
-                                        }
+                                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                                            if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                                double sumHaber = 0;
+                                                if (haber != null) {
+                                                    for (String db : haber) {
+                                                        sumHaber += Double.parseDouble(db);
+
+                                                    }
+                                                }
+                                            }
 
 
-                                        policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                        policytoDB.setFecha(policyObjFile.getDate());
-                                        policytoDB.setReferencia(policyObjFile.getFolio());
-                                        policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                        policytoDB.setSaldo_inicial("0");
-                                        double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                        policytoDB.setSaldo_final(String.valueOf(fin));
-                                        policytoDB.setAccount_id(account_id);
-                                        saveObjRepository.save(policytoDB);
+                                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                            policytoDB.setFecha(policyObjFile.getDate());
+                                            policytoDB.setReferencia(policyObjFile.getFolio());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setSaldo_inicial("0");
+                                            double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                            policytoDB.setSaldo_final(String.valueOf(fin));
+                                            policytoDB.setAccount_id(account_id);
+                                            policytoDB.setFile_name(file.getName());
+                                            saveObjRepository.save(policytoDB);
 
-                                    }
-                                }
-                                //return true;
-                                // LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
-                            } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
-
-                                List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
-                                cuentaContable.add(cuentaContableRepository.getCuantaContable(policyObjFile.getPolicyObj().getVenta_id()));
-                                policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
-                                cuentaContable.add(cuentaContableRepository.getCuantaContable(claveProductoServ.isEmpty() ? "01" : claveProductoServ.get(0)));
-
-                                policyObjFile.setCuenta_method("216.04");
-                                policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-                                List<String> id = new ArrayList<>();
-                                id.add("216.10");
-                                id.add(policyObjFile.getCuenta_method());
-                                policyObjFile.setTax_id(id);
-
-
-                                List<String> desc = new ArrayList<>();
-                                desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-                                desc.add(policyObjFile.getDescription_methods());
-                                policyObjFile.setTax_description(desc);
-                                List<String> cargo = new ArrayList<>();
-                                if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                    List<String> abonos = policyObjFile.getPolicyObj().getRetencion_importe();
-                                    if (abonos != null) {
-                                        for (String clv : abonos) {
-                                            cargo.add(cuentaContableRepository.getCuantaContableMethod(clv));
                                         }
                                     }
-                                }
-                                policyObjFile.getPolicyObj().setCargo(cargo);
-                                int rand_int1 = rand.nextInt(1000000000);
-                                policyObjFile.setFolio(String.valueOf(rand_int1));
-                                policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
-                                policyObjFile.setCuenta(claveProductoServ.get(0));
-                                //LOGGER.error(" I and PUE ---->  policyObjFile {}", policyObjFile);
-                                if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
-                                    List<String> taxId = policyObjFile.getTax_id();
-                                    taxId.add(policyObjFile.getCuenta_method());
-                                    policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+                                    //return true;
+                                    // LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
+                                } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
 
-                                    for (int i = 0; i < taxId.size(); i++) {
-                                        PolicytoDB policytoDB = new PolicytoDB();
-                                        policytoDB.setCliente(policyObjFile.getClient());
-                                        policytoDB.setUsuario(rfc);
-                                        policytoDB.setTipo(type);
-                                        policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                        policytoDB.setPoliza(policyObjFile.getFolio());
-                                        policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
-                                        policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+                                    List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
+                                    cuentaContable.add(cuentaContableRepository.getCuantaContable(policyObjFile.getPolicyObj().getVenta_id()));
+                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
 
-                                        List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                        double sumDebe = 0;
-                                        if (debe != null) {
-                                            for (String db : debe) {
-                                                sumDebe += Double.parseDouble(db);
+                                    cuentaContable.add(cuentaContableRepository.getCuantaContable(claveProductoServ.isEmpty() ? "01" : claveProductoServ.get(0)));
 
+                                    policyObjFile.setCuenta_method("216.04");
+                                    policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
+                                    List<String> id = new ArrayList<>();
+                                    id.add("216.10");
+                                    id.add(policyObjFile.getCuenta_method());
+                                    policyObjFile.setTax_id(id);
+
+
+                                    List<String> desc = new ArrayList<>();
+                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
+                                    desc.add(policyObjFile.getDescription_methods());
+                                    policyObjFile.setTax_description(desc);
+                                    List<String> cargo = new ArrayList<>();
+                                    if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                        List<String> abonos = policyObjFile.getPolicyObj().getRetencion_importe();
+                                        if (abonos != null) {
+                                            for (String clv : abonos) {
+                                                cargo.add(cuentaContableRepository.getCuantaContableMethod(clv));
                                             }
                                         }
-                                        //policytoDB.setDebe(String.valueOf(sumDebe));
-                                        policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
-                                        if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                            double sumHaber = 0;
-                                            if (haber != null) {
-                                                for (String db : haber) {
-                                                    sumHaber += Double.parseDouble(db);
+                                    }
+                                    policyObjFile.getPolicyObj().setCargo(cargo);
+                                    int rand_int1 = rand.nextInt(1000000000);
+                                    policyObjFile.setFolio(String.valueOf(rand_int1));
+                                    policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
+                                    policyObjFile.setCuenta(claveProductoServ.get(0));
+                                    //LOGGER.error(" I and PUE ---->  policyObjFile {}", policyObjFile);
+                                    if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+                                        List<String> taxId = policyObjFile.getTax_id();
+                                        taxId.add(policyObjFile.getCuenta_method());
+                                        policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+
+                                        for (int i = 0; i < taxId.size(); i++) {
+                                            PolicytoDB policytoDB = new PolicytoDB();
+                                            policytoDB.setCliente(policyObjFile.getClient());
+                                            policytoDB.setUsuario(rfc);
+                                            policytoDB.setTipo(type);
+                                            policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                            policytoDB.setPoliza(policyObjFile.getFolio());
+                                            policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
+                                            policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+
+                                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                            double sumDebe = 0;
+                                            if (debe != null) {
+                                                for (String db : debe) {
+                                                    sumDebe += Double.parseDouble(db);
 
                                                 }
                                             }
-                                        }
+                                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                                            if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                                double sumHaber = 0;
+                                                if (haber != null) {
+                                                    for (String db : haber) {
+                                                        sumHaber += Double.parseDouble(db);
 
-                                        //policytoDB.setHaber(String.valueOf(sumHaber));
-                                        policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                        policytoDB.setFecha(policyObjFile.getDate());
-                                        policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                        policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                        policytoDB.setSaldo_inicial("0");
-                                        double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                        policytoDB.setSaldo_final(String.valueOf(fin));
-                                        policytoDB.setAccount_id(account_id);
-                                        //  System.out.println("EGRESOS -- " + policytoDB);
-                                        saveObjRepository.save(policytoDB);
-                                    }
-                                }
-                                // return true;
-                                //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
-                            } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PPD")) {
+                                                    }
+                                                }
+                                            }
 
-                                policyObjFile.setCuenta_method("401.01");
-                                policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
-                                List<String> id = new ArrayList<>();
-                                id.add("105.01");
-                                policyObjFile.setTax_id(id);
-                                List<String> desc = new ArrayList<>();
-                                desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-                                policyObjFile.setTax_description(desc);
-                                policyObjFile.getPolicyObj().setVenta_id("209.01");
-                                policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-
-                                if (policyObjFile.getPolicyObj().getIva() != null) {
-                                    Map<String, String> i = policyObjFile.getPolicyObj().getIva();
-                                    Map<String, String> result = new HashMap<>();
-                                    List<String> retencion = new ArrayList<>();
-
-                                    for (Map.Entry<String, String> r : i.entrySet()) {
-                                        if (r.getKey().equals("001")) {
-                                            String c = cuentaContableRepository.getCuentaContableVenta("216.04");
-                                            result.put("216.04", c);
-                                            retencion.add(r.getValue());
-
-                                        }
-                                        if (r.getKey().equals("002")) {
-                                            String c1 = cuentaContableRepository.getCuentaContableVenta("216.10");
-                                            result.put("216.10", c1);
-                                            retencion.add(r.getValue());
-
+                                            //policytoDB.setHaber(String.valueOf(sumHaber));
+                                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                            policytoDB.setFecha(policyObjFile.getDate());
+                                            policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setSaldo_inicial("0");
+                                            double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                            policytoDB.setSaldo_final(String.valueOf(fin));
+                                            policytoDB.setAccount_id(account_id);
+                                            policytoDB.setFile_name(file.getName());
+                                            //  System.out.println("EGRESOS -- " + policytoDB);
+                                            saveObjRepository.save(policytoDB);
                                         }
                                     }
+                                    // return true;
+                                    //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
+                                } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PPD")) {
 
-                                    policyObjFile.getPolicyObj().setRetencion_importe(retencion);
-                                    policyObjFile.getPolicyObj().setIva(result);
+                                    policyObjFile.setCuenta_method("401.01");
+                                    policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
+                                    List<String> id = new ArrayList<>();
+                                    id.add("105.01");
+                                    policyObjFile.setTax_id(id);
+                                    List<String> desc = new ArrayList<>();
+                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
+                                    policyObjFile.setTax_description(desc);
+                                    policyObjFile.getPolicyObj().setVenta_id("209.01");
+                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
 
-                                }
-                                int rand_int1 = rand.nextInt(1000000000);
-                                policyObjFile.setFolio(String.valueOf(rand_int1));
-                                //policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
-                                if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
-                                    List<String> taxId = policyObjFile.getTax_id();
-                                    taxId.add(policyObjFile.getCuenta_method());
-                                    policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+                                    if (policyObjFile.getPolicyObj().getIva() != null) {
+                                        Map<String, String> i = policyObjFile.getPolicyObj().getIva();
+                                        Map<String, String> result = new HashMap<>();
+                                        List<String> retencion = new ArrayList<>();
 
-                                    for (int i = 0; i < taxId.size(); i++) {
+                                        for (Map.Entry<String, String> r : i.entrySet()) {
+                                            if (r.getKey().equals("001")) {
+                                                String c = cuentaContableRepository.getCuentaContableVenta("216.04");
+                                                result.put("216.04", c);
+                                                retencion.add(r.getValue());
 
-                                        PolicytoDB policytoDB = new PolicytoDB();
-                                        policytoDB.setCliente(policyObjFile.getClient());
-                                        policytoDB.setUsuario(rfc);
-                                        policytoDB.setTipo(type);
-                                        policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                        policytoDB.setPoliza(policyObjFile.getFolio());
-                                        policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
-                                        policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
-
-                                        List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                        double sumDebe = 0;
-                                        if (debe != null) {
-                                            for (String db : debe) {
-                                                sumDebe += Double.parseDouble(db);
+                                            }
+                                            if (r.getKey().equals("002")) {
+                                                String c1 = cuentaContableRepository.getCuentaContableVenta("216.10");
+                                                result.put("216.10", c1);
+                                                retencion.add(r.getValue());
 
                                             }
                                         }
-                                        //policytoDB.setDebe(String.valueOf(sumDebe));
-                                        policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
-                                        if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                            double sumHaber = 0;
-                                            if (haber != null) {
-                                                for (String db : haber) {
-                                                    sumHaber += Double.parseDouble(db);
+
+                                        policyObjFile.getPolicyObj().setRetencion_importe(retencion);
+                                        policyObjFile.getPolicyObj().setIva(result);
+
+                                    }
+                                    int rand_int1 = rand.nextInt(1000000000);
+                                    policyObjFile.setFolio(String.valueOf(rand_int1));
+                                    //policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
+                                    if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+                                        List<String> taxId = policyObjFile.getTax_id();
+                                        taxId.add(policyObjFile.getCuenta_method());
+                                        policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+
+                                        for (int i = 0; i < taxId.size(); i++) {
+
+                                            PolicytoDB policytoDB = new PolicytoDB();
+                                            policytoDB.setCliente(policyObjFile.getClient());
+                                            policytoDB.setUsuario(rfc);
+                                            policytoDB.setTipo(type);
+                                            policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                            policytoDB.setPoliza(policyObjFile.getFolio());
+                                            policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
+                                            policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+
+                                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                            double sumDebe = 0;
+                                            if (debe != null) {
+                                                for (String db : debe) {
+                                                    sumDebe += Double.parseDouble(db);
 
                                                 }
                                             }
-                                        }
+                                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                                            policytoDB.setDebe(policyObjFile.getPolicyObj().getTotalAmount());
+                                            if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                                double sumHaber = 0;
+                                                if (haber != null) {
+                                                    for (String db : haber) {
+                                                        sumHaber += Double.parseDouble(db);
 
-                                        // policytoDB.setHaber(String.valueOf(sumHaber));
-                                        policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                        policytoDB.setFecha(policyObjFile.getDate());
-                                        policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                        policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                        policytoDB.setSaldo_inicial("0");
-                                        double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                        policytoDB.setSaldo_final(String.valueOf(fin));
-                                        policytoDB.setAccount_id(account_id);
-                                        //  System.out.println("EGRESOS -- " + policytoDB);
-                                        saveObjRepository.save(policytoDB);
-                                    }
-                                }
-                                //return true;
-                                //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
-                            } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("E")) {
-
-                                policyObjFile.setCuenta_method("402.01");
-                                policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
-                                List<String> id = new ArrayList<>();
-                                id.add("105.99");
-                                policyObjFile.setTax_id(id);
-                                List<String> desc = new ArrayList<>();
-                                desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-
-                                policyObjFile.setTax_description(desc);
-                                policyObjFile.getPolicyObj().setVenta_id("209.01");
-                                policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
-                                int rand_int1 = rand.nextInt(1000000000);
-                                policyObjFile.setFolio(String.valueOf(rand_int1));
-                                // policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
-                                if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
-                                    List<String> taxId = policyObjFile.getTax_id();
-                                    taxId.add(policyObjFile.getCuenta_method());
-                                    policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
-
-                                    for (int i = 0; i < taxId.size(); i++) {
-                                        PolicytoDB policytoDB = new PolicytoDB();
-                                        policytoDB.setCliente(policyObjFile.getClient());
-                                        policytoDB.setUsuario(rfc);
-                                        policytoDB.setTipo(type);
-                                        policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                        policytoDB.setPoliza(policyObjFile.getFolio());
-                                        policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
-                                        policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
-
-                                        List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                        double sumDebe = 0;
-                                        if (debe != null) {
-                                            for (String db : debe) {
-                                                sumDebe += Double.parseDouble(db);
-
+                                                    }
+                                                }
                                             }
+
+                                            // policytoDB.setHaber(String.valueOf(sumHaber));
+                                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                            policytoDB.setFecha(policyObjFile.getDate());
+                                            policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setSaldo_inicial("0");
+                                            double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                            policytoDB.setSaldo_final(String.valueOf(fin));
+                                            policytoDB.setAccount_id(account_id);
+                                            policytoDB.setFile_name(file.getName());
+                                            //  System.out.println("EGRESOS -- " + policytoDB);
+                                            saveObjRepository.save(policytoDB);
                                         }
-                                        //policytoDB.setDebe(String.valueOf(sumDebe));
-                                        policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                            double sumHaber = 0;
-                                            if (haber != null) {
-                                                for (String db : haber) {
-                                                    sumHaber += Double.parseDouble(db);
+                                    }
+                                    //return true;
+                                    //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
+                                } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("E")) {
+
+                                    policyObjFile.setCuenta_method("402.01");
+                                    policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
+                                    List<String> id = new ArrayList<>();
+                                    id.add("105.99");
+                                    policyObjFile.setTax_id(id);
+                                    List<String> desc = new ArrayList<>();
+                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
+
+                                    policyObjFile.setTax_description(desc);
+                                    policyObjFile.getPolicyObj().setVenta_id("209.01");
+                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
+                                    int rand_int1 = rand.nextInt(1000000000);
+                                    policyObjFile.setFolio(String.valueOf(rand_int1));
+                                    // policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
+                                    if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+                                        List<String> taxId = policyObjFile.getTax_id();
+                                        taxId.add(policyObjFile.getCuenta_method());
+                                        policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+
+                                        for (int i = 0; i < taxId.size(); i++) {
+                                            PolicytoDB policytoDB = new PolicytoDB();
+                                            policytoDB.setCliente(policyObjFile.getClient());
+                                            policytoDB.setUsuario(rfc);
+                                            policytoDB.setTipo(type);
+                                            policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                            policytoDB.setPoliza(policyObjFile.getFolio());
+                                            policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
+                                            policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+
+                                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                            double sumDebe = 0;
+                                            if (debe != null) {
+                                                for (String db : debe) {
+                                                    sumDebe += Double.parseDouble(db);
 
                                                 }
                                             }
-                                        }
+                                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                                            policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
+                                            if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                                double sumHaber = 0;
+                                                if (haber != null) {
+                                                    for (String db : haber) {
+                                                        sumHaber += Double.parseDouble(db);
 
-                                        //policytoDB.setHaber(String.valueOf(sumHaber));
-                                        policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                        policytoDB.setFecha(policyObjFile.getDate());
-                                        policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                        policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                        policytoDB.setSaldo_inicial("0");
-                                        double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                        policytoDB.setSaldo_final(String.valueOf(fin));
-                                        policytoDB.setAccount_id(account_id);
-                                        //  System.out.println("EGRESOS -- " + policytoDB);
-                                        saveObjRepository.save(policytoDB);
-                                    }
-                                }
-                                //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
-                            } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
-                                //LOGGER.info("inside N");
-
-                                List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
-                                List<String> accounts = getCuentaCobtableList(claveProductoServ);
-
-                                //method payment (Abono)
-                                policyObjFile.setCuenta_method(methodOfPaymentRepository.getCuentaContable(policyObjFile.getPolicyObj().getTypeOfPayment()));
-                                policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
-
-                                claveProductoServ.add(policyObjFile.getCuenta_method());
-                                accounts.add(policyObjFile.getDescription_methods());
-                                policyObjFile.setTax_id(claveProductoServ);
-                                policyObjFile.setTax_description(accounts);
-                                int rand_int1 = rand.nextInt(1000000000);
-                                policyObjFile.setFolio(String.valueOf(rand_int1));
-
-                                policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
-                                policyObjFile.setCuenta(claveProductoServ.get(0));
-                                if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
-
-                                    List<String> taxId = policyObjFile.getTax_id();
-                                    taxId.add(policyObjFile.getCuenta_method());
-                                    policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
-
-                                    for (int i = 0; i < taxId.size(); i++) {
-                                        PolicytoDB policytoDB = new PolicytoDB();
-                                        policytoDB.setCliente(policyObjFile.getClient());
-                                        policytoDB.setUsuario(rfc);
-                                        policytoDB.setTipo(type);
-                                        policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                        policytoDB.setPoliza(policyObjFile.getFolio());
-                                        policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
-                                        policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
-
-                                        List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                        double sumDebe = 0;
-                                        if (debe != null) {
-                                            for (String db : debe) {
-                                                sumDebe += Double.parseDouble(db);
-
+                                                    }
+                                                }
                                             }
+
+                                            //policytoDB.setHaber(String.valueOf(sumHaber));
+                                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                            policytoDB.setFecha(policyObjFile.getDate());
+                                            policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setSaldo_inicial("0");
+                                            double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                            policytoDB.setSaldo_final(String.valueOf(fin));
+                                            policytoDB.setAccount_id(account_id);
+                                            policytoDB.setFile_name(file.getName());
+                                            //  System.out.println("EGRESOS -- " + policytoDB);
+                                            saveObjRepository.save(policytoDB);
                                         }
-                                        //policytoDB.setDebe(String.valueOf(sumDebe));
-                                        policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                            double sumHaber = 0;
-                                            if (haber != null) {
-                                                for (String db : haber) {
-                                                    sumHaber += Double.parseDouble(db);
+                                    }
+                                    //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
+                                } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
+                                    //LOGGER.info("inside N");
+
+                                    List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
+                                    List<String> accounts = getCuentaCobtableList(claveProductoServ);
+
+                                    //method payment (Abono)
+                                    policyObjFile.setCuenta_method(methodOfPaymentRepository.getCuentaContable(policyObjFile.getPolicyObj().getTypeOfPayment()));
+                                    policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
+
+                                    claveProductoServ.add(policyObjFile.getCuenta_method());
+                                    accounts.add(policyObjFile.getDescription_methods());
+                                    policyObjFile.setTax_id(claveProductoServ);
+                                    policyObjFile.setTax_description(accounts);
+                                    int rand_int1 = rand.nextInt(1000000000);
+                                    policyObjFile.setFolio(String.valueOf(rand_int1));
+
+                                    policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
+                                    policyObjFile.setCuenta(claveProductoServ.get(0));
+                                    if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+
+                                        List<String> taxId = policyObjFile.getTax_id();
+                                        taxId.add(policyObjFile.getCuenta_method());
+                                        policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+
+                                        for (int i = 0; i < taxId.size(); i++) {
+                                            PolicytoDB policytoDB = new PolicytoDB();
+                                            policytoDB.setCliente(policyObjFile.getClient());
+                                            policytoDB.setUsuario(rfc);
+                                            policytoDB.setTipo(type);
+                                            policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                            policytoDB.setPoliza(policyObjFile.getFolio());
+                                            policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
+                                            policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+
+                                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                            double sumDebe = 0;
+                                            if (debe != null) {
+                                                for (String db : debe) {
+                                                    sumDebe += Double.parseDouble(db);
 
                                                 }
                                             }
+                                            //policytoDB.setDebe(String.valueOf(sumDebe));
+                                            policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
+                                            if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                                double sumHaber = 0;
+                                                if (haber != null) {
+                                                    for (String db : haber) {
+                                                        sumHaber += Double.parseDouble(db);
+
+                                                    }
+                                                }
+                                            }
+
+                                            //policytoDB.setHaber(String.valueOf(sumHaber));
+                                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                            policytoDB.setFecha(policyObjFile.getDate());
+                                            policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setSaldo_inicial("0");
+                                            double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                            policytoDB.setSaldo_final(String.valueOf(fin));
+                                            policytoDB.setAccount_id(account_id);
+                                            policytoDB.setFile_name(file.getName());
+                                            // System.out.println("EGRESOS -- " + policytoDB);
+                                            saveObjRepository.save(policytoDB);
                                         }
 
-                                        //policytoDB.setHaber(String.valueOf(sumHaber));
-                                        policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                        policytoDB.setFecha(policyObjFile.getDate());
-                                        policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                        policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                        policytoDB.setSaldo_inicial("0");
-                                        double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                        policytoDB.setSaldo_final(String.valueOf(fin));
-                                        policytoDB.setAccount_id(account_id);
-                                        // System.out.println("EGRESOS -- " + policytoDB);
-                                        saveObjRepository.save(policytoDB);
                                     }
 
-                                }
+                                } else {
+                                    // (Cargo)
+                                    policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getAmount()));
+                                    policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
+                                    int rand_int1 = rand.nextInt(1000000000);
+                                    policyObjFile.setFolio(String.valueOf(rand_int1));
+                                    // policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
+                                    if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+                                        List<String> taxId = policyObjFile.getTax_id();
+                                        taxId.add(policyObjFile.getCuenta_method());
+                                        policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
 
-                            } else {
-                                // (Cargo)
-                                policyObjFile.setTax_id(getIvaIeps(policyObjFile.getPolicyObj().getIva(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getAmount()));
-                                policyObjFile.setTax_description(getCuentaCobtableList(policyObjFile.getTax_id()));
-                                int rand_int1 = rand.nextInt(1000000000);
-                                policyObjFile.setFolio(String.valueOf(rand_int1));
-                                // policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
-                                if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
-                                    List<String> taxId = policyObjFile.getTax_id();
-                                    taxId.add(policyObjFile.getCuenta_method());
-                                    policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+                                        for (int i = 0; i < taxId.size(); i++) {
 
-                                    for (int i = 0; i < taxId.size(); i++) {
+                                            PolicytoDB policytoDB = new PolicytoDB();
+                                            policytoDB.setCliente(policyObjFile.getClient());
+                                            policytoDB.setUsuario(rfc);
+                                            policytoDB.setTipo(type);
+                                            policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                            policytoDB.setPoliza(policyObjFile.getFolio());
+                                            policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
+                                            policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
 
-                                        PolicytoDB policytoDB = new PolicytoDB();
-                                        policytoDB.setCliente(policyObjFile.getClient());
-                                        policytoDB.setUsuario(rfc);
-                                        policytoDB.setTipo(type);
-                                        policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                        policytoDB.setPoliza(policyObjFile.getFolio());
-                                        policytoDB.setCuenta(Double.parseDouble(taxId.get(i)));
-                                        policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
-
-                                        List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                        double sumDebe = 0;
-                                        if (debe != null) {
-                                            for (String db : debe) {
-                                                sumDebe += Double.parseDouble(db);
-
-                                            }
-                                        }
-                                        policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-                                            List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                            double sumHaber = 0;
-                                            if (haber != null) {
-                                                for (String db : haber) {
-                                                    sumHaber += Double.parseDouble(db);
+                                            List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                            double sumDebe = 0;
+                                            if (debe != null) {
+                                                for (String db : debe) {
+                                                    sumDebe += Double.parseDouble(db);
 
                                                 }
                                             }
-                                        }
+                                            policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
+                                            if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
+                                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                                double sumHaber = 0;
+                                                if (haber != null) {
+                                                    for (String db : haber) {
+                                                        sumHaber += Double.parseDouble(db);
 
-                                        // policytoDB.setHaber(String.valueOf(sumHaber));
-                                        policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                        policytoDB.setFecha(policyObjFile.getDate());
-                                        policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                        policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                        policytoDB.setSaldo_inicial("0");
-                                        double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                        policytoDB.setSaldo_final(String.valueOf(fin));
-                                        policytoDB.setAccount_id(account_id);
-                                        //System.out.println("EGRESOS -- " + policytoDB);
-                                        saveObjRepository.save(policytoDB);
+                                                    }
+                                                }
+                                            }
+
+                                            // policytoDB.setHaber(String.valueOf(sumHaber));
+                                            policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                            policytoDB.setFecha(policyObjFile.getDate());
+                                            policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setSaldo_inicial("0");
+                                            double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                            policytoDB.setSaldo_final(String.valueOf(fin));
+                                            policytoDB.setAccount_id(account_id);
+                                            policytoDB.setFile_name(file.getName());
+                                            //System.out.println("EGRESOS -- " + policytoDB);
+                                            saveObjRepository.save(policytoDB);
+                                        }
                                     }
                                 }
                             }
-                        }
-                        //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
-                    } else if (type.equals("INGRESOS")) {
-                        count2++;
+                            //LOGGER.info("PolicyObjFile data egresos: {}", policyObjFile);
+                        } else if (file.getAbsolutePath().contains("INGRESOS")) {
+
+
+                           // count2++;
 //                        LOGGER.info("ingresos count --  {}", count2);
                         PolicyObjFile policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 //
 
-                        List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getTraslado());
-                        //xLOGGER.info("----- cla ---- " + claveProductoServ);
-                        List<String> accounts = getCuentaCobtableList(claveProductoServ);
-                        //  LOGGER.info("accounts {}", accounts);
+                            List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getTraslado());
+                            //xLOGGER.info("----- cla ---- " + claveProductoServ);
+                            List<String> accounts = getCuentaCobtableList(claveProductoServ);
+                            //  LOGGER.info("accounts {}", accounts);
 
 //                        if (accounts == null) {
 //                            LOGGER.warn("in");
@@ -676,110 +733,113 @@ public class CreateFileService {
 //
 //                        }
 
-                        //LOGGER.info("claveProductoServ {}", claveProductoServ);
+                            //LOGGER.info("claveProductoServ {}", claveProductoServ);
 
 
-                        // method payment (Abono)
-                        policyObjFile.setCuenta_method(methodOfPaymentRepository.getCuentaContable(policyObjFile.getPolicyObj().getTypeOfPayment()));
-                        policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
-                        claveProductoServ.add(policyObjFile.getCuenta_method());
-                        accounts.add(policyObjFile.getDescription_methods());
+                            // method payment (Abono)
+                            policyObjFile.setCuenta_method(methodOfPaymentRepository.getCuentaContable(policyObjFile.getPolicyObj().getTypeOfPayment()));
+                            policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
+                            claveProductoServ.add(policyObjFile.getCuenta_method());
+                            accounts.add(policyObjFile.getDescription_methods());
 //                        LOGGER.info("accounts {}", accounts);
 //                        LOGGER.info("claveProductoServ {}", claveProductoServ);
 
 
-                        policyObjFile.setTax_id(claveProductoServ);
-                        policyObjFile.setTax_description(accounts);
+                            policyObjFile.setTax_id(claveProductoServ);
+                            policyObjFile.setTax_description(accounts);
 
-                        int rand_int1 = rand.nextInt(1000000000);
-                        policyObjFile.setFolio(String.valueOf(rand_int1));
+                            int rand_int1 = rand.nextInt(1000000000);
+                            policyObjFile.setFolio(String.valueOf(rand_int1));
 
-                        // LOGGER.info("values before to create file {}", policyObjFile);
-                        //System.out.println();
-                        //System.out.println();
-                        if (CreateFilePDFPolicy.makeFileIngreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
-                            List<String> taxId = policyObjFile.getTax_id();
-                            taxId.add(policyObjFile.getCuenta_method());
-                            policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
-                            //LOGGER.info("PolicyObjFile data ingresos: {}", policyObjFile);
+                            // LOGGER.info("values before to create file {}", policyObjFile);
+                            //System.out.println();
+                            //System.out.println();
+                            if (CreateFilePDFPolicy.makeFileIngreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
+                                List<String> taxId = policyObjFile.getTax_id();
+                                taxId.add(policyObjFile.getCuenta_method());
+                                policyObjFile.getTax_description().add(policyObjFile.getDescription_methods());
+                                //LOGGER.info("PolicyObjFile data ingresos: {}", policyObjFile);
 
-                            for (int i = 0; i < taxId.size(); i++) {
-                                String taxIdValue = taxId.get(i);
-                                PolicytoDB policytoDB = new PolicytoDB();
-                                policytoDB.setCliente(policyObjFile.getClient());
-                                policytoDB.setUsuario(rfc);
-                                policytoDB.setTipo(type);
-                                policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
-                                policytoDB.setPoliza(policyObjFile.getFolio());
-                                //policytoDB.setCuenta(Double.parseDouble(policyObjFile.getTax_id().get(i)));
-                                try {
-                                    // Extraer el último valor numérico
-                                    if (taxIdValue != null && !taxIdValue.trim().isEmpty()) {
-                                        // Dividir la cadena en partes basadas en ","
-                                        String[] parts = taxIdValue.split(",");
+                                for (int i = 0; i < taxId.size(); i++) {
+                                    String taxIdValue = taxId.get(i);
+                                    PolicytoDB policytoDB = new PolicytoDB();
+                                    policytoDB.setCliente(policyObjFile.getClient());
+                                    policytoDB.setUsuario(rfc);
+                                    policytoDB.setTipo(type);
+                                    policytoDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
+                                    policytoDB.setPoliza(policyObjFile.getFolio());
+                                    //policytoDB.setCuenta(Double.parseDouble(policyObjFile.getTax_id().get(i)));
+                                    try {
+                                        // Extraer el último valor numérico
+                                        if (taxIdValue != null && !taxIdValue.trim().isEmpty()) {
+                                            // Dividir la cadena en partes basadas en ","
+                                            String[] parts = taxIdValue.split(",");
 
-                                        // Tomar el último valor
-                                        String lastValue = parts[parts.length - 1].trim();
+                                            // Tomar el último valor
+                                            String lastValue = parts[parts.length - 1].trim();
 
-                                        // Intentar convertir el último valor a double
-                                        double cuenta = Double.parseDouble(lastValue);
-                                        policytoDB.setCuenta(cuenta);
-                                        // LOGGER.info("Set cuenta: {}", cuenta);
-                                    } else {
-                                        // Manejar caso donde el valor es nulo o vacío
-                                        //LOGGER.warn("taxId value at index {} is null or empty, setting cuenta to 0.0", i);
-                                        policytoDB.setCuenta(0.0);
+                                            // Intentar convertir el último valor a double
+                                            double cuenta = Double.parseDouble(lastValue);
+                                            policytoDB.setCuenta(cuenta);
+                                            // LOGGER.info("Set cuenta: {}", cuenta);
+                                        } else {
+                                            // Manejar caso donde el valor es nulo o vacío
+                                            //LOGGER.warn("taxId value at index {} is null or empty, setting cuenta to 0.0", i);
+                                            policytoDB.setCuenta(0.0);
+                                        }
+                                    } catch (NumberFormatException e) {
+                                        // Manejar caso donde la conversión falla
+                                        LOGGER.error("Error parsing taxId value at index {}: {}", i, taxIdValue, e);
+                                        policytoDB.setCuenta(0.0); // O cualquier valor predeterminado que consideres adecuado
                                     }
-                                } catch (NumberFormatException e) {
-                                    // Manejar caso donde la conversión falla
-                                    LOGGER.error("Error parsing taxId value at index {}: {}", i, taxIdValue, e);
-                                    policytoDB.setCuenta(0.0); // O cualquier valor predeterminado que consideres adecuado
-                                }
-                                policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
+                                    policytoDB.setDescripcion(policyObjFile.getTax_description().get(i));
 
-                                List<String> debe = policyObjFile.getPolicyObj().getTraslado();
-                                double sumDebe = 0;
-                                if (debe != null) {
-                                    for (String db : debe) {
-                                        sumDebe += Double.parseDouble(db);
+                                    List<String> debe = policyObjFile.getPolicyObj().getTraslado();
+                                    double sumDebe = 0;
+                                    if (debe != null) {
+                                        for (String db : debe) {
+                                            sumDebe += Double.parseDouble(db);
 
+                                        }
                                     }
-                                }
-                                policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
-                                double sumHaber = 0;
-                                if (haber != null) {
-                                    for (String db : haber) {
-                                        sumHaber += Double.parseDouble(db);
+                                    policytoDB.setDebe(policyObjFile.getPolicyObj().getAmount());
+                                    List<String> haber = policyObjFile.getPolicyObj().getRetencion_importe();
+                                    double sumHaber = 0;
+                                    if (haber != null) {
+                                        for (String db : haber) {
+                                            sumHaber += Double.parseDouble(db);
 
+                                        }
                                     }
-                                }
 
-                                //LOGGER.error("policyObjFile ---- {} ", policyObjFile);
-                                // policytoDB.setHaber(String.valueOf(sumHaber));
-                                policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
-                                policytoDB.setFecha(policyObjFile.getDate());
-                                policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
-                                policytoDB.setSaldo_inicial("0");
-                                double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
-                                policytoDB.setSaldo_final(String.valueOf(fin));
-                                policytoDB.setAccount_id(account_id);
-                                //System.out.println("INGRESOS -- " + policytoDB);
-                                saveObjRepository.save(policytoDB);
+                                    //LOGGER.error("policyObjFile ---- {} ", policyObjFile);
+                                    // policytoDB.setHaber(String.valueOf(sumHaber));
+                                    policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                    policytoDB.setFecha(policyObjFile.getDate());
+                                    policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
+                                    policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                    policytoDB.setSaldo_inicial("0");
+                                    double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
+                                    policytoDB.setSaldo_final(String.valueOf(fin));
+                                    policytoDB.setAccount_id(account_id);
+                                    policytoDB.setFile_name(file.getName());
+                                    //System.out.println("INGRESOS -- " + policytoDB);
+                                    saveObjRepository.save(policytoDB);
+                                }
                             }
                         }
                     }
                 }
+                return 2;
             }
         } catch (Exception e) {
             System.out.println(" createPolicy - createFile :   " + e.getMessage() + e.getCause());
         }
-        return false;
+        return 0;
     }
 
     private void createTextFile(String fileName, String rfc, String type) {
-        //LOGGER.info("createTextFile");
+
         String baseFileName;
         if (fileName != null) {
             baseFileName = fileName.replaceAll("\\.xml$", "");
