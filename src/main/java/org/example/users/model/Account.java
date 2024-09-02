@@ -4,7 +4,6 @@ package org.example.users.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
-import org.example.users.util.EncryptionUtil;
 
 import java.io.Serializable;
 

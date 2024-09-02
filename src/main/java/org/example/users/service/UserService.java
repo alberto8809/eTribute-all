@@ -18,7 +18,7 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
-    Logger LOGGER = LogManager.getLogger(UserService.class);
+    final Logger LOGGER = LogManager.getLogger(UserService.class);
 
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;

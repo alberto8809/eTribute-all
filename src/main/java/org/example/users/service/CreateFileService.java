@@ -25,7 +25,7 @@ import java.util.*;
 
 @Service
 public class CreateFileService {
-   // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
+    // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
     private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
     //public static long count2 = 1;
     //public static long count = 0;
@@ -152,7 +152,7 @@ public class CreateFileService {
         Map<String, Object> filesXMLFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "xml", initial_date, final_date);
         Map<String, Object> finalResult = new HashMap<>();
 
-        int value = createPolicy(rfc, "EGRESOS");
+        int value = createPolicy(rfc, "EGRESOS", initial_date, final_date);
         if (value == 1) {
 
             Map<String, Object> filesPDFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "pdf", initial_date, final_date);
@@ -190,7 +190,7 @@ public class CreateFileService {
             finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
 
         } else if (value == 2) {
-            createPolicy(rfc, "INGRESOS");
+            createPolicy(rfc, "INGRESOS", initial_date, final_date);
 
             Map<String, Object> filesPDFromAWS = UploadFileToS3_Policies.getFileFromAWS(rfc, "pdf", initial_date, final_date);
 
@@ -233,14 +233,14 @@ public class CreateFileService {
     }
 
 
-    public int createPolicy(String rfc, String type) {
+    public int createPolicy(String rfc, String type, String initial_date, String final_date) {
         try {
             Random rand = new Random();
             int account_id = accountRepository.getAccountByAccount_id(rfc);
             List<CuentaContable> cuentaContable = new ArrayList<>();
             File folder = new File(server_path + rfc + "/xml/" + type + "/");
             File[] listOfFiles = folder.listFiles();
-            List<String> po = saveObjRepository.getObjFromDB(rfc, type);
+            List<String> po = saveObjRepository.getObjFromDB(rfc, type, initial_date, final_date);
 
             if (!po.isEmpty()) {
                 if (Arrays.stream(listOfFiles).anyMatch(n -> n.getName().equals(po.get(0)))) {
@@ -716,9 +716,9 @@ public class CreateFileService {
                         } else if (file.getAbsolutePath().contains("INGRESOS")) {
 
 
-                           // count2++;
+                            // count2++;
 //                        LOGGER.info("ingresos count --  {}", count2);
-                        PolicyObjFile policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
+                            PolicyObjFile policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
 //
 
                             List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getTraslado());
