@@ -15,15 +15,14 @@ import java.io.FileOutputStream;
 public class CreateFilePDFPolicy {
 
     //private static final String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
-    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
-    public static Logger LOGGER = LogManager.getLogger(CreateFilePDFPolicy.class);
+    private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
+    public static final Logger LOGGER = LogManager.getLogger(CreateFilePDFPolicy.class);
 
     public CreateFilePDFPolicy() {
     }
 
 
     public static boolean makeFileEgreso(PolicyObjFile policyObjFile, String fileName, String rfc, String type) {
-
         try {
 
             File uploadDir = new File(server_path + rfc + "/pdf/" + type + "/");
@@ -111,9 +110,6 @@ public class CreateFilePDFPolicy {
             cargoTable.setWidthPercentage(100);
 
             if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
-               // LOGGER.error("in I - PUE ---> {}", policyObjFile);
-
-
                 PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getCuenta(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 accountBody.setBorderColorBottom(BaseColor.BLACK);
                 accountBody.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -139,9 +135,6 @@ public class CreateFilePDFPolicy {
                 bodyTable.addCell(descriptionBody);
                 bodyTable.addCell(paymentBody);
                 bodyTable.addCell(Body);
-
-                //-- cargo
-
 
                 for (int i = 0; i < policyObjFile.getTax_id().size(); i++) {
 
@@ -177,34 +170,12 @@ public class CreateFilePDFPolicy {
 //                LOGGER.error("in I - PPD ---> {}", policyObjFile);
 
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("E")) {
-               // LOGGER.error("in E");
+                // LOGGER.error("in E");
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
                 //LOGGER.error("in N");
             } else if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
                 //LOGGER.error("in P");
             }
-
-
-            //--------------------
-
-//            System.out.println("    -------------   ");
-//            LOGGER.info("name file " + policyObjFile.getNameFile());
-//            LOGGER.info(" method {}", policyObjFile.getCuenta_method());
-//            LOGGER.info(" description {}", policyObjFile.getDescription_methods());
-//
-//            //LOGGER.info("policyObjFile getTax_id().size() :  " + policyObjFile.getTax_id().size());
-//            LOGGER.info("policyObjFile getTax_id() :  " + policyObjFile.getTax_id());
-//            LOGGER.info("policyObjFile getTax_description :  " + policyObjFile.getTax_description());
-//            LOGGER.info("abono " + policyObjFile.getPolicyObj().getAbono());
-//            LOGGER.info("cargo " + policyObjFile.getPolicyObj().getCargo());
-//            LOGGER.info("retencion " + policyObjFile.getPolicyObj().getRetencion_importe());
-//            LOGGER.info("translado  " + policyObjFile.getPolicyObj().getTraslado());
-//            LOGGER.info("impuestos " + policyObjFile.getPolicyObj().getImpuestos());
-//            System.out.println("    -------------   ");
-//            System.out.println();
-
-
-            //--------------------
 
 
             //---------------------   footer of file  --------------------- //
@@ -214,11 +185,9 @@ public class CreateFilePDFPolicy {
             PdfPCell sumFooter = new PdfPCell(new Paragraph("SUMAS IGUALES", FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.BOLD, BaseColor.BLACK)));
             sumFooter.setHorizontalAlignment(Element.ALIGN_CENTER);
             sumFooter.setBackgroundColor(new BaseColor(182, 208, 226));
-            PdfPCell sumCargo = null;
-            //if (policyObjFile.getPolicyObj().getRetencion_importe() != null) {
-            sumCargo = new PdfPCell(new Paragraph("$" + (Double.parseDouble(policyObjFile.getPolicyObj().getTotalAmount()) + Double.parseDouble("0") + Double.parseDouble("0")), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+            PdfPCell sumCargo = new PdfPCell(new Paragraph("$" + (Double.parseDouble(policyObjFile.getPolicyObj().getTotalAmount()) + Double.parseDouble("0") + Double.parseDouble("0")), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
             sumCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-            //}
+
 
             PdfPCell sumAbono = new PdfPCell(new Paragraph("$" + (Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
             sumAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -404,21 +373,7 @@ public class CreateFilePDFPolicy {
             PdfPTable bodyTable = new PdfPTable(4);
 
             bodyTable.setWidthPercentage(100);
-//            System.out.println("    -------------   ");
-//            LOGGER.info("name file " + policyObjFile.getNameFile());
-//            LOGGER.info(" method {}", policyObjFile.getCuenta_method());
-//            LOGGER.info(" description {}", policyObjFile.getDescription_methods());
-//
-//            //LOGGER.info("policyObjFile getTax_id().size() :  " + policyObjFile.getTax_id().size());
-//            LOGGER.info("policyObjFile getTax_id() :  " + policyObjFile.getTax_id());
-//            LOGGER.info("policyObjFile getTax_description :  " + policyObjFile.getTax_description());
-//            LOGGER.info("abono " + policyObjFile.getPolicyObj().getAbono());
-//            LOGGER.info("cargo " + policyObjFile.getPolicyObj().getCargo());
-//            LOGGER.info("retencion " + policyObjFile.getPolicyObj().getRetencion_importe());
-//            LOGGER.info("translado  " + policyObjFile.getPolicyObj().getTraslado());
-//            LOGGER.info("impuestos " + policyObjFile.getPolicyObj().getImpuestos());
-//            System.out.println("    -------------   ");
-//            System.out.println();
+
             for (int j = 0; j < policyObjFile.getTax_id().size(); j++) {
 
                 PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
@@ -432,7 +387,6 @@ public class CreateFilePDFPolicy {
 
 
                 PdfPCell paymentBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getRetencion_importe().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                //PdfPCell paymentBody = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 paymentBody.setBorderColorLeft(BaseColor.WHITE);
                 paymentBody.setBorderColorRight(BaseColor.WHITE);
                 paymentBody.setBorderColorTop(BaseColor.WHITE);

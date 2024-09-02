@@ -25,9 +25,9 @@ import org.apache.commons.io.FileUtils;
 
 public class ParserFileIngresos {
 
-    public static Logger LOGGER = LogManager.getLogger(ParserFileIngresos.class);
+    public static final Logger LOGGER = LogManager.getLogger(ParserFileIngresos.class);
     //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
-    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
+    private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Response getParseValues(String pathFromAWS, String rfc, String type, String fileName) {
 
@@ -82,105 +82,67 @@ public class ParserFileIngresos {
             Document doc = dBuilder.parse(archivoXML);
             doc.getDocumentElement().normalize();
 
-
-            // LOGGER.info(" type {}", path.substring(64, 72));
             Element total = doc.getDocumentElement();
             //"------------- total  ---------------
             values.setTotalAmount(total.getAttribute("Total"));
 
-            //LOGGER.info("total Amount {}", values.getTotalAmount());
-
             Element date = doc.getDocumentElement();
-            //System.out.println(date.getAttribute("Fecha"));
             String currentDate = date.getAttribute("Fecha");
-            // LOGGER.info("currentDate {}", currentDate);
-
             Element payment1 = doc.getDocumentElement();
             values.setTypeOfPayment(payment1.getAttribute("FormaPago").isEmpty() || payment1.getAttribute("FormaPago") == null ? "99" : payment1.getAttribute("FormaPago"));
 
-            //LOGGER.info("typeOfPayment {}", values.getTypeOfPayment());
-            //System.out.println(currentDate.substring(0,10));
-            //System.out.println("newdate: "+currentDate.replace("T"," "));
-
-
-            Element payment = doc.getDocumentElement();
-            //System.out.println("payment --- "+payment.getAttribute("FormaPago"));
             Element comprobante = doc.getDocumentElement();
-
-
             values.setTypeOfComprobante(comprobante.getAttribute("TipoDeComprobante"));
-            //System.out.println("comprobante --- "+comprobante.getAttribute("TipoDeComprobante"));
-            //LOGGER.info("typeOfCom {}", values.getTypeOfComprobante());
-
             Element method = doc.getDocumentElement();
-            //repetido
             values.setMethodPayment(method.getAttribute("MetodoPago"));
             values.setMetodo(method.getAttribute("MetodoPago"));
-            // LOGGER.info("methodPayment {}", values.getMethodPayment());
 
             NodeList repectEgr = doc.getElementsByTagName("cfdi:Receptor");
             Element rEgr = (Element) repectEgr.item(0);
             values.setClient(rEgr.getAttribute("Nombre"));
-            //LOGGER.info(" client {} ", values.getClient());
-
             NodeList rfc = doc.getElementsByTagName("cfdi:Emisor");
             Element RFC = (Element) rfc.item(0);
             values.setRfc(RFC.getAttribute("Rfc"));
-            //LOGGER.info(" RFC {} ", values.getRfc());
 
             String typeOf = "";
-            //values.getTypeOfComprobante()
-            //typeOfComprobante
             if (values.getMethodPayment().equals("PUE")) {
                 typeOf = "Egreso";
             } else if (values.getMethodPayment().equals("PPD")) {
                 typeOf = "Diario";
             }
-            //LOGGER.info(" type {} ", typeOf);
+
             NodeList emisor = doc.getElementsByTagName("cfdi:Emisor");
             Element rcp = (Element) emisor.item(0);
             values.setCompanyName(rcp.getAttribute("Nombre"));
-            //LOGGER.info(" company {} ", values.getCompanyName());
-
             NodeList receptor = doc.getElementsByTagName("cfdi:Receptor");
             Element regimen = (Element) receptor.item(0);
             values.setRegimen(regimen.getAttribute("RegimenFiscalReceptor"));
-            //LOGGER.info(" regimen {} ", values.getRegimen());
-
             Element useCFDI = (Element) receptor.item(0);
             values.setUsoCFDI(useCFDI.getAttribute("UsoCFDI"));
-            //LOGGER.info(" usoCFDI {} ", values.getUsoCFDI());
 
             NodeList conceptosList = doc.getElementsByTagName("cfdi:Concepto");
             Element description = (Element) conceptosList.item(0);
             values.setConcepto_Descripcion(description.getAttribute("Descripcion"));
-            //LOGGER.info(" concepto {} ", values.getConcepto_Descripcion());
 
             Element amount = (Element) conceptosList.item(0);
             values.setAmount(amount.getAttribute("Importe"));
-            //LOGGER.info(" amount {} ", values.getAmount());
 
             NodeList timbre = doc.getElementsByTagName("tfd:TimbreFiscalDigital");
             Element uudi = (Element) timbre.item(0);
             values.setTimbreFiscalDigital_UUID(uudi.getAttribute("UUID"));
-            //LOGGER.info(" timbre {} ", values.getTimbreFiscalDigital_UUID());
-
-
             if (values.getTypeOfComprobante().equals("I") && values.getMethodPayment().equals("PUE")) {
 
                 NodeList impe = doc.getElementsByTagName("cfdi:Impuestos");
-                //  LOGGER.error("impe  {}", impe);
+
                 Element ime = (Element) impe.item(0);
-                //LOGGER.info(" ime {} ", ime);
+
                 values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0" : ime.getAttribute("Traslados"));
-                //LOGGER.info("impuestos {}", values.getImpuestos());
 
                 NodeList ClaveProdServ = doc.getElementsByTagName("cfdi:Concepto");
                 Element claveProdServ = (Element) ClaveProdServ.item(0);
                 List<String> clv = new ArrayList<>();
                 clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
-               // LOGGER.info("I PUE --- claveProdServ {}", values.getClaveProdServ());
 
                 NodeList traslados = doc.getElementsByTagName("cfdi:Traslado");
                 List<String> translado = new ArrayList<>();
@@ -190,7 +152,6 @@ public class ParserFileIngresos {
 
                 }
                 values.setTraslado(translado);
-                //LOGGER.info("traslados {}", values.getTraslado());
 
                 NodeList retencion = doc.getElementsByTagName("cfdi:Retencion");
                 List<String> retencion_importe = new ArrayList<>();
@@ -199,16 +160,12 @@ public class ParserFileIngresos {
                     retencion_importe.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
                 }
                 values.setRetencion_importe(retencion_importe);
-                //LOGGER.info("retencion_importe {}", values.getRetencion_importe());
-
                 values.setVenta_id("102.01");
-                //LOGGER.info("iva {}", values.getIva());
-
                 List<String> abono = new ArrayList<>();
                 abono.add("401.01");
                 abono.add("208.01");
                 values.setAbono(abono);
-                //  LOGGER.info("abono {}", values.getAbono());
+
                 values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
@@ -218,7 +175,6 @@ public class ParserFileIngresos {
 
             } else if (values.getTypeOfComprobante().equals("I") && values.getMethodPayment().equals("PPD")) {
 
-                // LOGGER.warn("I and PPD");
                 NodeList retencion = doc.getElementsByTagName("cfdi:Retencion");
                 List<String> retencion_importe = new ArrayList<>();
                 for (int i = 0; i < retencion.getLength(); i++) {
@@ -226,9 +182,6 @@ public class ParserFileIngresos {
                     retencion_importe.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
                 }
                 values.setRetencion_importe(retencion_importe);
-                //LOGGER.info("retencion_importe {}", values.getRetencion_importe());
-
-
                 NodeList traslados = doc.getElementsByTagName("cfdi:Traslado");
 
                 List<String> translado = new ArrayList<>();
@@ -238,10 +191,7 @@ public class ParserFileIngresos {
 
                 }
                 values.setTraslado(translado);
-                //LOGGER.info("traslados {}", translado);
-
                 values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
-                //LOGGER.info("subtotal {}", values.getSubtotal());
 
                 //si iva es 002 setear a 006 siempre y cuando sea Retencion
                 NodeList iva = doc.getElementsByTagName("cfdi:Retencion");
@@ -251,8 +201,6 @@ public class ParserFileIngresos {
                     iva2.put(clv.getAttribute("Impuesto"), clv.getAttribute("Importe"));
                 }
                 values.setIva(iva2);
-                //LOGGER.info("iva {}", values.getIva());
-
 
                 NodeList tipo = doc.getElementsByTagName("cfdi:Concepto");
                 List<String> claveProd = new ArrayList<>();
@@ -261,8 +209,6 @@ public class ParserFileIngresos {
                     claveProd.add(clv.getAttribute("ClaveProdServ"));
                 }
                 values.setClaveProdServ(claveProd);
-                LOGGER.info("I PPD --- claveProdServ {}", values.getClaveProdServ());
-                //  LOGGER.info("claveProdServ {}", values.getClaveProdServ());
                 values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
@@ -274,24 +220,18 @@ public class ParserFileIngresos {
                 NodeList rcp2 = doc.getElementsByTagName("cfdi:Receptor");
                 Element rcp3 = (Element) rcp2.item(0);
                 values.setMetodo(rcp3.getAttribute("Nombre"));
-                //LOGGER.info("metodo {} ", values.getMetodo());
 
                 values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
-                //LOGGER.info("subtotal {}", values.getSubtotal());
 
                 NodeList impe = doc.getElementsByTagName("cfdi:Impuestos");
                 Element ime = (Element) impe.item(impe.getLength() - 1);
                 values.setImpuestos(ime.getAttribute("TotalImpuestosTrasladados").isEmpty() ? "0" : ime.getAttribute("TotalImpuestosTrasladados"));
-                // LOGGER.info("impuestos {}", values.getImpuestos());
-
 
                 NodeList ClaveProdServ = doc.getElementsByTagName("cfdi:Concepto");
                 Element claveProdServ = (Element) ClaveProdServ.item(0);
                 List<String> clv = new ArrayList<>();
                 clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
-                LOGGER.info("E --- claveProdServ {}", values.getClaveProdServ());
-                //LOGGER.info("claveProdServ {}", values.getClaveProdServ());
 
                 NodeList traslados = doc.getElementsByTagName("cfdi:Traslado");
                 List<String> translado = new ArrayList<>();
@@ -301,7 +241,6 @@ public class ParserFileIngresos {
 
                 }
                 values.setTraslado(translado);
-                //LOGGER.info("traslados {}", values.getTraslado());
 
                 NodeList retencion = doc.getElementsByTagName("cfdi:Concepto");
                 List<String> retencion_importe = new ArrayList<>();
@@ -310,7 +249,6 @@ public class ParserFileIngresos {
                     retencion_importe.add(retencionR.getAttribute("Importe"));
                 }
                 values.setRetencion_importe(retencion_importe);
-                //LOGGER.info("retencion_importe {}", values.getRetencion_importe());
                 values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
@@ -320,8 +258,6 @@ public class ParserFileIngresos {
 
             } else if (values.getTypeOfComprobante().equals("N")) {
                 values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
-                // LOGGER.info("subtotal {}", values.getSubtotal());
-                //N
                 NodeList impe = doc.getElementsByTagName("cfdi:Impuestos");
 
                 if (impe.getLength() > 0) {
@@ -332,15 +268,9 @@ public class ParserFileIngresos {
                         totalImpuestosTrasladados = "0";
                     }
                     values.setImpuestos(totalImpuestosTrasladados);
-                    //LOGGER.info("impuestos {}", values.getImpuestos());
                 } else {
-                    // LOGGER.warn("No se encontró ningún elemento 'cfdi:Impuestos' con el atributo 'TotalImpuestosTrasladados'.");
                     values.setImpuestos("0");
                 }
-//                LOGGER.error("impe  N {}", impe.getLength());
-//                Element ime = (Element) impe.item(0);
-//                values.setImpuestos(ime.getAttribute("TotalImpuestosTrasladados").isEmpty() ? "0" : ime.getAttribute("TotalImpuestosTrasladados"));
-//                LOGGER.info("impuestos {}", values.getImpuestos());
                 NodeList imp = doc.getElementsByTagName("cfdi:Traslado");
                 Map<String, String> iva = new HashMap<>();
                 List<String> importte = new ArrayList<>();
@@ -349,14 +279,9 @@ public class ParserFileIngresos {
                     iva.put(clv.getAttribute("Impuesto"), clv.getAttribute("Importe"));
                 }
                 values.setIva(iva);
-                // LOGGER.info("iva {}", values.getIva());
                 importte.addAll(iva.values());
-//                for (String clv : iva.values()) {
-//                    importte.add(clv);
-//                }
-                values.setTax_amount(importte);
-                // LOGGER.info("tax_amount {}", values.getTax_amount());
 
+                values.setTax_amount(importte);
                 NodeList tipo = doc.getElementsByTagName("cfdi:Concepto");
                 List<String> claveProd = new ArrayList<>();
                 for (int j = 0; j < tipo.getLength(); j++) {
@@ -364,8 +289,6 @@ public class ParserFileIngresos {
                     claveProd.add(clv.getAttribute("ClaveProdServ"));
                 }
                 values.setClaveProdServ(claveProd);
-                LOGGER.info("N --- claveProdServ {}", values.getClaveProdServ());
-                // LOGGER.info("claveProdServ {}", values.getClaveProdServ());
 
                 NodeList traslados = doc.getElementsByTagName("nomina12:Deduccion");
                 List<String> translado = new ArrayList<>();
@@ -375,7 +298,6 @@ public class ParserFileIngresos {
 
                 }
                 values.setTraslado(translado);
-                // LOGGER.info("traslados {}", values.getTraslado());
 
                 NodeList retencion = doc.getElementsByTagName("nomina12:Deduccion");
                 List<String> retencion_importe = new ArrayList<>();
@@ -403,7 +325,6 @@ public class ParserFileIngresos {
                 Element totalSueldos = (Element) percep.item(0);
                 String dou = totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16").isEmpty() || totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16") == null ? "0" : totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16");
                 values.setSubtotal(Double.parseDouble(dou.isEmpty() || dou == null ? "0" : dou));
-                //  LOGGER.info("subtotal {}", values.getSubtotal());
 
                 NodeList pago = doc.getElementsByTagName("pago20:Pago");
                 Element pay = (Element) pago.item(0);
@@ -430,8 +351,6 @@ public class ParserFileIngresos {
 
             }
 
-            //LOGGER.info("Values: {} ", values);
-            //  System.out.println();
             return new PolicyObjFile(values, path, values.getCompanyName(), values.getClient(), currentDate.substring(0, 10), typeOf, values.getTypeOfComprobante());
 
         } catch (Exception e) {

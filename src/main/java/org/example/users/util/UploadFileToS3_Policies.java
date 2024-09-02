@@ -15,10 +15,10 @@ import java.time.LocalDate;
 import java.util.*;
 
 public class UploadFileToS3_Policies {
-    private static String bucketName = "xmlfilesback";
+    private static final String bucketName = "xmlfilesback";
 
     //private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all5/";
-    private static String server_path = "/home/ubuntu/endpoints/eTribute-all/";
+    private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static Logger LOGGER = LogManager.getLogger(UploadFileToS3_Policies.class);
 
@@ -48,7 +48,6 @@ public class UploadFileToS3_Policies {
                     .build();
 
             File file = new File(server_path + rfc + "/pdf/" + type + "/" + pdf);
-            //PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/" + date + "/" + xml, file);
             PutObjectRequest request = new PutObjectRequest(bucketName, rfc + "/pdf/" + type + "/" + pdf, file);
             s3Client.putObject(request);
 
