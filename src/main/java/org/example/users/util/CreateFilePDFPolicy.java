@@ -11,6 +11,10 @@ import org.example.users.model.PolicyObjFile;
 import java.io.File;
 import java.io.FileOutputStream;
 
+import static org.example.users.util.CFDI.CN01;
+import static org.example.users.util.CFDI.G03;
+import static org.example.users.util.Regimen.*;
+
 
 public class CreateFilePDFPolicy {
 
@@ -109,72 +113,140 @@ public class CreateFilePDFPolicy {
             PdfPTable cargoTable = new PdfPTable(4);
             cargoTable.setWidthPercentage(100);
 
+            PdfPTable abonoTable = new PdfPTable(4);
+            abonoTable.setWidthPercentage(100);
+
+
             if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
-                PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getCuenta(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                accountBody.setBorderColorBottom(BaseColor.BLACK);
-                accountBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                PdfPCell descriptionBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getConcepto_Descripcion() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                descriptionBody.setBorderColorBottom(BaseColor.BLACK);
-                descriptionBody.setHorizontalAlignment(Element.ALIGN_CENTER);
+                if ((policyObjFile.getPolicyObj().getRegimen().equals(RG601.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG603.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG620.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG622.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG623.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG625.getRegimen())) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG612.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG621.getRegimen()) &&
+                                policyObjFile.getPolicyObj().getUsoCFDI().equals(G03.getValue())) {
 
-
-                PdfPCell paymentBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTotalAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                paymentBody.setBorderColorLeft(BaseColor.WHITE);
-                paymentBody.setBorderColorRight(BaseColor.WHITE);
-                paymentBody.setBorderColorTop(BaseColor.WHITE);
-                paymentBody.setBorderColorBottom(BaseColor.BLACK);
-                paymentBody.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-                PdfPCell Body = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                Body.setBorderColorBottom(BaseColor.BLACK);
-                Body.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- R1 ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
 
 
-                bodyTable.addCell(accountBody);
-                bodyTable.addCell(descriptionBody);
-                bodyTable.addCell(paymentBody);
-                bodyTable.addCell(Body);
+                    PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getCuenta(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    accountBody.setBorderColorBottom(BaseColor.BLACK);
+                    accountBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                for (int i = 0; i < policyObjFile.getTax_id().size(); i++) {
-
-                    PdfPCell accountCargo = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                    accountCargo.setBorderColorBottom(BaseColor.BLACK);
-                    accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-                    PdfPCell descripcionCargo = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                    descripcionCargo.setBorderColorBottom(BaseColor.BLACK);
-                    descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    PdfPCell descriptionBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getConcepto_Descripcion() + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    descriptionBody.setBorderColorBottom(BaseColor.BLACK);
+                    descriptionBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 
-                    PdfPCell cargoCargo = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTraslado().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                    cargoCargo.setBorderColorBottom(BaseColor.BLACK);
-                    cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    PdfPCell paymentBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTotalAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    paymentBody.setBorderColorLeft(BaseColor.WHITE);
+                    paymentBody.setBorderColorRight(BaseColor.WHITE);
+                    paymentBody.setBorderColorTop(BaseColor.WHITE);
+                    paymentBody.setBorderColorBottom(BaseColor.BLACK);
+                    paymentBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                    PdfPCell cargo = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                    cargo.setBorderColorBottom(BaseColor.BLACK);
-                    cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
-                    cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    PdfPCell Body = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    Body.setBorderColorBottom(BaseColor.BLACK);
+                    Body.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                    cargoTable.addCell(accountCargo);
-                    cargoTable.addCell(descripcionCargo);
-                    cargoTable.addCell(cargoCargo);
-                    cargoTable.addCell(cargo);
+
+                    bodyTable.addCell(accountBody);
+                    bodyTable.addCell(descriptionBody);
+                    bodyTable.addCell(paymentBody);
+                    bodyTable.addCell(Body);
+
+                    for (int i = 1; i < policyObjFile.getTax_id().size(); i++) {
+
+                        PdfPCell accountCargo = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                        accountCargo.setBorderColorBottom(BaseColor.BLACK);
+                        accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        accountCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                        PdfPCell descripcionCargo = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                        descripcionCargo.setBorderColorBottom(BaseColor.BLACK);
+                        descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        descripcionCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                        PdfPCell cargoCargo = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTraslado().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                        cargoCargo.setBorderColorBottom(BaseColor.BLACK);
+                        cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        cargoCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                        PdfPCell cargo = new PdfPCell(new Paragraph("0.0", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                        cargo.setBorderColorBottom(BaseColor.BLACK);
+                        cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+                        cargo.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                        cargoTable.addCell(accountCargo);
+                        cargoTable.addCell(descripcionCargo);
+                        cargoTable.addCell(cargoCargo);
+                        cargoTable.addCell(cargo);
+                    }
+
+
+                    PdfPCell accountAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(0), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    accountAbono.setBorderColorBottom(BaseColor.BLACK);
+                    accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    PdfPCell descripcionAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(0), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    descripcionAbono.setBorderColorBottom(BaseColor.BLACK);
+                    descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell Abono = new PdfPCell(new Paragraph("0.0", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    Abono.setBorderColorBottom(BaseColor.BLACK);
+                    Abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    Abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    PdfPCell AbonoPago = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTraslado().get(0), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    AbonoPago.setBorderColorBottom(BaseColor.BLACK);
+                    AbonoPago.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    AbonoPago.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    abonoTable.addCell(accountAbono);
+                    abonoTable.addCell(descripcionAbono);
+                    abonoTable.addCell(Abono);
+                    abonoTable.addCell(AbonoPago);
+
+
                 }
-
-
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMetodo().equals("PPD")) {
-//                LOGGER.error("in I - PPD ---> {}", policyObjFile);
+                LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} . {}--- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta(), policyObjFile.getNameFile());
+
 
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("E")) {
-                // LOGGER.error("in E");
+
+
+                if ((policyObjFile.getPolicyObj().getRegimen().equals(RG601.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG603.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG612.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG620.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG622.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG623.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG624.getRegimen())) &&
+                        policyObjFile.getPolicyObj().getUsoCFDI().equals(G03.getValue())) {
+                    LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
+                }
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
-                //LOGGER.error("in N");
+                if (policyObjFile.getPolicyObj().getRegimen().equals(RG601.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG603.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG605.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG612.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG620.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG622.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG623.getRegimen()) ||
+                        policyObjFile.getPolicyObj().getRegimen().equals(RG624.getRegimen()) &&
+                                policyObjFile.getPolicyObj().getUsoCFDI().equals(CN01.getValue())) {
+                    LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
+                }
             } else if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
-                //LOGGER.error("in P");
+                LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
             }
 
 
@@ -268,7 +340,7 @@ public class CreateFilePDFPolicy {
             document.add(headerTable);
             document.add(bodyTable);
             document.add(cargoTable);
-            //document.add(abonoTable);
+            document.add(abonoTable);
             document.add(footer);
             document.add(new Paragraph("\n\n\n\n"));
             document.add(headerLastValues);
@@ -299,6 +371,7 @@ public class CreateFilePDFPolicy {
             Document document = new Document(PageSize.A4);
             PdfWriter.getInstance(document, new FileOutputStream(server_path + rfc + "/pdf/" + type + "/" + fileName + ".pdf"));
             document.open();
+            LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
 
 
             //---------------------   header of file  --------------------- //
@@ -368,16 +441,21 @@ public class CreateFilePDFPolicy {
             headerTable.addCell(payment);
 
 
-            //---body
-
             PdfPTable bodyTable = new PdfPTable(4);
-
             bodyTable.setWidthPercentage(100);
 
-            for (int j = 0; j < policyObjFile.getTax_id().size(); j++) {
 
-                PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                PdfPCell descriptionBody = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(j) + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+            PdfPTable abonoTable = new PdfPTable(4);
+            abonoTable.setWidthPercentage(100);
+
+// ------------------------------------------------------------------------------------------------------------------------
+            if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
+
+
+                // for (int j = 0; j < policyObjFile.getTax_id().size(); j++) {
+
+                PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(0), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell descriptionBody = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(0) + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
 
                 accountBody.setBorderColorBottom(BaseColor.BLACK);
                 accountBody.setHorizontalAlignment(Element.ALIGN_CENTER);
@@ -386,14 +464,14 @@ public class CreateFilePDFPolicy {
                 descriptionBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 
-                PdfPCell paymentBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getRetencion_importe().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell paymentBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 paymentBody.setBorderColorLeft(BaseColor.WHITE);
                 paymentBody.setBorderColorRight(BaseColor.WHITE);
                 paymentBody.setBorderColorTop(BaseColor.WHITE);
                 paymentBody.setBorderColorBottom(BaseColor.BLACK);
                 paymentBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                PdfPCell Body = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getTraslado().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                PdfPCell Body = new PdfPCell(new Paragraph("0.0", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                 Body.setBorderColorBottom(BaseColor.BLACK);
                 Body.setHorizontalAlignment(Element.ALIGN_CENTER);
 
@@ -402,44 +480,75 @@ public class CreateFilePDFPolicy {
                 bodyTable.addCell(paymentBody);
                 bodyTable.addCell(Body);
 
+                //}
+
+
+                for (int i = 1; i < policyObjFile.getTax_id().size(); i++) {
+
+
+                    PdfPCell accountAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    accountAbono.setBorderColorBottom(BaseColor.BLACK);
+                    accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell descripcionAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    descripcionAbono.setBorderColorBottom(BaseColor.BLACK);
+                    descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell cargoAbono = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    cargoAbono.setBorderColorBottom(BaseColor.BLACK);
+                    cargoAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cargoAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell abono = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getRetencion_importe().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    abono.setBorderColorBottom(BaseColor.BLACK);
+                    abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    abonoTable.addCell(accountAbono);
+                    abonoTable.addCell(descripcionAbono);
+                    abonoTable.addCell(cargoAbono);
+                    abonoTable.addCell(abono);
+
+                }
+
+            } else {
+
+                for (int j = 0; j < policyObjFile.getTax_id().size(); j++) {
+                    PdfPCell accountBody = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(j), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    PdfPCell descriptionBody = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(j) + "\n", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+
+                    accountBody.setBorderColorBottom(BaseColor.BLACK);
+                    accountBody.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    descriptionBody.setBorderColorBottom(BaseColor.BLACK);
+                    descriptionBody.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell paymentBody = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    paymentBody.setBorderColorLeft(BaseColor.WHITE);
+                    paymentBody.setBorderColorRight(BaseColor.WHITE);
+                    paymentBody.setBorderColorTop(BaseColor.WHITE);
+                    paymentBody.setBorderColorBottom(BaseColor.BLACK);
+                    paymentBody.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    PdfPCell Body = new PdfPCell(new Paragraph("0.0", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    Body.setBorderColorBottom(BaseColor.BLACK);
+                    Body.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    bodyTable.addCell(accountBody);
+                    bodyTable.addCell(descriptionBody);
+                    bodyTable.addCell(paymentBody);
+                    bodyTable.addCell(Body);
+
+                }
             }
-            PdfPTable abonoTable = new PdfPTable(4);
-            abonoTable.setWidthPercentage(100);
-
-
-            for (int i = 0; i < policyObjFile.getTax_id().size(); i++) {
-
-
-                PdfPCell accountAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_id().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                accountAbono.setBorderColorBottom(BaseColor.BLACK);
-                accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
-                accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-                PdfPCell descripcionAbono = new PdfPCell(new Paragraph(policyObjFile.getTax_description().get(i), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                descripcionAbono.setBorderColorBottom(BaseColor.BLACK);
-                descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
-                descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-                PdfPCell cargoAbono = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                cargoAbono.setBorderColorBottom(BaseColor.BLACK);
-                cargoAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cargoAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-                PdfPCell abono = new PdfPCell(new Paragraph(policyObjFile.getPolicyObj().getAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
-                abono.setBorderColorBottom(BaseColor.BLACK);
-                abono.setHorizontalAlignment(Element.ALIGN_CENTER);
-                abono.setHorizontalAlignment(Element.ALIGN_CENTER);
-
-
-                abonoTable.addCell(accountAbono);
-                abonoTable.addCell(descripcionAbono);
-                abonoTable.addCell(cargoAbono);
-                abonoTable.addCell(abono);
-
-            }
+// ------------------------------------------------------------------------------------------------------------------------
 
 
             //------------ footer

@@ -21,7 +21,6 @@ public interface MethodOfPaymentRepository extends JpaRepository<CuentaContable,
 
     @Query(value = "SELECT nm.codigo_agrupador  FROM dbmaster.nomina nm WHERE nm.c_TipoDeduccion =:tax_id", nativeQuery = true)
     String getCuentaContableByNomina(String tax_id);
-    @Query(value = "SELECT p.codigo_agrupador FROM dbmaster.percepciones p  WHERE p.c_TipoPercepcion=:cta ", nativeQuery = true)
-    String getCuentaContablePer(String cta);
+
 
 }

@@ -193,7 +193,6 @@ public class ParserFileIngresos {
                 values.setTraslado(translado);
                 values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
 
-                //si iva es 002 setear a 006 siempre y cuando sea Retencion
                 NodeList iva = doc.getElementsByTagName("cfdi:Retencion");
                 Map<String, String> iva2 = new HashMap<>();
                 for (int j = 0; j < iva.getLength(); j++) {
@@ -321,6 +320,7 @@ public class ParserFileIngresos {
 
 
             } else if (values.getTypeOfComprobante().equals("P")) {
+
                 NodeList percep = doc.getElementsByTagName("pago20:Totales");
                 Element totalSueldos = (Element) percep.item(0);
                 String dou = totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16").isEmpty() || totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16") == null ? "0" : totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16");
@@ -329,19 +329,37 @@ public class ParserFileIngresos {
                 NodeList pago = doc.getElementsByTagName("pago20:Pago");
                 Element pay = (Element) pago.item(0);
                 values.setImpuestos(pay.getAttribute("FormaDePagoP"));
-                values.setUsoCFDI(pay.getAttribute("FechaPago").substring(0, 10));
-                values.setTypeOfComprobante(pay.getAttribute("TipoCambioP"));
+
+                NodeList receptor2 = doc.getElementsByTagName("cfdi:Receptor");
+                Element regimen31 = (Element) receptor2.item(0);
+                values.setRegimen(regimen31.getAttribute("RegimenFiscalReceptor"));
+                Element useCFDI2 = (Element) receptor2.item(0);
+                values.setUsoCFDI(useCFDI2.getAttribute("UsoCFDI"));
+
+                values.setMetodo("N/A");
+                values.setMethodPayment("N/A");
+
                 values.setAmount(pay.getAttribute("Monto"));
 
-                NodeList docu = doc.getElementsByTagName("pago20:DoctoRelacionado");
+                NodeList docu = doc.getElementsByTagName("cfdi:Concepto");
                 Element d = (Element) docu.item(0);
-                values.setTimbreFiscalDigital_UUID(d.getAttribute("IdDocumento") + " " + d.getAttribute("Folio"));
-                values.setConcepto_Descripcion(d.getAttribute("MonedaDR"));
-                values.setTotalAmount(d.getAttribute("ImpSaldoAnt"));
+
+
+                NodeList timbre34 = doc.getElementsByTagName("tfd:TimbreFiscalDigital");
+                Element uudi34 = (Element) timbre34.item(0);
+                values.setTimbreFiscalDigital_UUID(uudi34.getAttribute("UUID"));
+
+                values.setConcepto_Descripcion("");
+                values.setTotalAmount(values.getAmount());
+
+
+                NodeList ClaveProdServ = doc.getElementsByTagName("cfdi:Concepto");
+                Element claveProdServ = (Element) ClaveProdServ.item(0);
                 List<String> clv = new ArrayList<>();
-                clv.add(d.getAttribute("ImpPagado"));
+                clv.add(claveProdServ.getAttribute("ClaveProdServ"));
                 values.setClaveProdServ(clv);
-                values.setRegimen(d.getAttribute("NumParcialidad"));
+
+
                 values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());

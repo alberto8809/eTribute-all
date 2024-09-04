@@ -26,13 +26,12 @@ public class PolicyObjFile {
     private String cuenta;
 
     public PolicyObjFile(PolicyObjParser policyObjParser, String nameFile, String companyName, String client, String date, String typeOf, String typeOfPayment) {
-        this.policyObj = policyObjParser != null ? policyObjParser : new PolicyObjParser();
-        this.nameFile = nameFile != null ? nameFile : "";
-       // this.companyName = companyName != null ? companyName : "";
-        this.client = client != null ? client : "";
-        this.date = date != null ? date : "";
-        this.typeOf = typeOf != null ? typeOf : "";
-        //this.typeOfPayment = typeOfPayment != null ? typeOfPayment : "";
+        this.policyObj = policyObjParser;
+        this.nameFile = nameFile;
+        this.client = client;
+        this.date = date;
+        this.typeOf = typeOf;
+
     }
 //    private String id_policy;
 //    private PolicyObjParser policyObj;

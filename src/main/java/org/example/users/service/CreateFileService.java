@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -57,47 +56,31 @@ public class CreateFileService {
     public List<String> getClaveProductoService(List<String> c_claveprodserv, String type, List<String> nomine) {
         List<String> claveProductoServs = new ArrayList<>();
 
-        //LOGGER.info("c_claveprodserv {} ", c_claveprodserv);
-
         for (String clv : c_claveprodserv) {
 
             if (type.equals("E")) {
-
                 claveProductoServs.add(claveProductoServRepository.getClaveProductoS("01010101"));
-//                    for (String cl : clave) {
-//                        claveProductoServs.add(cl);
-//                    }
             } else if (type.equals("N")) {
-                //query to get accounts
-                // LOGGER.info("getClaveProductoService N {}", clv);
-                claveProductoServs.add(methodOfPaymentRepository.getCuentaContablePer(clv));
+
+                claveProductoServs.add(claveProductoServRepository.getClaveProductoS(clv));
                 for (String value : nomine) {
+
                     claveProductoServs.add(methodOfPaymentRepository.getCuentaContableByNomina(value));
 
                 }
 
             } else {
-                //LOGGER.error(" 80 clv {}", clv);
-
                 claveProductoServs.add(claveProductoServRepository.getClaveProductoS(clv));
-                //for (String cl : clave) {
-                //LOGGER.info("claveProductoServRepository.getClaveProductoS: " + cl);
-                //  claveProductoServs.add(cl);
-                //}
 
             }
         }
-        //LOGGER.info("before claveProductoServs {}", claveProductoServs);
+
         return claveProductoServs;
     }
 
 
     public List<String> getCuentaCobtableList(List<String> claveProductoServ) {
         List<String> account = new ArrayList<>();
-        //Map<String, String> accountMap = new HashMap<>();
-        // LOGGER.error(" 93  getCuentaCobtableList  {}", claveProductoServ);
-        //agregar llave valor al ,mapa
-
 
         for (String clv : claveProductoServ) {
             account.add(cuentaContableRepository.getCuantaContableMethod(clv));
@@ -139,7 +122,6 @@ public class CreateFileService {
             Path filePath = Paths.get(server_path + rfc + "/xml", fileName);
             Files.write(filePath, file.getBytes());
 
-            //date is comming from xml
             UploadFileToS3_Policies.upload(fileName, rfc);
 
         }
@@ -240,10 +222,10 @@ public class CreateFileService {
             List<CuentaContable> cuentaContable = new ArrayList<>();
             File folder = new File(server_path + rfc + "/xml/" + type + "/");
             File[] listOfFiles = folder.listFiles();
-            List<String> po = saveObjRepository.getObjFromDB(rfc, type, initial_date, final_date);
+            List<String> objFromDB = saveObjRepository.getObjFromDB(rfc, type, initial_date, final_date);
 
-            if (!po.isEmpty()) {
-                if (Arrays.stream(listOfFiles).anyMatch(n -> n.getName().equals(po.get(0)))) {
+            if (!objFromDB.isEmpty()) {
+                if (Arrays.stream(listOfFiles).anyMatch(n -> n.getName().equals(objFromDB.get(0)))) {
                     return 1;
                 }
             } else {
@@ -252,7 +234,6 @@ public class CreateFileService {
                         if (file.getAbsolutePath().contains("EGRESOS")) {
 
                             PolicyObjFile policyObjFile = ParserFileEgresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
-
                             if (policyObjFile != null) {
                                 if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("P")) {
                                     policyObjFile.setCuenta_method("102.01");
@@ -331,10 +312,10 @@ public class CreateFileService {
 
                                     cuentaContable.add(cuentaContableRepository.getCuantaContable(claveProductoServ.isEmpty() ? "01" : claveProductoServ.get(0)));
 
-                                    policyObjFile.setCuenta_method("216.04");
+                                    policyObjFile.setCuenta_method("118.01");
                                     policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
-                                    id.add("216.10");
+                                    id.add("118.03");
                                     id.add(policyObjFile.getCuenta_method());
                                     policyObjFile.setTax_id(id);
 
@@ -407,10 +388,10 @@ public class CreateFileService {
                                     }
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PPD")) {
 
-                                    policyObjFile.setCuenta_method("401.01");
+                                    policyObjFile.setCuenta_method("119.01");
                                     policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
-                                    id.add("105.01");
+                                    id.add("119.03");
                                     policyObjFile.setTax_id(id);
                                     List<String> desc = new ArrayList<>();
                                     desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
@@ -678,15 +659,19 @@ public class CreateFileService {
                         } else if (file.getAbsolutePath().contains("INGRESOS")) {
 
                             PolicyObjFile policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
-                            List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getTraslado());
+                            List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
                             List<String> accounts = getCuentaCobtableList(claveProductoServ);
+
+
                             // method payment (Abono)
+
                             policyObjFile.setCuenta_method(methodOfPaymentRepository.getCuentaContable(policyObjFile.getPolicyObj().getTypeOfPayment()));
                             policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
                             claveProductoServ.add(policyObjFile.getCuenta_method());
                             accounts.add(policyObjFile.getDescription_methods());
                             policyObjFile.setTax_id(claveProductoServ);
                             policyObjFile.setTax_description(accounts);
+                            policyObjFile.setCuenta(claveProductoServ.get(0));
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
                             if (CreateFilePDFPolicy.makeFileIngreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
@@ -767,27 +752,6 @@ public class CreateFileService {
         return 0;
     }
 
-    private void createTextFile(String fileName, String rfc, String type) {
-
-        String baseFileName;
-        if (fileName != null) {
-            baseFileName = fileName.replaceAll("\\.xml$", "");
-            baseFileName = server_path + rfc + "/pdf/" + type + "/error_" + baseFileName + ".txt";
-        } else {
-            baseFileName = server_path + rfc + "/pdf/" + type + "/error_no_files.txt";
-        }
-
-        //  File txtFile = new File(local_path + rfc + "/pdf/" + type + "/error.txt");
-        //File txtFile = new File(local_path + "error.txt");
-        File txtFile = new File(baseFileName);
-
-        try (FileWriter writer = new FileWriter(txtFile)) {
-            writer.write(fileName);
-            LOGGER.info("Text file created: {}", txtFile.getAbsolutePath());
-        } catch (IOException e) {
-            LOGGER.error("Error creating text file: {}", txtFile.getAbsolutePath(), e);
-        }
-    }
 
 }
 
