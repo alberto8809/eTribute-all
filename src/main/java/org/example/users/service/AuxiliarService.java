@@ -115,8 +115,8 @@ public class AuxiliarService {
                 Balance b = (Balance) values.get(i);
                 deudorInicial_total += Float.parseFloat(b.getDebe());
                 acredorinical_total += Float.parseFloat(b.getHaber());
-                debe_total = Float.parseFloat(b.getDebe());
-                haber_total = Float.parseFloat(b.getHaber());
+                debe_total += Float.parseFloat(b.getDebe());
+                haber_total += Float.parseFloat(b.getHaber());
                 deudorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
                 acredorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
                 i++;
