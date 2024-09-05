@@ -30,10 +30,10 @@ public interface AuxiliarRepository extends JpaRepository<Auxiliar, String> {
     String getSumAbono(String cuenta);
 
     /**/
-    @Query(value = "SELECT SUM(pof.debe) FROM  dbmaster.policy pof where pof.account_id=:account_id", nativeQuery = true)
+    @Query(value = "SELECT SUM(pof.debe) FROM  dbmaster.policy pof where pof.cuenta=:account_id", nativeQuery = true)
     String getSumDebeByAccountId(String account_id);
 
-    @Query(value = "SELECT SUM(pof.haber) FROM  dbmaster.policy pof where pof.account_id=:account_id", nativeQuery = true)
+    @Query(value = "SELECT SUM(pof.haber) FROM  dbmaster.policy pof where pof.cuenta=:account_id", nativeQuery = true)
     String getSumHaberByAccountId(String account_id);
 
     @Query(value = "SELECT SUM(pof.saldo_final) FROM  dbmaster.policy pof where pof.cuenta=:account_id", nativeQuery = true)
