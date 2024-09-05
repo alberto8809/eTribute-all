@@ -96,11 +96,11 @@ public class AuxiliarService {
                 balance.setDeudor_inicial("0");
                 //balance.setAcredor_inicial(auxiliarRepository.getAcredor_final(listAuxiliar.getCuenta(), initial_date, final_date));
                 balance.setAcredor_inicial("0");
-                balance.setDebe_movimiento(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
-                balance.setHaber_movimiento(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
-                float sum = Float.parseFloat(balance.getDeudor_inicial()) + Float.parseFloat(balance.getDebe_movimiento());
+                balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
+                balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
+                float sum = Float.parseFloat(balance.getDeudor_inicial()) + Float.parseFloat(balance.getDebe());
                 balance.setDeudor_final(String.valueOf(sum));
-                float sum1 = Float.parseFloat(balance.getAcredor_inicial()) + Float.parseFloat(balance.getHaber_movimiento());
+                float sum1 = Float.parseFloat(balance.getAcredor_inicial()) + Float.parseFloat(balance.getHaber());
                 balance.setAcredor_final(String.valueOf(sum1));
                 obj2.put(listAuxiliar.getCuenta(), balance);
             }
@@ -115,12 +115,12 @@ public class AuxiliarService {
             for (Map.Entry<String, Object> ob : obj2.entrySet()) {
                 values.add(ob.getValue());
                 Balance b = (Balance) values.get(i);
-                deudorInicial_total += Float.parseFloat(b.getDebe_movimiento());
-                acredorinical_total += Float.parseFloat(b.getHaber_movimiento());
-                debe_total += Float.parseFloat(b.getDebe_movimiento());
-                haber_total += Float.parseFloat(b.getHaber_movimiento());
-                deudorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe_movimiento());
-                acredorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber_movimiento());
+                deudorInicial_total += Float.parseFloat(b.getDebe());
+                acredorinical_total += Float.parseFloat(b.getHaber());
+                debe_total += Float.parseFloat(b.getDebe());
+                haber_total += Float.parseFloat(b.getHaber());
+                deudorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
+                acredorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
                 i++;
             }
 
