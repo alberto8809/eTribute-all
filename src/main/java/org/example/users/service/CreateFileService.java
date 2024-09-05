@@ -289,11 +289,10 @@ public class CreateFileService {
                                                 }
                                             }
 
-
                                             policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getFolio());
-                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                             policytoDB.setSaldo_inicial("0");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
@@ -377,7 +376,7 @@ public class CreateFileService {
                                             policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                             policytoDB.setSaldo_inicial("0");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
@@ -463,7 +462,7 @@ public class CreateFileService {
                                             policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                             policytoDB.setSaldo_inicial("0");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
@@ -525,7 +524,7 @@ public class CreateFileService {
                                             policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                             policytoDB.setSaldo_inicial("0");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
@@ -590,7 +589,7 @@ public class CreateFileService {
                                             policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                             policytoDB.setSaldo_inicial("0");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
@@ -645,7 +644,7 @@ public class CreateFileService {
                                             policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                            policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                             policytoDB.setSaldo_inicial("0");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
@@ -732,7 +731,7 @@ public class CreateFileService {
                                     policytoDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
                                     policytoDB.setFecha(policyObjFile.getDate());
                                     policytoDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
-                                    policytoDB.setTotal(policyObjFile.getPolicyObj().getTotalAmount());
+                                    policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
                                     policytoDB.setSaldo_inicial("0");
                                     double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                     policytoDB.setSaldo_final(String.valueOf(fin));
