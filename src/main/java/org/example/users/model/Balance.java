@@ -12,8 +12,8 @@ public class Balance {
     private String nombre;
     private String deudor_inicial;
     private String acredor_inicial;
-    private String debe;
-    private String haber;
+    private String debe_movimiento;
+    private String haber_movimiento;
     private String deudor_final;
     private String acredor_final;
 
