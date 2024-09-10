@@ -119,8 +119,8 @@ public class AuxiliarService {
                 acredorinical_total += Float.parseFloat(b.getHaber());
                 debe_total += Float.parseFloat(b.getDebe());
                 haber_total += Float.parseFloat(b.getHaber());
-                deudorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
-                acredorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
+                deudorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
+                acredorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
                 i++;
             }
 
@@ -130,8 +130,8 @@ public class AuxiliarService {
             balanceTotal.setAcredorinical_total(String.valueOf(acredorinical_total));
             balanceTotal.setDebe_total(String.valueOf(debe_total));
             balanceTotal.setHaber_total(String.valueOf(haber_total));
-            balanceTotal.setDeudorFinal_total(String.valueOf(deudorFinal_total));
-            balanceTotal.setAcredorFinal_total(String.valueOf(acredorFinal_total));
+            balanceTotal.setDeudorFinal_total(String.valueOf(acredorFinal_total));
+            balanceTotal.setAcredorFinal_total(String.valueOf(deudorFinal_total));
 
 
             obj.put("balanza", values);
