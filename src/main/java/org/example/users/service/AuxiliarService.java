@@ -119,8 +119,8 @@ public class AuxiliarService {
                 acredorinical_total += Float.parseFloat(b.getHaber());
                 debe_total += Float.parseFloat(b.getDebe());
                 haber_total += Float.parseFloat(b.getHaber());
-                deudorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
-                acredorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
+                deudorFinal_total += acredorinical_total + Float.parseFloat(b.getHaber());
+                acredorFinal_total += deudorInicial_total + Float.parseFloat(b.getDebe());
                 i++;
             }
 
