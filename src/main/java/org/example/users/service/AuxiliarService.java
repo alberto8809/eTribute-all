@@ -98,9 +98,10 @@ public class AuxiliarService {
                 balance.setAcredor_inicial("0");
                 balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
                 balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
+
                 float sum = Float.parseFloat(balance.getDeudor_inicial()) + Float.parseFloat(balance.getDebe());
-                balance.setDeudor_final(String.valueOf(sum));
                 float sum1 = Float.parseFloat(balance.getAcredor_inicial()) + Float.parseFloat(balance.getHaber());
+                balance.setDeudor_final(String.valueOf(sum));
                 balance.setAcredor_final(String.valueOf(sum1));
                 obj2.put(listAuxiliar.getCuenta(), balance);
             }
@@ -130,8 +131,8 @@ public class AuxiliarService {
             balanceTotal.setAcredorinical_total(String.valueOf(acredorinical_total));
             balanceTotal.setDebe_total(String.valueOf(debe_total));
             balanceTotal.setHaber_total(String.valueOf(haber_total));
-            balanceTotal.setDeudorFinal_total(String.valueOf(acredorFinal_total));//
-            balanceTotal.setAcredorFinal_total(String.valueOf(deudorFinal_total));//
+            balanceTotal.setDeudorFinal_total(String.valueOf(deudorFinal_total));
+            balanceTotal.setAcredorFinal_total(String.valueOf(acredorFinal_total));
 
 
             obj.put("balanza", values);
