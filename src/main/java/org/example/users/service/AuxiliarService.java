@@ -1,5 +1,7 @@
 package org.example.users.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.example.users.model.*;
 import org.example.users.repository.AuxiliarRepository;
 import org.example.users.repository.CuentaContableRepository;
@@ -20,7 +22,7 @@ public class AuxiliarService {
     CuentaContableRepository cuentaContableRepository;
     @Autowired
     JdbcClient jdbc;
-
+    public static final Logger LOGGER = LogManager.getLogger(AuxiliarService.class);
 
     public Map<String, List<ListAuxiliar>> getListAccounts(String account, String inicial_date, String final_date) {
         Map<String, List<ListAuxiliar>> list = new HashMap<>();
@@ -275,9 +277,9 @@ public class AuxiliarService {
         b.setCodigo_agrupador(c.getCodigo_agrupador());
         b.setNombre_cuenta(c.getNombre_cuenta());
         b.setImporte_anual("0");
-        b.setImporte_mensual("0");
+        b.setImporte_mensual(cuentaContableRepository.getValuesOfTable("401", initial, final_));
         b.setPorcentaje_mensual("0");
-        b.setImporte_anual("0");
+        b.setImporte_anual(cuentaContableRepository.getValuesOfTable("401", initial, final_));
         b.setPorcentaje_anual("0");
 
 
@@ -287,9 +289,9 @@ public class AuxiliarService {
         b2.setCodigo_agrupador(d.getCodigo_agrupador());
         b2.setNombre_cuenta(d.getNombre_cuenta());
         b2.setImporte_anual("0");
-        b2.setImporte_mensual("0");
+        b2.setImporte_mensual(cuentaContableRepository.getValuesOfTable("501", initial, final_));
         b2.setPorcentaje_mensual("0");
-        b2.setImporte_anual("0");
+        b2.setImporte_anual(cuentaContableRepository.getValuesOfTable("501", initial, final_));
         b2.setPorcentaje_anual("0");
 
 
@@ -306,9 +308,9 @@ public class AuxiliarService {
         b3.setCodigo_agrupador(c3.getCodigo_agrupador());
         b3.setNombre_cuenta(c3.getNombre_cuenta());
         b3.setImporte_anual("0");
-        b3.setImporte_mensual("0");
+        b3.setImporte_mensual(cuentaContableRepository.getValuesOfTable("503", initial, final_));
         b3.setPorcentaje_mensual("0");
-        b3.setImporte_anual("0");
+        b3.setImporte_anual(cuentaContableRepository.getValuesOfTable("503", initial, final_));
         b3.setPorcentaje_anual("0");
 
         CuentaContable c4 = cuentaContableRepository.getValuesOf601(account_id, initial, final_);
@@ -317,9 +319,9 @@ public class AuxiliarService {
         b4.setCodigo_agrupador(c4.getCodigo_agrupador());
         b4.setNombre_cuenta(c4.getNombre_cuenta());
         b4.setImporte_anual("0");
-        b4.setImporte_mensual("0");
+        b4.setImporte_mensual(cuentaContableRepository.getValuesOfTable("601", initial, final_));
         b4.setPorcentaje_mensual("0");
-        b4.setImporte_anual("0");
+        b4.setImporte_anual(cuentaContableRepository.getValuesOfTable("601", initial, final_));
         b4.setPorcentaje_anual("0");
 
         CuentaContable d1 = cuentaContableRepository.getValuesOf613(account_id, initial, final_);
@@ -328,9 +330,9 @@ public class AuxiliarService {
         b0.setCodigo_agrupador(d1.getCodigo_agrupador());
         b0.setNombre_cuenta(d1.getNombre_cuenta());
         b0.setImporte_anual("0");
-        b0.setImporte_mensual("0");
+        b0.setImporte_mensual(cuentaContableRepository.getValuesOfTable("613", initial, final_));
         b0.setPorcentaje_mensual("0");
-        b0.setImporte_anual("0");
+        b0.setImporte_anual(cuentaContableRepository.getValuesOfTable("613", initial, final_));
         b0.setPorcentaje_anual("0");
 
         CuentaContable c6 = cuentaContableRepository.getValuesOf704(account_id, initial, final_);
@@ -339,9 +341,9 @@ public class AuxiliarService {
         b6.setCodigo_agrupador(c6.getCodigo_agrupador());
         b6.setNombre_cuenta(c6.getNombre_cuenta());
         b6.setImporte_anual("0");
-        b6.setImporte_mensual("0");
+        b6.setImporte_mensual(cuentaContableRepository.getValuesOfTable("704", initial, final_));
         b6.setPorcentaje_mensual("0");
-        b6.setImporte_anual("0");
+        b6.setImporte_anual(cuentaContableRepository.getValuesOfTable("704", initial, final_));
         b6.setPorcentaje_anual("0");
 
         CuentaContable c7 = cuentaContableRepository.getValuesOf701(account_id, initial, final_);
@@ -350,9 +352,9 @@ public class AuxiliarService {
         b7.setCodigo_agrupador(c7.getCodigo_agrupador());
         b7.setNombre_cuenta(c7.getNombre_cuenta());
         b7.setImporte_anual("0");
-        b7.setImporte_mensual("0");
+        b7.setImporte_mensual(cuentaContableRepository.getValuesOfTable("701", initial, final_));
         b7.setPorcentaje_mensual("0");
-        b7.setImporte_anual("0");
+        b7.setImporte_anual(cuentaContableRepository.getValuesOfTable("701", initial, final_));
         b7.setPorcentaje_anual("0");
 
 
