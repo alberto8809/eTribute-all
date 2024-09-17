@@ -217,7 +217,12 @@ public class CreateFilePDFPolicy {
 
                 }
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMetodo().equals("PPD")) {
-                LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} . {}--- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta(), policyObjFile.getNameFile());
+
+                if (policyObjFile.getCuenta() == null) {
+                    policyObjFile.setCuenta("0");
+                }
+
+                LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
 
 
             } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("E")) {
@@ -245,7 +250,10 @@ public class CreateFilePDFPolicy {
                                 policyObjFile.getPolicyObj().getUsoCFDI().equals(CN01.getValue())) {
                     LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
                 }
-            } else if (policyObjFile.getPolicyObj().getMetodo().equals("P")) {
+            } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("P")) {
+                if (policyObjFile.getCuenta() == null) {
+                    policyObjFile.setCuenta("0");
+                }
                 LOGGER.info(" --- {} . {} . {}  . {} .  {} . {} . {} . {} --- ", type, policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getMethodPayment(), policyObjFile.getPolicyObj().getRegimen(), policyObjFile.getPolicyObj().getUsoCFDI(), policyObjFile.getCuenta_method(), policyObjFile.getTax_id(), policyObjFile.getCuenta());
             }
 

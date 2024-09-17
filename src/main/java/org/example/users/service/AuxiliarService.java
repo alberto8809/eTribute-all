@@ -34,7 +34,9 @@ public class AuxiliarService {
                 ListAuxiliar listAuxiliar = new ListAuxiliar();
                 listAuxiliar.setConcepto(aux.getDescripcion());
                 listAuxiliar.setCuenta(aux.getCuenta());
-                addingResponse.put(aux.getCuenta(), listAuxiliar);
+                if (!aux.getCuenta().equals("0.0")) {
+                    addingResponse.put(aux.getCuenta(), listAuxiliar);
+                }
 
             }
         }
