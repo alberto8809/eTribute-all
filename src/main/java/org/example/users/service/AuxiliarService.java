@@ -89,25 +89,32 @@ public class AuxiliarService {
     public Map<String, Object> getAllBalance(String account_id, String initial_date, String final_date) {
         List<Auxiliar> listAuxiliars = auxiliarRepository.getAuxiliar(account_id, initial_date, final_date);
         List<Object> values = new ArrayList<>();
+        Map<String, String> acc = new HashMap<>();
         Map<String, Object> obj = new HashMap<>();
         Map<String, Object> obj2 = new HashMap<>();
         if (!listAuxiliars.isEmpty()) {
             for (Auxiliar listAuxiliar : listAuxiliars) {
+                if (!listAuxiliar.getCuenta().equals("0.0")) {
+                    acc.put(listAuxiliar.getCuenta(), listAuxiliar.getDescripcion());
+                }
+            }
+
+            for (Map.Entry<String, String> re : acc.entrySet()) {
                 Balance balance = new Balance();
-                balance.setCuenta(listAuxiliar.getCuenta());
-                balance.setNombre(listAuxiliar.getDescripcion());
+                balance.setCuenta(re.getKey());
+                balance.setNombre(re.getValue());
                 //balance.setDeudor_inicial(auxiliarRepository.getDeudor_inicial(listAuxiliar.getCuenta(), initial_date, final_date));
                 balance.setDeudor_inicial("0");
                 //balance.setAcredor_inicial(auxiliarRepository.getAcredor_final(listAuxiliar.getCuenta(), initial_date, final_date));
                 balance.setAcredor_inicial("0");
-                balance.setDebe(auxiliarRepository.getSumCargo(listAuxiliar.getCuenta()));
-                balance.setHaber(auxiliarRepository.getSumAbono(listAuxiliar.getCuenta()));
+                balance.setDebe(auxiliarRepository.getSumCargo(re.getKey()));
+                balance.setHaber(auxiliarRepository.getSumAbono(re.getKey()));
 
                 float sum = Float.parseFloat(balance.getDeudor_inicial()) + Float.parseFloat(balance.getDebe());
                 float sum1 = Float.parseFloat(balance.getAcredor_inicial()) + Float.parseFloat(balance.getHaber());
                 balance.setDeudor_final(String.valueOf(sum));
                 balance.setAcredor_final(String.valueOf(sum1));
-                obj2.put(listAuxiliar.getCuenta(), balance);
+                obj2.put(re.getKey(), balance);
             }
 
             float deudorInicial_total = 0;
