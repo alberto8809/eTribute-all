@@ -71,7 +71,10 @@ public interface CuentaContableRepository extends JpaRepository<CuentaContable, 
     @Query(value = "SELECT *  FROM dbmaster.cuentas WHERE codigo_agrupador='701'", nativeQuery = true)
     CuentaContable getValuesOf701(String account_id, String initial, String final_date);
 
-    @Query(value = "SELECT SUM(pof.saldo_final) FROM  dbmaster.policy pof where pof.cuenta LIKE :account_id% AND pof.fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
-    String getValuesOfTable(String account_id, String initial_date, String final_date);
+    @Query(value = "SELECT DISTINCT cuenta FROM  dbmaster.policy  where cuenta LIKE :account_id% AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
+    List<String> getAccountsOfTable(String account_id, String initial_date, String final_date);
+
+    @Query(value = "SELECT SUM(saldo_final) FROM  dbmaster.policy  where cuenta LIKE :account_id% AND fecha BETWEEN :initial_date AND :final_date", nativeQuery = true)
+   String getValuesOfTable(String account_id, String initial_date, String final_date);
 
 }

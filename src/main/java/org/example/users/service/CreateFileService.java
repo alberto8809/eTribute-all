@@ -26,8 +26,6 @@ import java.util.*;
 public class CreateFileService {
     // private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
     private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
-    //public static long count2 = 1;
-    //public static long count = 0;
     public static final Logger LOGGER = LogManager.getLogger(CreateFileService.class);
 
     @Autowired
@@ -310,7 +308,8 @@ public class CreateFileService {
                                         policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                         policyAccountDB.setPoliza(policyObjFile.getFolio());
                                         policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        policyAccountDB.setHaber("0");
                                         policyAccountDB.setFecha(policyObjFile.getDate());
                                         policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                         policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -319,13 +318,7 @@ public class CreateFileService {
                                         policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                         policyAccountDB.setAccount_id(account_id);
                                         policyAccountDB.setFile_name(file.getName());
-                                        // LOGGER.info("P {}", policyAccountDB);
                                         saveObjRepository.save(policyAccountDB);
-//                                        LOGGER.error(" P {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                                policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                                rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                                policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                                policyObjFile.getPolicyObj().getAmount());
                                     }
 
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
@@ -421,7 +414,8 @@ public class CreateFileService {
                                         policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                         policyAccountDB.setPoliza(policyObjFile.getFolio());
                                         policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        policyAccountDB.setHaber("0");
                                         policyAccountDB.setFecha(policyObjFile.getDate());
                                         policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                         policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -430,13 +424,7 @@ public class CreateFileService {
                                         policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                         policyAccountDB.setAccount_id(account_id);
                                         policyAccountDB.setFile_name(file.getName());
-                                        // LOGGER.info("I PUE {}", policyAccountDB);
                                         saveObjRepository.save(policyAccountDB);
-//                                        LOGGER.error(" I PUE {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                                policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                                rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                                policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                                policyObjFile.getPolicyObj().getAmount());
                                     }
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PPD")) {
 
@@ -534,7 +522,8 @@ public class CreateFileService {
                                         policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                         policyAccountDB.setPoliza(policyObjFile.getFolio());
                                         policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        policyAccountDB.setHaber("0");
                                         policyAccountDB.setFecha(policyObjFile.getDate());
                                         policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                         policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -544,13 +533,7 @@ public class CreateFileService {
                                         policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                         policyAccountDB.setAccount_id(account_id);
                                         policyAccountDB.setFile_name(file.getName());
-                                        //LOGGER.info("I PPD {}", policyAccountDB);
                                         saveObjRepository.save(policyAccountDB);
-//                                        LOGGER.error("I PPD {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                                policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                                rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                                policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                                policyObjFile.getPolicyObj().getAmount());
                                     }
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("E")) {
 
@@ -622,7 +605,8 @@ public class CreateFileService {
                                         policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                         policyAccountDB.setPoliza(policyObjFile.getFolio());
                                         policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        policyAccountDB.setHaber("0");
                                         policyAccountDB.setFecha(policyObjFile.getDate());
                                         policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                         policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -631,13 +615,7 @@ public class CreateFileService {
                                         policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                         policyAccountDB.setAccount_id(account_id);
                                         policyAccountDB.setFile_name(file.getName());
-                                        //LOGGER.info("E {}", policyAccountDB);
                                         saveObjRepository.save(policyAccountDB);
-//                                        LOGGER.error("E {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                                policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                                rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                                policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                                policyObjFile.getPolicyObj().getAmount());
                                     }
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
 
@@ -711,7 +689,8 @@ public class CreateFileService {
                                         policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                         policyAccountDB.setPoliza(policyObjFile.getFolio());
                                         policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        policyAccountDB.setHaber("0");
                                         policyAccountDB.setFecha(policyObjFile.getDate());
                                         policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                         policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -720,13 +699,7 @@ public class CreateFileService {
                                         policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                         policyAccountDB.setAccount_id(account_id);
                                         policyAccountDB.setFile_name(file.getName());
-                                        //LOGGER.info("N {}", policyAccountDB);
                                         saveObjRepository.save(policyAccountDB);
-//                                        LOGGER.error("N {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                                policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                                rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                                policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                                policyObjFile.getPolicyObj().getAmount());
                                     }
 
                                 } else {
@@ -790,7 +763,8 @@ public class CreateFileService {
                                         policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                         policyAccountDB.setPoliza(policyObjFile.getFolio());
                                         policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                        policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                        policyAccountDB.setHaber("0");
                                         policyAccountDB.setFecha(policyObjFile.getDate());
                                         policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                         policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -799,13 +773,7 @@ public class CreateFileService {
                                         policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                         policyAccountDB.setAccount_id(account_id);
                                         policyAccountDB.setFile_name(file.getName());
-                                        //LOGGER.info("else {}", policyAccountDB);
                                         saveObjRepository.save(policyAccountDB);
-//                                        LOGGER.error("else {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                                policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                                rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                                policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                                policyObjFile.getPolicyObj().getAmount());
                                     }
                                 }
                             }
@@ -903,7 +871,8 @@ public class CreateFileService {
                                 policyAccountDB.setProveedor(policyObjFile.getPolicyObj().getCompanyName());
                                 policyAccountDB.setPoliza(policyObjFile.getFolio());
                                 policyAccountDB.setDebe(policyObjFile.getPolicyObj().getAmount());
-                                policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                //policyAccountDB.setHaber(String.valueOf(policyObjFile.getPolicyObj().getSubtotal()));
+                                policyAccountDB.setHaber("0");
                                 policyAccountDB.setFecha(policyObjFile.getDate());
                                 policyAccountDB.setReferencia(policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID());
                                 policyAccountDB.setTotal(policyObjFile.getPolicyObj().getAmount());
@@ -912,13 +881,8 @@ public class CreateFileService {
                                 policyAccountDB.setSaldo_final(String.valueOf(fin2));
                                 policyAccountDB.setAccount_id(account_id);
                                 policyAccountDB.setFile_name(file.getName());
-                                // LOGGER.info("ingresos {}", policyAccountDB);
                                 saveObjRepository.save(policyAccountDB);
-//                                LOGGER.error("ingresos {} . {} .{}. {}. {}. {}. {}. {}. {}. {}.  {}. {}  ",
-//                                        policyObjFile.getCuenta(), policyObjFile.getPolicyObj().getConcepto_Descripcion(), policyObjFile.getClient(),
-//                                        rfc, type, policyObjFile.getPolicyObj().getCompanyName(), policyObjFile.getFolio(), policyObjFile.getPolicyObj().getAmount(),
-//                                        policyObjFile.getPolicyObj().getSubtotal(), policyObjFile.getDate(), policyObjFile.getPolicyObj().getTimbreFiscalDigital_UUID(),
-//                                        policyObjFile.getPolicyObj().getAmount());
+
                             }
                         }
                     }

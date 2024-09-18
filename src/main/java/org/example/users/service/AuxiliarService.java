@@ -278,10 +278,15 @@ public class AuxiliarService {
         b.setNivel(c.getNivel());
         b.setCodigo_agrupador(c.getCodigo_agrupador());
         b.setNombre_cuenta(c.getNombre_cuenta());
-        b.setImporte_anual("0");
-        b.setImporte_mensual(cuentaContableRepository.getValuesOfTable("401", initial, final_));
+        List<String> acc3 = cuentaContableRepository.getAccountsOfTable("401", initial, final_);
+        double sum3 = 0;
+        for (String s : acc3) {
+            sum3 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+
+        b.setImporte_mensual(String.valueOf(sum3));
         b.setPorcentaje_mensual("0");
-        b.setImporte_anual(cuentaContableRepository.getValuesOfTable("401", initial, final_));
+        b.setImporte_anual(String.valueOf(sum3));
         b.setPorcentaje_anual("0");
 
 
@@ -290,10 +295,14 @@ public class AuxiliarService {
         b2.setNivel(d.getNivel());
         b2.setCodigo_agrupador(d.getCodigo_agrupador());
         b2.setNombre_cuenta(d.getNombre_cuenta());
-        b2.setImporte_anual("0");
-        b2.setImporte_mensual(cuentaContableRepository.getValuesOfTable("501", initial, final_));
+        List<String> acc2 = cuentaContableRepository.getAccountsOfTable("501", initial, final_);
+        double sum2 = 0;
+        for (String s : acc2) {
+            sum2 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b2.setImporte_mensual(String.valueOf(sum2));
         b2.setPorcentaje_mensual("0");
-        b2.setImporte_anual(cuentaContableRepository.getValuesOfTable("501", initial, final_));
+        b2.setImporte_anual(String.valueOf(sum2));
         b2.setPorcentaje_anual("0");
 
 
@@ -302,6 +311,16 @@ public class AuxiliarService {
         b9.setNivel(c9.getNivel());
         b9.setCodigo_agrupador(c9.getCodigo_agrupador());
         b9.setNombre_cuenta(c9.getNombre_cuenta());
+        b9.setImporte_anual("0");
+        List<String> acc9 = cuentaContableRepository.getAccountsOfTable("605", initial, final_);
+        double sum9 = 0;
+        for (String s : acc9) {
+            sum9 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b9.setImporte_mensual(String.valueOf(sum9));
+        b9.setPorcentaje_mensual("0");
+        b9.setImporte_anual(String.valueOf(sum9));
+        b9.setPorcentaje_anual("0");
 
 
         CuentaContable c3 = cuentaContableRepository.getValuesOf503(account_id, initial, final_);
@@ -309,32 +328,46 @@ public class AuxiliarService {
         b3.setNivel(c3.getNivel());
         b3.setCodigo_agrupador(c3.getCodigo_agrupador());
         b3.setNombre_cuenta(c3.getNombre_cuenta());
-        b3.setImporte_anual("0");
-        b3.setImporte_mensual(cuentaContableRepository.getValuesOfTable("503", initial, final_));
+        List<String> acc33 = cuentaContableRepository.getAccountsOfTable("503", initial, final_);
+        double sum33 = 0;
+        for (String s : acc33) {
+            sum33 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b3.setImporte_mensual(String.valueOf(sum33));
         b3.setPorcentaje_mensual("0");
-        b3.setImporte_anual(cuentaContableRepository.getValuesOfTable("503", initial, final_));
+        b3.setImporte_anual(String.valueOf(sum33));
         b3.setPorcentaje_anual("0");
+
 
         CuentaContable c4 = cuentaContableRepository.getValuesOf601(account_id, initial, final_);
         BalanceGeneral b4 = new BalanceGeneral();
         b4.setNivel(c4.getNivel());
         b4.setCodigo_agrupador(c4.getCodigo_agrupador());
         b4.setNombre_cuenta(c4.getNombre_cuenta());
-        b4.setImporte_anual("0");
-        b4.setImporte_mensual(cuentaContableRepository.getValuesOfTable("601", initial, final_));
+        List<String> acc = cuentaContableRepository.getAccountsOfTable("601", initial, final_);
+        double sum = 0;
+        for (String s : acc) {
+            sum += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b4.setImporte_mensual(String.valueOf(sum));
         b4.setPorcentaje_mensual("0");
-        b4.setImporte_anual(cuentaContableRepository.getValuesOfTable("601", initial, final_));
+        b4.setImporte_anual(String.valueOf(sum));
         b4.setPorcentaje_anual("0");
+
 
         CuentaContable d1 = cuentaContableRepository.getValuesOf613(account_id, initial, final_);
         BalanceGeneral b0 = new BalanceGeneral();
         b0.setNivel(d1.getNivel());
         b0.setCodigo_agrupador(d1.getCodigo_agrupador());
         b0.setNombre_cuenta(d1.getNombre_cuenta());
-        b0.setImporte_anual("0");
-        b0.setImporte_mensual(cuentaContableRepository.getValuesOfTable("613", initial, final_));
+        List<String> acc13 = cuentaContableRepository.getAccountsOfTable("613", initial, final_);
+        double sum13 = 0;
+        for (String s : acc13) {
+            sum13 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b0.setImporte_mensual(String.valueOf(sum13));
         b0.setPorcentaje_mensual("0");
-        b0.setImporte_anual(cuentaContableRepository.getValuesOfTable("613", initial, final_));
+        b0.setImporte_anual(String.valueOf(sum13));
         b0.setPorcentaje_anual("0");
 
         CuentaContable c6 = cuentaContableRepository.getValuesOf704(account_id, initial, final_);
@@ -342,21 +375,32 @@ public class AuxiliarService {
         b6.setNivel(c6.getNivel());
         b6.setCodigo_agrupador(c6.getCodigo_agrupador());
         b6.setNombre_cuenta(c6.getNombre_cuenta());
-        b6.setImporte_anual("0");
-        b6.setImporte_mensual(cuentaContableRepository.getValuesOfTable("704", initial, final_));
-        b6.setPorcentaje_mensual("0");
-        b6.setImporte_anual(cuentaContableRepository.getValuesOfTable("704", initial, final_));
-        b6.setPorcentaje_anual("0");
+
+        List<String> acc04 = cuentaContableRepository.getAccountsOfTable("704", initial, final_);
+        double sum04 = 0;
+        for (String s : acc04) {
+            sum04 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b0.setImporte_mensual(String.valueOf(sum04));
+        b0.setPorcentaje_mensual("0");
+        b0.setImporte_anual(String.valueOf(sum04));
+        b0.setPorcentaje_anual("0");
+
 
         CuentaContable c7 = cuentaContableRepository.getValuesOf701(account_id, initial, final_);
         BalanceGeneral b7 = new BalanceGeneral();
         b7.setNivel(c7.getNivel());
         b7.setCodigo_agrupador(c7.getCodigo_agrupador());
         b7.setNombre_cuenta(c7.getNombre_cuenta());
-        b7.setImporte_anual("0");
-        b7.setImporte_mensual(cuentaContableRepository.getValuesOfTable("701", initial, final_));
+
+        List<String> acc01 = cuentaContableRepository.getAccountsOfTable("701", initial, final_);
+        double sum01 = 0;
+        for (String s : acc01) {
+            sum01 += Double.parseDouble(cuentaContableRepository.getValuesOfTable(s, initial, final_));
+        }
+        b7.setImporte_mensual(String.valueOf(sum01));
         b7.setPorcentaje_mensual("0");
-        b7.setImporte_anual(cuentaContableRepository.getValuesOfTable("701", initial, final_));
+        b7.setImporte_anual(String.valueOf(sum01));
         b7.setPorcentaje_anual("0");
 
 
