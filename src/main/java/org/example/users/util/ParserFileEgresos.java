@@ -294,6 +294,7 @@ public class ParserFileEgresos {
             } else {
                 values.setTraslado(new ArrayList<>());
                 values.setRetencion_importe(new ArrayList<>());
+                values.setClaveProdServ(new ArrayList<>());
             }
 
 
