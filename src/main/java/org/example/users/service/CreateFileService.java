@@ -204,8 +204,8 @@ public class CreateFileService {
             rv.removeIf(n -> n.getUrl_pdf() == null);
 
 
-            finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
-            finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
+            finalResult.put("Emitidas", filesXMLFromAWS.get("Recibidas"));
+            finalResult.put("Recibidas", filesXMLFromAWS.get("Emitidas"));
 
 
         }
