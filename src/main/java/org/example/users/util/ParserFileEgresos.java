@@ -264,8 +264,12 @@ public class ParserFileEgresos {
             if (!values.getTypeOfComprobante().equals("P")) {
                 NodeList ClaveProdServ = comprobanteElement.getElementsByTagName("cfdi:Concepto");
                 Element claveProdServ = (Element) ClaveProdServ.item(0);
-                values.setClaveProdServ(Collections.singletonList(claveProdServ.getAttribute("ClaveProdServ")));
+                if (claveProdServ.getAttribute("ClaveProdServ") != null) {
 
+                    values.setClaveProdServ(Collections.singletonList(claveProdServ.getAttribute("ClaveProdServ")));
+                } else {
+                    values.setClaveProdServ(new ArrayList<>());
+                }
                 //------------- Traslado ----------------
                 NodeList traslados = comprobanteElement.getElementsByTagName("cfdi:Traslado");
                 //LOGGER.info("traslados: {} ", traslados.getLength());
