@@ -39,6 +39,8 @@ public class PolicyObjParser {
     private String methodPayment;
     private String typeOfPayment;
     private String client;
-   private String companyName;
+    private String companyName;
+    private TypeOfEgresoN typeOfEgresoN;
+
 
 }

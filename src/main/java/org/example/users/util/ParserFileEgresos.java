@@ -4,6 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.example.users.model.PolicyObjFile;
 import org.example.users.model.PolicyObjParser;
+import org.example.users.model.TypeOfEgresoN;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -15,7 +16,8 @@ import java.util.*;
 
 public class ParserFileEgresos {
     public static Logger LOGGER = LogManager.getLogger(PolicyObjParser.class);
-    public static long count = 0;
+    private static String local_path = "/Users/marioalberto/IdeaProjects/eTribute-all/";
+    private static final String server_path = "/home/ubuntu/endpoints/eTribute-all/";
 
     public static PolicyObjFile getParse(String path) {
 
@@ -45,14 +47,10 @@ public class ParserFileEgresos {
             //LOGGER.info("currentDate {}", currentDate);
 
             Element payment1 = doc.getDocumentElement();
-            String typeOfPayment = payment1.getAttribute("FormaPago").isEmpty() || payment1.getAttribute("FormaPago") == null ? "99" : payment1.getAttribute("FormaPago");
+            values.setTypeOfPayment(payment1.getAttribute("FormaPago").isEmpty() || payment1.getAttribute("FormaPago") == null ? "99" : payment1.getAttribute("FormaPago"));
 
-            //LOGGER.info("typeOfPayment {}", typeOfPayment);
-            //System.out.println(currentDate.substring(0,10));
-            //System.out.println("newdate: "+currentDate.replace("T"," "));
 
             Element method2 = doc.getDocumentElement();
-            //repetido
             values.setMethodPayment(method2.getAttribute("MetodoPago"));
             values.setMetodo(method2.getAttribute("MetodoPago"));
             NodeList repectEgr2 = doc.getElementsByTagName("cfdi:Receptor");
@@ -67,16 +65,10 @@ public class ParserFileEgresos {
             Element rcp2 = (Element) emisor2.item(0);
             values.setCompanyName(rcp2.getAttribute("Nombre"));
 
-
-            // Element payment = doc.getDocumentElement();
-            //System.out.println("payment --- "+payment.getAttribute("FormaPago"));
             Element comprobante = doc.getDocumentElement();
 
 
             values.setTypeOfComprobante(comprobante.getAttribute("TipoDeComprobante"));
-            //System.out.println("comprobante --- "+comprobante.getAttribute("TipoDeComprobante"));
-            //String typeOfCom = comprobante.getAttribute("TipoDeComprobante");
-            //LOGGER.info("typeOfCom {}", values.getTypeOfComprobante());
 
             if (values.getTypeOfComprobante().equals("P")) {
                 NodeList py = comprobanteElement.getElementsByTagName("pago20:Pago");
@@ -129,8 +121,6 @@ public class ParserFileEgresos {
 
             NodeList repectEgr = comprobanteElement.getElementsByTagName("cfdi:Receptor");
             Element rEgr = (Element) repectEgr.item(0);
-            //System.out.println(" rEgr --- > "+rEgr.getAttribute("Nombre"));
-
 
             NodeList datoCli = comprobanteElement.getElementsByTagName("cfdi:Receptor");
             Element cliente = (Element) datoCli.item(0);
@@ -197,6 +187,34 @@ public class ParserFileEgresos {
             Element ime = (Element) impe.item(0);
             values.setImpuestos(ime.getAttribute("TotalImpuestosTrasladados").isEmpty() ? "0" : ime.getAttribute("TotalImpuestosTrasladados"));
             */
+
+            if (values.getTypeOfComprobante().equals("N")) {
+                values.setAmount("0");
+                NodeList receptor = doc.getElementsByTagName("nomina12:Deducciones");
+                Element receptor1 = (Element) receptor.item(0);
+                TypeOfEgresoN tipoDeEgresoN = new TypeOfEgresoN();
+                tipoDeEgresoN.setCuenta("601.23");
+                tipoDeEgresoN.setDescripcion("Previsión social");
+                tipoDeEgresoN.setAbonoIMSS("211.01");
+                tipoDeEgresoN.setAbonoDescipcion("Provisión de IMSS patronal por pagar");
+                tipoDeEgresoN.setIsr("216.01");
+                tipoDeEgresoN.setIsrDescripcion("Impuestos retenidos de ISR por sueldos y salarios");
+                List<String> percepciones = new ArrayList<>();
+                percepciones.add(receptor1.getAttribute("TotalOtrasDeducciones") == null ? "0" : receptor1.getAttribute("TotalOtrasDeducciones"));
+                percepciones.add(receptor1.getAttribute("TotalImpuestosRetenidos") == null ? "0" : receptor1.getAttribute("TotalImpuestosRetenidos"));
+                tipoDeEgresoN.setPercepciones(percepciones);
+                values.setTypeOfEgresoN(tipoDeEgresoN);
+
+                values.setRetencion_importe(new ArrayList<>());
+                values.setImpuestos("0.0");
+                values.setCargo(new ArrayList<>());
+                values.setAbono(new ArrayList<>());
+                values.setVenta_id("209.01");
+                values.setIva(new HashMap<>());
+                values.setTax_amount(new ArrayList<>());
+
+            }
+
 
             NodeList impeT = comprobanteElement.getElementsByTagName("cfdi:Traslados");
             //Element tras= (Element) impeT.item(0);
@@ -288,13 +306,17 @@ public class ParserFileEgresos {
                 }
                 NodeList dr = comprobanteElement.getElementsByTagName("pago20:TrasladoDR");
                 Element d = (Element) dr.item(0);
-                values.setAmount(d.getAttribute("ImporteDR"));
+                if (d == null) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                } else {
+                    values.setAmount(d.getAttribute("ImporteDR"));
+                }
             }
 
-            return new PolicyObjFile(values, path, companyName, cli, currentDate.substring(0, 10), typeOf, typeOfPayment);
+            return new PolicyObjFile(values, path, companyName, cli, currentDate.substring(0, 10), typeOf, values.getTypeOfPayment());
 
         } catch (Exception e) {
-            System.out.println("ParserFileEgresos " + e.getMessage() + e.getLocalizedMessage());
+            LOGGER.error("ParserFileEgresos " + e.getMessage() + e.getLocalizedMessage());
         }
         return null;
     }

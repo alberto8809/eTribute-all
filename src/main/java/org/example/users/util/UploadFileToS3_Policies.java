@@ -88,10 +88,14 @@ public class UploadFileToS3_Policies {
                         String objectUrl = s3Client.generatePresignedUrl(request).toString();
                         request.getRequestParameters();
                         String file = objectSummary.getKey().replace(rfc + "/" + type + "/EGRESOS/", "");
-                        LocalDate dates = LocalDate.parse(file.substring(0, 10));
-                        LocalDate initial = LocalDate.parse(initial_date);
-                        LocalDate ending = LocalDate.parse(final_date);
-                        if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                        if (rfc.equals("SAPE550207J9A")) {
+                            LocalDate dates = LocalDate.parse(file.substring(0, 10));
+                            LocalDate initial = LocalDate.parse(initial_date);
+                            LocalDate ending = LocalDate.parse(final_date);
+                            if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                                egresosXML.put(file, objectUrl);
+                            }
+                        } else {
                             egresosXML.put(file, objectUrl);
                         }
                     } else if (objectSummary.getKey().contains(rfc + "/" + type + "/INGRESOS/")) {
@@ -100,17 +104,29 @@ public class UploadFileToS3_Policies {
                         String objectUrl = s3Client.generatePresignedUrl(request).toString();
                         request.getRequestParameters();
                         String file = objectSummary.getKey().replace(rfc + "/" + type + "/INGRESOS/", "");
-                        LocalDate dates = LocalDate.parse(file.substring(0, 10));
-                        LocalDate initial = LocalDate.parse(initial_date);
-                        LocalDate ending = LocalDate.parse(final_date);
-                        if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                        if (rfc.equals("SAPE550207J9A")) {
+                            LocalDate dates = LocalDate.parse(file.substring(0, 10));
+                            LocalDate initial = LocalDate.parse(initial_date);
+                            LocalDate ending = LocalDate.parse(final_date);
+                            if ((dates.isAfter(initial) && dates.isBefore(ending)) || (dates.isEqual(initial) || dates.isEqual(ending))) {
+                                ingresosXML.put(file, objectUrl);
+                            }
+                        } else {
                             ingresosXML.put(file, objectUrl);
                         }
+
 
                     }
 
                 }
+                //removing key or values emptys
+                ingresosXML.entrySet().removeIf(ent -> ent.getValue().isEmpty());
+                ingresosXML.entrySet().removeIf(ent -> ent.getKey().isEmpty());
+                egresosXML.entrySet().removeIf(ent -> ent.getValue().isEmpty());
+                egresosXML.entrySet().removeIf(ent -> ent.getKey().isEmpty());
+
                 request2.setMarker(objectListing.getNextMarker());
+
             } while (objectListing.isTruncated());
 
             if (type.equals("xml")) {

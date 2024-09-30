@@ -13,7 +13,7 @@ import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -65,7 +65,7 @@ public class ParserFileIngresos {
 
 
         } catch (Exception e) {
-            LOGGER.error("error { " + e.getLocalizedMessage() + " }");
+            LOGGER.error("error { " + e.getLocalizedMessage() + " }  {}", e.getMessage());
         }
         return response;
     }
@@ -131,12 +131,22 @@ public class ParserFileIngresos {
             Element uudi = (Element) timbre.item(0);
             values.setTimbreFiscalDigital_UUID(uudi.getAttribute("UUID"));
             if (values.getTypeOfComprobante().equals("I") && values.getMethodPayment().equals("PUE")) {
+                NodeList impe;
+                if (doc.getElementsByTagName("cfdi:Impuestos") == null) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                    impe = (NodeList) new ArrayList<>();
+                } else {
+                    impe = doc.getElementsByTagName("cfdi:Impuestos");
 
-                NodeList impe = doc.getElementsByTagName("cfdi:Impuestos");
+                }
 
                 Element ime = (Element) impe.item(0);
+                if (ime == null) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                } else {
+                    values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0" : ime.getAttribute("Traslados"));
+                }
 
-                values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0" : ime.getAttribute("Traslados"));
 
                 NodeList ClaveProdServ = doc.getElementsByTagName("cfdi:Concepto");
                 Element claveProdServ = (Element) ClaveProdServ.item(0);
@@ -222,9 +232,22 @@ public class ParserFileIngresos {
 
                 values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
 
-                NodeList impe = doc.getElementsByTagName("cfdi:Impuestos");
+                NodeList impe;
+                if (doc.getElementsByTagName("cfdi:Impuestos") == null) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                    impe = (NodeList) new ArrayList<>();
+                } else {
+                    impe = doc.getElementsByTagName("cfdi:Impuestos");
+
+                }
+
                 Element ime = (Element) impe.item(impe.getLength() - 1);
-                values.setImpuestos(ime.getAttribute("TotalImpuestosTrasladados").isEmpty() ? "0" : ime.getAttribute("TotalImpuestosTrasladados"));
+
+                if (ime == null) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                } else {
+                    values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0" : ime.getAttribute("Traslados"));
+                }
 
                 NodeList ClaveProdServ = doc.getElementsByTagName("cfdi:Concepto");
                 Element claveProdServ = (Element) ClaveProdServ.item(0);
@@ -257,8 +280,14 @@ public class ParserFileIngresos {
 
             } else if (values.getTypeOfComprobante().equals("N")) {
                 values.setSubtotal(Double.parseDouble(comprobante.getAttribute("SubTotal")));
-                NodeList impe = doc.getElementsByTagName("cfdi:Impuestos");
+                NodeList impe;
+                if (doc.getElementsByTagName("cfdi:Impuestos") == null) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                    impe = (NodeList) new ArrayList<>();
+                } else {
+                    impe = doc.getElementsByTagName("cfdi:Impuestos");
 
+                }
                 if (impe.getLength() > 0) {
                     Element impuestosElement = (Element) impe.item(0);
                     String totalImpuestosTrasladados = impuestosElement.getAttribute("TotalImpuestosTrasladados");
@@ -339,6 +368,9 @@ public class ParserFileIngresos {
                 values.setMetodo("N/A");
                 values.setMethodPayment("N/A");
 
+                if (values.getMethodPayment().equals("N/A")) {
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                }
                 values.setAmount(pay.getAttribute("Monto"));
 
                 NodeList docu = doc.getElementsByTagName("cfdi:Concepto");
@@ -372,7 +404,7 @@ public class ParserFileIngresos {
             return new PolicyObjFile(values, path, values.getCompanyName(), values.getClient(), currentDate.substring(0, 10), typeOf, values.getTypeOfComprobante());
 
         } catch (Exception e) {
-            System.out.println("ParserFileIngresos " + e.getMessage() + e.getLocalizedMessage());
+            LOGGER.error("ParserFileIngresos " + e.getMessage() + e.getLocalizedMessage());
         }
         return null;
     }
