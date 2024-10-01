@@ -204,8 +204,8 @@ public class CreateFileService {
             rv.removeIf(n -> n.getUrl_pdf() == null);
 
 
-            finalResult.put("Emitidas", filesXMLFromAWS.get("Recibidas"));
-            finalResult.put("Recibidas", filesXMLFromAWS.get("Emitidas"));
+            finalResult.put("Emitidas", filesXMLFromAWS.get("Emitidas"));
+            finalResult.put("Recibidas", filesXMLFromAWS.get("Recibidas"));
 
 
         }
@@ -465,6 +465,9 @@ public class CreateFileService {
                                     }
                                     int rand_int1 = rand.nextInt(1000000000);
                                     policyObjFile.setFolio(String.valueOf(rand_int1));
+                                    policyObjFile.setCuenta(policyObjFile.getPolicyObj().getClaveProdServ().get(0));
+                                    policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta()));
+
                                     if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
                                         List<String> taxId = policyObjFile.getTax_id();
                                         taxId.add(policyObjFile.getCuenta_method());
@@ -633,8 +636,6 @@ public class CreateFileService {
                                     int rand_int1 = rand.nextInt(1000000000);
                                     policyObjFile.setFolio(String.valueOf(rand_int1));
 
-                                    policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(claveProductoServ.get(0)));
-                                    policyObjFile.setCuenta(claveProductoServ.get(0));
                                     if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
 
                                         List<String> taxId = policyObjFile.getTax_id();
