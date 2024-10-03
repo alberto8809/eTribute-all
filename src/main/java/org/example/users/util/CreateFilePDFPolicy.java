@@ -934,10 +934,10 @@ public class CreateFilePDFPolicy {
             sumFooter.setHorizontalAlignment(Element.ALIGN_CENTER);
             sumFooter.setBackgroundColor(new BaseColor(182, 208, 226));
 
-            PdfPCell sumCargo = new PdfPCell(new Paragraph("$" + Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos()), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+            PdfPCell sumCargo = new PdfPCell(new Paragraph("$" + (Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
             sumCargo.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-            PdfPCell sumAbono = new PdfPCell(new Paragraph("$" + Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos()), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+            PdfPCell sumAbono = new PdfPCell(new Paragraph("$" + (Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
             sumAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 
@@ -990,7 +990,7 @@ public class CreateFilePDFPolicy {
             cellUUID.setHorizontalAlignment(Element.ALIGN_CENTER);
             cellUUID.setBorderColor(BaseColor.BLACK);
 
-            PdfPCell totalAmount = new PdfPCell(new Paragraph("$" + (Double.parseDouble(policyObjFile.getPolicyObj().getAmount()) + policyObjFile.getPolicyObj().getSubtotal()), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.NORMAL, BaseColor.BLACK)));
+            PdfPCell totalAmount = new PdfPCell(new Paragraph("$" + policyObjFile.getPolicyObj().getTotalAmount(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.NORMAL, BaseColor.BLACK)));
             totalAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
             totalAmount.setBorderColor(BaseColor.BLACK);
 
