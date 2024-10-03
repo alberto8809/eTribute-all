@@ -182,11 +182,21 @@ public class ParserFileEgresos {
                     // LOGGER.info("Valor encontrado en pago20:ImpuestosP: {}", totalImpuestosTrasladados);
                 }
             }
-            /*NodeList impe = comprobanteElement.getElementsByTagName("cfdi:Impuestos");
-            LOGGER.info("impe : {}", impe.getLength());
-            Element ime = (Element) impe.item(0);
-            values.setImpuestos(ime.getAttribute("TotalImpuestosTrasladados").isEmpty() ? "0" : ime.getAttribute("TotalImpuestosTrasladados"));
-            */
+
+            if (values.getTypeOfComprobante().equals("E")) {
+                if (values.getRetencion_importe() == null) {
+                    values.setRetencion_importe(new ArrayList<>());
+                    values.setCargo(new ArrayList<>());
+                    values.setAbono(new ArrayList<>());
+                    values.setTax_amount(new ArrayList<>());
+                    values.setIva(new HashMap<>());
+                    values.setImpuestos("");
+                    values.setVenta_id("");
+                    values.setVenta_descripcion("");
+                    values.setClaveProdServ(new ArrayList<>());
+                }
+
+            }
 
             if (values.getTypeOfComprobante().equals("N")) {
                 values.setAmount("0");
@@ -228,8 +238,6 @@ public class ParserFileEgresos {
                 transladoIm.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
 
             }
-
-            //System.out.println("Impuesto--  "+tras.getAttribute("Impuesto"));
 
 
             //"------------- Nombre de empresa ----------------
@@ -321,7 +329,7 @@ public class ParserFileEgresos {
             return new PolicyObjFile(values, path, companyName, cli, currentDate.substring(0, 10), typeOf, values.getTypeOfPayment());
 
         } catch (Exception e) {
-            LOGGER.error("ParserFileEgresos " + e.getMessage() + e.getLocalizedMessage());
+            LOGGER.error("ParserFileEgresos " + e.getMessage() + e.getLocalizedMessage() + e.getCause());
         }
         return null;
     }

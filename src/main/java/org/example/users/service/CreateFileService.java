@@ -465,7 +465,7 @@ public class CreateFileService {
                                     }
                                     int rand_int1 = rand.nextInt(1000000000);
                                     policyObjFile.setFolio(String.valueOf(rand_int1));
-                                    policyObjFile.setCuenta(policyObjFile.getPolicyObj().getClaveProdServ().get(0));
+                                    policyObjFile.setCuenta(claveProductoServRepository.getClaveProductoS(policyObjFile.getPolicyObj().getClaveProdServ().get(0)));
                                     policyObjFile.getPolicyObj().setConcepto_Descripcion(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta()));
 
                                     if (CreateFilePDFPolicy.makeFileEgreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
