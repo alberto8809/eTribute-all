@@ -246,6 +246,11 @@ public class ParserFileEgresos {
             //Element tras= (Element) impeT.item(0);
             //LOGGER.info("impeT: {} ", impeT.getLength());
 
+            if (comprobante.getAttribute("TipoDeComprobante").equals("I") &&
+                    values.getMethodPayment().equals("PUE") || comprobante.getAttribute("TipoDeComprobante").equals("I") &&
+                    values.getMethodPayment().equals("PPD")) {
+                values.setDescuento(total.getAttribute("Descuento"));
+            }
 
             List<String> transladoIm = new ArrayList<>();
             for (int i = 0; i < impeT.getLength(); i++) {

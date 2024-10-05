@@ -323,20 +323,46 @@ public class CreateFileService {
 
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
 
+
+                                    if (policyObjFile.getPolicyObj().getTypeOfPayment().equals("99") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("04") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("05") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("06") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("08") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("12") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("13") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("14") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("15") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("17") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("23") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("24") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("25") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("26") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("27") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("28") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("29") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("30") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("31")) {
+                                        policyObjFile.getPolicyObj().setVenta_id("205.99");
+                                        policyObjFile.getPolicyObj().setVenta_descripcion("Otras Formas de pago");
+                                    } else if (policyObjFile.getPolicyObj().getTypeOfPayment().equals("02") || policyObjFile.getPolicyObj().getTypeOfPayment().equals("03")) {
+                                        policyObjFile.getPolicyObj().setVenta_id("102.01");
+                                        policyObjFile.getPolicyObj().setVenta_descripcion("Bancos Nacionales");
+                                    }
+
                                     List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
                                     cuentaContable.add(cuentaContableRepository.getCuantaContable(policyObjFile.getPolicyObj().getVenta_id()));
                                     policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
 
                                     cuentaContable.add(cuentaContableRepository.getCuantaContable(claveProductoServ.isEmpty() ? "01" : claveProductoServ.get(0)));
 
-                                    policyObjFile.setCuenta_method("118.01");
+                                    policyObjFile.setCuenta_method("118.03");
                                     policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
-                                    id.add("118.03");
+
+                                    id.add("118.01");
                                     id.add(policyObjFile.getCuenta_method());
                                     policyObjFile.setTax_id(id);
-
-
                                     List<String> desc = new ArrayList<>();
                                     desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
                                     desc.add(policyObjFile.getDescription_methods());

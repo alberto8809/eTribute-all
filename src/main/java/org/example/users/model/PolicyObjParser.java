@@ -41,6 +41,7 @@ public class PolicyObjParser {
     private String client;
     private String companyName;
     private TypeOfEgresoN typeOfEgresoN;
+    private String descuento;
 
 
 }
