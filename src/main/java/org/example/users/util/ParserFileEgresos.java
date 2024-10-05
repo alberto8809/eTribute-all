@@ -347,6 +347,8 @@ public class ParserFileEgresos {
                 }
             }
 
+            values.setAmount(values.getAmount().equals(null) ? "0.0" : values.getAmount());
+
             return new PolicyObjFile(values, path, companyName, cli, currentDate.substring(0, 10), typeOf, values.getTypeOfPayment());
 
         } catch (Exception e) {
