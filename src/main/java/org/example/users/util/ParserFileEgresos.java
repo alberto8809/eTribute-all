@@ -226,6 +226,22 @@ public class ParserFileEgresos {
             }
 
 
+            if (comprobante.getAttribute("TipoDeComprobante").equals("I") &&
+                    values.getMethodPayment().equals("PPD")) {
+
+                values.setRetencion_importe(new ArrayList<>());
+                values.setAmount("0.0");
+                values.setIva(new HashMap<>());
+
+
+            } else if (comprobante.getAttribute("TipoDeComprobante").equals("I") &&
+                    values.getMethodPayment().equals("PUE")) {
+                values.setAmount("0.0");
+                values.setRetencion_importe(new ArrayList<>());
+                values.setIva(new HashMap<>());
+                values.setVenta_descripcion("");
+            }
+
             NodeList impeT = comprobanteElement.getElementsByTagName("cfdi:Traslados");
             //Element tras= (Element) impeT.item(0);
             //LOGGER.info("impeT: {} ", impeT.getLength());
@@ -262,8 +278,13 @@ public class ParserFileEgresos {
             values.setConcepto_Descripcion(description.getAttribute("Descripcion"));
 
             //"------------- amount ----------------
-            Element amount = (Element) conceptosList.item(0);
-            values.setAmount(amount.getAttribute("Importe"));
+            List<String> abono = new ArrayList<>();
+            for (int i = 0; i < conceptosList.getLength(); i++) {
+                Element amount = (Element) conceptosList.item(i);
+                abono.add(amount.getAttribute("Importe"));
+
+            }
+            values.setAbono(abono);
 
 
             //"------------- ClaveProdServ ----------------

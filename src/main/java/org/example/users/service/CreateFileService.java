@@ -431,13 +431,38 @@ public class CreateFileService {
                                     policyObjFile.setCuenta_method("119.01");
                                     policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
-                                    id.add("119.03");
+
+                                    if (policyObjFile.getPolicyObj().getTypeOfPayment().equals("99") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("04") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("05") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("06") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("08") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("12") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("13") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("14") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("15") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("17") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("23") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("24") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("25") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("26") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("27") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("28") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("29") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("30") ||
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("31")) {
+                                        id.add("205.99");
+                                    } else if (policyObjFile.getPolicyObj().getTypeOfPayment().equals("02") || policyObjFile.getPolicyObj().getTypeOfPayment().equals("03")) {
+                                        id.add("102.01");
+                                    }
+
+
                                     policyObjFile.setTax_id(id);
                                     List<String> desc = new ArrayList<>();
                                     desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
                                     policyObjFile.setTax_description(desc);
-                                    policyObjFile.getPolicyObj().setVenta_id("209.01");
-                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
+//                                    policyObjFile.getPolicyObj().setVenta_id("209.01");
+//                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
 
                                     if (policyObjFile.getPolicyObj().getIva() != null) {
                                         Map<String, String> i = policyObjFile.getPolicyObj().getIva();
