@@ -234,19 +234,20 @@ public class CreateFileService {
                             PolicyObjFile policyObjFile = ParserFileEgresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
                             if (policyObjFile != null) {
                                 if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("P")) {
-                                    policyObjFile.setCuenta_method("102.01");
+                                    policyObjFile.setCuenta_method("205.99");
                                     policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
-                                    id.add("209.01");
-                                    id.add("105.99");
+                                    id.add("118.01");
+                                    id.add("119.01");
                                     policyObjFile.setTax_id(id);
 
                                     List<String> desc = new ArrayList<>();
-                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(0)));
-                                    desc.add(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getTax_id().get(1)));
+                                    for (String ids : id) {
+                                        desc.add(cuentaContableRepository.getCuentaContableVenta(ids));
+                                    }
                                     policyObjFile.setTax_description(desc);
-                                    policyObjFile.getPolicyObj().setVenta_id("208.01");
-                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
+//                                    policyObjFile.getPolicyObj().setVenta_id("208.01");
+//                                    policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
                                     int rand_int1 = rand.nextInt(1000000000);
                                     policyObjFile.setFolio(String.valueOf(rand_int1));
 
@@ -322,8 +323,6 @@ public class CreateFileService {
                                     }
 
                                 } else if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("I") && policyObjFile.getPolicyObj().getMethodPayment().equals("PUE")) {
-
-
                                     if (policyObjFile.getPolicyObj().getTypeOfPayment().equals("99") ||
                                             policyObjFile.getPolicyObj().getTypeOfPayment().equals("04") ||
                                             policyObjFile.getPolicyObj().getTypeOfPayment().equals("05") ||
@@ -342,7 +341,8 @@ public class CreateFileService {
                                             policyObjFile.getPolicyObj().getTypeOfPayment().equals("28") ||
                                             policyObjFile.getPolicyObj().getTypeOfPayment().equals("29") ||
                                             policyObjFile.getPolicyObj().getTypeOfPayment().equals("30") ||
-                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("31")) {
+                                            policyObjFile.getPolicyObj().getTypeOfPayment().equals("31") ||
+                                            policyObjFile.getPolicyObj().getVenta_id().equals("defaultVentaId")) {
                                         policyObjFile.getPolicyObj().setVenta_id("205.99");
                                         policyObjFile.getPolicyObj().setVenta_descripcion("Otras Formas de pago");
                                     } else if (policyObjFile.getPolicyObj().getTypeOfPayment().equals("02") || policyObjFile.getPolicyObj().getTypeOfPayment().equals("03")) {
@@ -355,12 +355,42 @@ public class CreateFileService {
                                     policyObjFile.getPolicyObj().setVenta_descripcion(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getPolicyObj().getVenta_id()));
 
                                     cuentaContable.add(cuentaContableRepository.getCuantaContable(claveProductoServ.isEmpty() ? "01" : claveProductoServ.get(0)));
-
-                                    policyObjFile.setCuenta_method("118.03");
-                                    policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
+                                    if (policyObjFile.getPolicyObj().getImpuestoId().equals("002")) {
+                                        policyObjFile.setCuenta_method("118.01");
+                                        policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
+                                    } else if (policyObjFile.getPolicyObj().getImpuestoId().equals("003")) {
+                                        policyObjFile.setCuenta_method("118.03");
+                                        policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
+                                        //id.add("118.01");
+                                    } else {
+                                        policyObjFile.setCuenta_method("118.03");
+                                        policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
+                                        id.add("118.01");
+                                    }
 
-                                    id.add("118.01");
+                                    if (policyObjFile.getPolicyObj().getRetencionId() != null) {
+                                        Collections.sort(policyObjFile.getPolicyObj().getRetencionPago());
+
+                                        List<String> idR = new ArrayList<>();
+                                        for (String n : policyObjFile.getPolicyObj().getRetencionId()) {
+                                            if (n.equals("001")) {
+                                                idR.add(methodOfPaymentRepository.getCuentaContableByTax("005"));
+                                            } else if (n.equals("002")) {
+                                                idR.add(methodOfPaymentRepository.getCuentaContableByTax("006"));
+
+                                            }
+                                        }
+                                        Collections.sort(idR);
+                                        List<String> des = new ArrayList<>();
+                                        for (String idAcc : idR) {
+                                            des.add(cuentaContableRepository.getCuentaContableVenta(idAcc));
+                                        }
+
+                                        policyObjFile.getPolicyObj().setRetencionId(idR);
+                                        policyObjFile.getPolicyObj().setRetencionDesc(des);
+                                    }
+
                                     id.add(policyObjFile.getCuenta_method());
                                     policyObjFile.setTax_id(id);
                                     List<String> desc = new ArrayList<>();
@@ -942,7 +972,7 @@ public class CreateFileService {
                 return 2;
             }
         } catch (Exception e) {
-            LOGGER.error(" createPolicy - createFile :   " + e.getMessage() + e.getCause() + e.getLocalizedMessage());
+            LOGGER.error(" createPolicy - createFile :   " + e.getMessage() + e.getCause() + e.getLocalizedMessage() + e.fillInStackTrace());
         }
         return 0;
     }

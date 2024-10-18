@@ -42,6 +42,11 @@ public class PolicyObjParser {
     private String companyName;
     private TypeOfEgresoN typeOfEgresoN;
     private String descuento;
+    private String impuestoId;
+    private String impPagado;
+    private List<String> retencionId;
+    private List<String> retencionPago;
+    private List<String> retencionDesc;
 
 
 }

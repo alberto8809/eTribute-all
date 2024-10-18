@@ -70,22 +70,22 @@ public class ParserFileEgresos {
 
             values.setTypeOfComprobante(comprobante.getAttribute("TipoDeComprobante"));
 
-            if (values.getTypeOfComprobante().equals("P")) {
-                NodeList py = comprobanteElement.getElementsByTagName("pago20:Pago");
-                Element rEgr = (Element) py.item(0);
-                values.setMethodPayment(rEgr.getAttribute("FormaDePagoP"));
-                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
-                values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
-                values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
-                values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
-                values.setAbono(values.getAbono() == null ? new ArrayList<>() : values.getAbono());
-                values.setTax_amount(values.getTax_amount() == null ? new ArrayList<>() : values.getTax_amount());
-
-            } else {
-                Element method = doc.getDocumentElement();
-                String methodPayment = method.getAttribute("MetodoPago");
-                values.setMethodPayment(methodPayment);
-            }
+//            if (values.getTypeOfComprobante().equals("P")) {
+//                NodeList py = comprobanteElement.getElementsByTagName("pago20:Pago");
+//                Element rEgr = (Element) py.item(0);
+//                values.setMethodPayment(rEgr.getAttribute("FormaDePagoP"));
+//                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
+//                values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
+//                values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
+//                values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
+//                values.setAbono(values.getAbono() == null ? new ArrayList<>() : values.getAbono());
+//                values.setTax_amount(values.getTax_amount() == null ? new ArrayList<>() : values.getTax_amount());
+//
+//            } else {
+//                Element method = doc.getDocumentElement();
+//                String methodPayment = method.getAttribute("MetodoPago");
+//                values.setMethodPayment(methodPayment);
+//            }
             //LOGGER.info("MethodPayment {}", values.getMethodPayment());
             NodeList timbre = doc.getElementsByTagName("tfd:TimbreFiscalDigital");
             Element uudi = (Element) timbre.item(0);
@@ -103,12 +103,18 @@ public class ParserFileEgresos {
                 NodeList py = comprobanteElement.getElementsByTagName("pago20:Pago");
                 Element rEgr = (Element) py.item(0);
                 values.setMethodPayment(rEgr.getAttribute("FormaDePagoP"));
+                NodeList imp = comprobanteElement.getElementsByTagName("pago20:Totales");
+                Element ip = (Element) imp.item(0);
+                values.setAmount(ip.getAttribute("MontoTotalPagos"));
                 values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
                 values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
                 values.setAbono(values.getAbono() == null ? new ArrayList<>() : values.getAbono());
                 values.setTax_amount(values.getTax_amount() == null ? new ArrayList<>() : values.getTax_amount());
+                NodeList impPagado = doc.getElementsByTagName("pago20:DoctoRelacionado");
+                Element impPay = (Element) impPagado.item(0);
+                values.setImpPagado(impPay.getAttribute("ImpPagado"));
 
             } else {
                 Element method = doc.getDocumentElement();
@@ -139,6 +145,8 @@ public class ParserFileEgresos {
                         //System.out.println("---> Diario");
                     }
                 }
+            } else {
+                typeOf = "defaultValue";
             }
 
             if (comprobante.getAttribute("TipoDeComprobante").equals("I")) {
@@ -240,6 +248,22 @@ public class ParserFileEgresos {
                 values.setRetencion_importe(new ArrayList<>());
                 values.setIva(new HashMap<>());
                 values.setVenta_descripcion("");
+
+                List<String> impuesto = new ArrayList<>();
+                List<String> importe = new ArrayList<>();
+
+                NodeList retencion = comprobanteElement.getElementsByTagName("cfdi:Retencion");
+                if (retencion != null || retencion.getLength() > 0) {
+                    for (int i = 0; i < retencion.getLength(); i++) {
+                        Element rcp = (Element) retencion.item(i);
+                        if (!rcp.getAttribute("Base").isEmpty()) {
+                            impuesto.add(rcp.getAttribute("Impuesto"));
+                            importe.add(rcp.getAttribute("Importe"));
+                        }
+                    }
+                }
+                values.setRetencionId(impuesto);
+                values.setRetencionPago(importe);
             }
 
             NodeList impeT = comprobanteElement.getElementsByTagName("cfdi:Traslados");
@@ -256,6 +280,7 @@ public class ParserFileEgresos {
             for (int i = 0; i < impeT.getLength(); i++) {
                 Element retencionR = (Element) impeT.item(i);
                 //System.out.println(retencionR.getAttribute("Impuesto"));
+
                 transladoIm.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
 
             }
@@ -311,7 +336,7 @@ public class ParserFileEgresos {
                 for (int i = 0; i < traslados.getLength(); i++) {
                     Element retencionR = (Element) traslados.item(i);
                     translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
-
+                    values.setImpuestoId(retencionR.getAttribute("Impuesto"));
                 }
 
                 values.setTraslado(translado);
@@ -346,14 +371,17 @@ public class ParserFileEgresos {
                 NodeList dr = comprobanteElement.getElementsByTagName("pago20:TrasladoDR");
                 Element d = (Element) dr.item(0);
                 if (d == null) {
-                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
+                    LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(local_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
                 } else {
                     values.setAmount(d.getAttribute("ImporteDR"));
                 }
             }
 
-            values.setAmount(values.getAmount().equals(null) ? "0.0" : values.getAmount());
+            values.setAmount(values.getAmount() == null ? "0.0" : values.getAmount());
+            values.setImpuestoId(values.getImpuestoId() == null ? "0" : values.getImpuestoId());
 
+            //LOGGER.error("type {}", values.getTypeOfComprobante());
+            //LOGGER.error("impuesto {}", values.getImpuestoId());
             return new PolicyObjFile(values, path, companyName, cli, currentDate.substring(0, 10), typeOf, values.getTypeOfPayment());
 
         } catch (Exception e) {
