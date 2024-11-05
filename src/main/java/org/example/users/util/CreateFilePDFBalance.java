@@ -8,6 +8,8 @@ import org.example.users.model.Auxiliar;
 import org.example.users.model.Balance;
 
 import java.io.FileOutputStream;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 
@@ -406,6 +408,12 @@ public class CreateFilePDFBalance {
 
         }
         return false;
+    }
+
+    public static String decimal(Double value) {
+
+        BigDecimal formatNumber = new BigDecimal(value);
+        return "" + formatNumber.setScale(2, RoundingMode.DOWN);
     }
 
 }

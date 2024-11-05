@@ -144,7 +144,7 @@ public class ParserFileIngresos {
                 if (ime == null) {
                     LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
                 } else {
-                    values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0" : ime.getAttribute("Traslados"));
+                    values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0.00" : ime.getAttribute("Traslados"));
                 }
 
 
@@ -158,7 +158,7 @@ public class ParserFileIngresos {
                 List<String> translado = new ArrayList<>();
                 for (int i = 0; i < traslados.getLength(); i++) {
                     Element retencionR = (Element) traslados.item(i);
-                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
+                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0.00" : retencionR.getAttribute("Importe"));
 
                 }
                 values.setTraslado(translado);
@@ -167,7 +167,7 @@ public class ParserFileIngresos {
                 List<String> retencion_importe = new ArrayList<>();
                 for (int i = 0; i < retencion.getLength(); i++) {
                     Element retencionR = (Element) retencion.item(i);
-                    retencion_importe.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
+                    retencion_importe.add(retencionR.getAttribute("Importe").isEmpty() ? "0.00" : retencionR.getAttribute("Importe"));
                 }
                 values.setRetencion_importe(retencion_importe);
                 values.setVenta_id("102.01");
@@ -176,7 +176,7 @@ public class ParserFileIngresos {
                 abono.add("208.01");
                 values.setAbono(abono);
 
-                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
+                values.setImpuestos(values.getImpuestos() == null ? "0.00" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
                 values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
@@ -189,7 +189,7 @@ public class ParserFileIngresos {
                 List<String> retencion_importe = new ArrayList<>();
                 for (int i = 0; i < retencion.getLength(); i++) {
                     Element retencionR = (Element) retencion.item(i);
-                    retencion_importe.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
+                    retencion_importe.add(retencionR.getAttribute("Importe").isEmpty() ? "0.00" : retencionR.getAttribute("Importe"));
                 }
                 values.setRetencion_importe(retencion_importe);
                 NodeList traslados = doc.getElementsByTagName("cfdi:Traslado");
@@ -197,7 +197,7 @@ public class ParserFileIngresos {
                 List<String> translado = new ArrayList<>();
                 for (int i = 0; i < traslados.getLength(); i++) {
                     Element retencionR = (Element) traslados.item(i);
-                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
+                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0.00" : retencionR.getAttribute("Importe"));
 
                 }
                 values.setTraslado(translado);
@@ -218,7 +218,7 @@ public class ParserFileIngresos {
                     claveProd.add(clv.getAttribute("ClaveProdServ"));
                 }
                 values.setClaveProdServ(claveProd);
-                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
+                values.setImpuestos(values.getImpuestos() == null ? "0.00" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
                 values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
@@ -246,7 +246,7 @@ public class ParserFileIngresos {
                 if (ime == null) {
                     LOGGER.error(" archivo no cumpple caracteristicas de R´s:  {}", path.substring(server_path.length() + values.getRfc().length() + values.getTypeOfPayment().length() + "xml/".length(), path.length()));
                 } else {
-                    values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0" : ime.getAttribute("Traslados"));
+                    values.setImpuestos(ime.getAttribute("Traslados").isEmpty() ? "0.00" : ime.getAttribute("Traslados"));
                 }
 
                 NodeList ClaveProdServ = doc.getElementsByTagName("cfdi:Concepto");
@@ -259,7 +259,7 @@ public class ParserFileIngresos {
                 List<String> translado = new ArrayList<>();
                 for (int i = 0; i < traslados.getLength(); i++) {
                     Element retencionR = (Element) traslados.item(i);
-                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0" : retencionR.getAttribute("Importe"));
+                    translado.add(retencionR.getAttribute("Importe").isEmpty() ? "0.00" : retencionR.getAttribute("Importe"));
 
                 }
                 values.setTraslado(translado);
@@ -271,7 +271,7 @@ public class ParserFileIngresos {
                     retencion_importe.add(retencionR.getAttribute("Importe"));
                 }
                 values.setRetencion_importe(retencion_importe);
-                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
+                values.setImpuestos(values.getImpuestos() == null ? "0.00" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
                 values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
@@ -293,11 +293,11 @@ public class ParserFileIngresos {
                     String totalImpuestosTrasladados = impuestosElement.getAttribute("TotalImpuestosTrasladados");
 
                     if (totalImpuestosTrasladados.isEmpty()) {
-                        totalImpuestosTrasladados = "0";
+                        totalImpuestosTrasladados = "0.00";
                     }
                     values.setImpuestos(totalImpuestosTrasladados);
                 } else {
-                    values.setImpuestos("0");
+                    values.setImpuestos("0.00");
                 }
                 NodeList imp = doc.getElementsByTagName("cfdi:Traslado");
                 Map<String, String> iva = new HashMap<>();
@@ -336,11 +336,11 @@ public class ParserFileIngresos {
 
                 NodeList percep = doc.getElementsByTagName("nomina12:Percepciones");
                 Element totalSueldos = (Element) percep.item(0);
-                String totaS = totalSueldos.getAttribute("TotalSueldos") == null ? "0" : totalSueldos.getAttribute("TotalSueldos");
+                String totaS = totalSueldos.getAttribute("TotalSueldos") == null ? "0.00" : totalSueldos.getAttribute("TotalSueldos");
                 retencion_importe.add(totaS.isEmpty() || totaS == null ? "0" : totaS);
                 retencion_importe.add(values.getTotalAmount());
                 values.setRetencion_importe(retencion_importe);
-                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
+                values.setImpuestos(values.getImpuestos() == null ? "0.00" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
                 values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
@@ -353,7 +353,7 @@ public class ParserFileIngresos {
                 NodeList percep = doc.getElementsByTagName("pago20:Totales");
                 Element totalSueldos = (Element) percep.item(0);
                 String dou = totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16").isEmpty() || totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16") == null ? "0" : totalSueldos.getAttribute("TotalTrasladosImpuestoIVA16");
-                values.setSubtotal(Double.parseDouble(dou.isEmpty() || dou == null ? "0" : dou));
+                values.setSubtotal(Double.parseDouble(dou.isEmpty() || dou == null ? "0.00" : dou));
 
                 NodeList pago = doc.getElementsByTagName("pago20:Pago");
                 Element pay = (Element) pago.item(0);
@@ -392,7 +392,7 @@ public class ParserFileIngresos {
                 values.setClaveProdServ(clv);
 
 
-                values.setImpuestos(values.getImpuestos() == null ? "0" : values.getImpuestos());
+                values.setImpuestos(values.getImpuestos() == null ? "0.00" : values.getImpuestos());
                 values.setVenta_id(values.getVenta_id() == null ? "defaultVentaId" : values.getVenta_id());
                 values.setVenta_descripcion(values.getVenta_descripcion() == null ? "defaultVentaDescripcion" : values.getVenta_descripcion());
                 values.setCargo(values.getCargo() == null ? new ArrayList<>() : values.getCargo());
