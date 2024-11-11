@@ -411,9 +411,9 @@ public class CreateFilePDFBalance {
     }
 
     public static String decimal(Double value) {
-
-        BigDecimal formatNumber = new BigDecimal(value);
-        return "" + formatNumber.setScale(2, RoundingMode.DOWN);
+        //BigDecimal formatNumber = new BigDecimal(value);
+        //return "" + formatNumber.setScale(2, RoundingMode.DOWN);
+        return String.format("%,.2f", value);
     }
 
 }
