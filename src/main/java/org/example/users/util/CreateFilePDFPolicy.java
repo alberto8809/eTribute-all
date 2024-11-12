@@ -10,6 +10,8 @@ import org.example.users.model.PolicyObjFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.example.users.util.CFDI.*;
 import static org.example.users.util.Regimen.*;
