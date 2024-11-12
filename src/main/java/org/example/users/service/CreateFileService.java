@@ -883,17 +883,12 @@ public class CreateFileService {
                             PolicyObjFile policyObjFile = ParserFileIngresos.getParse(server_path + rfc + "/xml/" + type + "/" + file.getName());
                             List<String> claveProductoServ = getClaveProductoService(policyObjFile.getPolicyObj().getClaveProdServ(), policyObjFile.getPolicyObj().getTypeOfComprobante(), policyObjFile.getPolicyObj().getTraslado());
                             List<String> accounts = getCuentaCobtableList(claveProductoServ);
-
-
-                            // method payment (Abono)
-
                             policyObjFile.setCuenta_method(methodOfPaymentRepository.getCuentaContable(policyObjFile.getPolicyObj().getTypeOfPayment()));
                             policyObjFile.setDescription_methods(cuentaContableRepository.getCuantaContableMethod(policyObjFile.getCuenta_method()));
-                            claveProductoServ.add(policyObjFile.getCuenta_method());
-                            accounts.add(policyObjFile.getDescription_methods());
                             policyObjFile.setTax_id(claveProductoServ);
                             policyObjFile.setTax_description(accounts);
                             policyObjFile.setCuenta(claveProductoServ.get(0));
+                            
                             int rand_int1 = rand.nextInt(1000000000);
                             policyObjFile.setFolio(String.valueOf(rand_int1));
                             if (CreateFilePDFPolicy.makeFileIngreso(policyObjFile, file.getName().replace(".xml", ""), rfc, type)) {
