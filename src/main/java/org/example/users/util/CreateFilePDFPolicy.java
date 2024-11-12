@@ -29,7 +29,7 @@ public class CreateFilePDFPolicy {
         try {
 
             String cargoTotal = "";
-            String abonoTotal = "";
+            String impuesto= "";
             File uploadDir = new File(server_path + rfc + "/pdf/" + type + "/");
             if (!uploadDir.exists()) {
                 uploadDir.mkdirs();
@@ -175,7 +175,7 @@ public class CreateFilePDFPolicy {
 
 
                     double imp = (Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos()) + suma) - Double.valueOf(policyObjFile.getPolicyObj().getDescuento());
-                    abonoTotal = String.valueOf(imp);
+                    impuesto = String.valueOf(imp);
                     cargoTotal = String.valueOf((Double.parseDouble(policyObjFile.getPolicyObj().getImpuestos()) + suma));
 
                     double sumaTraslado = 0;
