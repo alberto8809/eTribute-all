@@ -201,7 +201,7 @@ public class CreateFilePDFPolicy {
                                         sumaTraslado += Double.parseDouble(deduped.get(j));
                                     }
                             }
-                            if (!policyObjFile.getPolicyObj().getTraslado().isEmpty()) {
+                            if (sumaTraslado > 0) {
                                 cargoCargo = new PdfPCell(new Paragraph(CreateFilePDFBalance.decimal(Double.parseDouble(String.valueOf(sumaTraslado))), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
 
                             } else {
