@@ -237,6 +237,25 @@ public class CreateFileService {
                                     policyObjFile.setCuenta_method("205.99");
                                     policyObjFile.setDescription_methods(cuentaContableRepository.getCuentaContableVenta(policyObjFile.getCuenta_method()));
                                     List<String> id = new ArrayList<>();
+                                        if ((policyObjFile.getPolicyObj().getMethodPayment().equals("01") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("04") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("05") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("06") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("08") |
+                                                    policyObjFile.getPolicyObj().getMethodPayment().equals("12") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("13") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("14") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("15") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("17") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("23") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("24") ||
+                                            policyObjFile.getPolicyObj().getMethodPayment().equals("25"))) {
+
+                                        id.add("205.99");
+                                    } else if (policyObjFile.getPolicyObj().getMethodPayment().equals("02") || policyObjFile.getPolicyObj().getMethodPayment().equals("03")) {
+                                        id.add("102.01");
+                                    }
+                                                                    
                                     id.add("118.01");
                                     id.add("119.01");
                                     policyObjFile.setTax_id(id);
@@ -292,7 +311,7 @@ public class CreateFileService {
                                             policytoDB.setFecha(policyObjFile.getDate());
                                             policytoDB.setReferencia(policyObjFile.getFolio());
                                             policytoDB.setTotal(policyObjFile.getPolicyObj().getAmount());
-                                            policytoDB.setSaldo_inicial("0");
+                                            policytoDB.setSaldo_inicial("0.00");
                                             double fin = Double.parseDouble(policytoDB.getSaldo_inicial()) + Double.parseDouble(policytoDB.getTotal());
                                             policytoDB.setSaldo_final(String.valueOf(fin));
                                             policytoDB.setAccount_id(account_id);
