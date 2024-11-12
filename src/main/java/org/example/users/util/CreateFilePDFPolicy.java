@@ -747,7 +747,7 @@ public class CreateFilePDFPolicy {
                 cargoTotal = String.valueOf(caGT);
                 CreateFilePDFBalance.decimal(Double.parseDouble(cargoTotal));
                 impuesto = String.valueOf(caGT);
-                CreateFilePDFBalance.decimal(Double.parseDouble(abonoTotal));
+                CreateFilePDFBalance.decimal(Double.parseDouble(impuesto));
             }
 
 
