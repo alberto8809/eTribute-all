@@ -407,5 +407,8 @@ public class CreateFilePDFBalance {
         }
         return false;
     }
+      public static String decimal(Double value) {
+        return String.format("%,.2f", value);
+    }
 
 }
