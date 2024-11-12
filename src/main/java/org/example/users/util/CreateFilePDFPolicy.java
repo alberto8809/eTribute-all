@@ -694,7 +694,7 @@ public class CreateFilePDFPolicy {
                         descripcionAbonoPPD.setBorderColorBottom(BaseColor.BLACK);
                         descripcionAbonoPPD.setHorizontalAlignment(Element.ALIGN_CENTER);
                         descripcionAbonoPPD.setHorizontalAlignment(Element.ALIGN_CENTER);
-Pd  Pdf                 PdfPCell AbonoPPD = null;
+                        PdfPCell AbonoPPD = null;
                         PdfPCell AbonoPagoPPD = null;
 
                         if (policyObjFile.getTax_id().get(i).equals("102.01")) {
