@@ -943,6 +943,9 @@ public class CreateFilePDFPolicy {
 
             PdfPTable abonoTable = new PdfPTable(4);
             abonoTable.setWidthPercentage(100);
+            
+             PdfPTable abonoTable2 = new PdfPTable(4);
+            abonoTable2.setWidthPercentage(100);
 
 // ------------------------------------------------------------------------------------------------------------------------
             if (policyObjFile.getPolicyObj().getTypeOfComprobante().equals("N")) {
@@ -976,6 +979,7 @@ public class CreateFilePDFPolicy {
                 bodyTable.addCell(Body);
 
                 //}
+
 
                 if (!policyObjFile.getTax_id().isEmpty()) {
                     for (int i = 0; i < policyObjFile.getTax_id().size(); i++) {
@@ -1011,6 +1015,32 @@ public class CreateFilePDFPolicy {
                         abonoTable.addCell(abono);
 
                     }
+
+                    PdfPCell accountAbono = new PdfPCell(new Paragraph(policyObjFile.getCuenta_method(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    accountAbono.setBorderColorBottom(BaseColor.BLACK);
+                    accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    PdfPCell descripcionAbono = new PdfPCell(new Paragraph(policyObjFile.getDescription_methods(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    descripcionAbono.setBorderColorBottom(BaseColor.BLACK);
+                    descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                    PdfPCell Abono = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    Abono.setBorderColorBottom(BaseColor.BLACK);
+                    Abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    Abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    PdfPCell AbonoPago = new PdfPCell(new Paragraph(CreateFilePDFBalance.decimal(Double.parseDouble(policyObjFile.getPolicyObj().getAmount())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    AbonoPago.setBorderColorBottom(BaseColor.BLACK);
+                    AbonoPago.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    AbonoPago.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                    abonoTable2.addCell(accountAbono);
+                    abonoTable2.addCell(descripcionAbono);
+                    abonoTable2.addCell(Abono);
+                    abonoTable2.addCell(AbonoPago);
                 }
 
             } else {
@@ -1026,14 +1056,14 @@ public class CreateFilePDFPolicy {
                     descriptionBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
 
-                    PdfPCell paymentBody = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    PdfPCell paymentBody = new PdfPCell(new Paragraph(CreateFilePDFBalance.decimal(Double.parseDouble(policyObjFile.getPolicyObj().getAmount())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                     paymentBody.setBorderColorLeft(BaseColor.WHITE);
                     paymentBody.setBorderColorRight(BaseColor.WHITE);
                     paymentBody.setBorderColorTop(BaseColor.WHITE);
                     paymentBody.setBorderColorBottom(BaseColor.BLACK);
                     paymentBody.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                    PdfPCell Body = new PdfPCell(new Paragraph(CreateFilePDFBalance.decimal(Double.parseDouble(policyObjFile.getPolicyObj().getAmount())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                    PdfPCell Body = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
                     Body.setBorderColorBottom(BaseColor.BLACK);
                     Body.setHorizontalAlignment(Element.ALIGN_CENTER);
 
@@ -1043,6 +1073,31 @@ public class CreateFilePDFPolicy {
                     bodyTable.addCell(Body);
 
                 }
+                PdfPCell accountAbono = new PdfPCell(new Paragraph(policyObjFile.getCuenta_method(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                accountAbono.setBorderColorBottom(BaseColor.BLACK);
+                accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                accountAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                PdfPCell descripcionAbono = new PdfPCell(new Paragraph(policyObjFile.getDescription_methods(), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                descripcionAbono.setBorderColorBottom(BaseColor.BLACK);
+                descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                descripcionAbono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+
+                PdfPCell Abono = new PdfPCell(new Paragraph("0.00", FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                Abono.setBorderColorBottom(BaseColor.BLACK);
+                Abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+                Abono.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                PdfPCell AbonoPago = new PdfPCell(new Paragraph(CreateFilePDFBalance.decimal(Double.parseDouble(policyObjFile.getPolicyObj().getAmount())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 9, BaseColor.BLACK)));
+                AbonoPago.setBorderColorBottom(BaseColor.BLACK);
+                AbonoPago.setHorizontalAlignment(Element.ALIGN_CENTER);
+                AbonoPago.setHorizontalAlignment(Element.ALIGN_CENTER);
+
+                abonoTable2.addCell(accountAbono);
+                abonoTable2.addCell(descripcionAbono);
+                abonoTable2.addCell(Abono);
+                abonoTable2.addCell(AbonoPago);
             }
 // ------------------------------------------------------------------------------------------------------------------------
 
@@ -1112,7 +1167,7 @@ public class CreateFilePDFPolicy {
             cellUUID.setHorizontalAlignment(Element.ALIGN_CENTER);
             cellUUID.setBorderColor(BaseColor.BLACK);
 
-            PdfPCell totalAmount = new PdfPCell(new Paragraph("$" +CreateFilePDFBalance.decimal(Double.parseDouble(policyObjFile.getPolicyObj().getTotalAmount())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.NORMAL, BaseColor.BLACK)));
+            PdfPCell totalAmount = new PdfPCell(new Paragraph("$" + CreateFilePDFBalance.decimal(Double.parseDouble(policyObjFile.getPolicyObj().getTotalAmount())), FontFactory.getFont(FontFactory.TIMES_ROMAN, 11, Font.NORMAL, BaseColor.BLACK)));
             totalAmount.setHorizontalAlignment(Element.ALIGN_CENTER);
             totalAmount.setBorderColor(BaseColor.BLACK);
 
@@ -1138,6 +1193,7 @@ public class CreateFilePDFPolicy {
             document.add(headerTable);
             document.add(bodyTable);
             document.add(abonoTable);
+            document.add(abonoTable2);
             document.add(footer);
             document.add(new Paragraph("\n\n\n\n"));
             document.add(headerLastValues);
