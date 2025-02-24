@@ -851,7 +851,7 @@ public class CreateFilePDFPolicy {
             document.add(lastValues);
             document.close();
 
-            // UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
+            UploadFileToS3_Policies.uploadPDF(fileName + ".pdf", rfc, type);
 
             return true;
         } catch (Exception e) {
